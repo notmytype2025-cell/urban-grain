@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Urban Grain — Indian Streetwear | Limited Drops</title>
+<meta name="description" content="Urban Grain is an Indian streetwear brand from Chennai. Shop limited drop hoodies, tees, cargos and jackets."/>
+<meta name="keywords" content="Urban Grain, Indian streetwear, Chennai streetwear, limited drop clothing, hoodies India"/>
+<meta name="robots" content="index, follow"/>
+<meta name="google-site-verification" content="myr0AKW7BvarjPJZrbHHflYsWqxOWotYmYDAQbrrE2E"/>
+<meta property="og:title" content="Urban Grain — Indian Streetwear"/>
+<meta property="og:description" content="Limited drops. Real quality. Made in India."/>
+<meta property="og:url" content="https://urban-grain.netlify.app"/>
+<meta property="og:type" content="website"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ClothingStore",
+  "name": "Urban Grain",
+  "url": "https://urban-grain.netlify.app",
+  "description": "Urban Grain is an Indian streetwear brand from Chennai. Limited drops, real quality, made in India.",
+  "email": "urbangrain25@gmail.com",
+  "address": {"@type": "PostalAddress", "addressLocality": "Chennai", "addressRegion": "Tamil Nadu", "addressCountry": "IN"},
+  "sameAs": ["https://urban-grain.netlify.app"]
+}
+</script>
+<!-- Razorpay -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- Supabase Realtime SDK (live site only) -->
+<script>
+if(window.location.hostname&&window.location.hostname!==''){
+  var s=document.createElement('script');
+  s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
+  document.head.appendChild(s);
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f1ea;--bg2:#ede8df;--bg3:#e4ddd2;
+  --white:#fff;--black:#1a1410;
+  --rust:#b5451b;--rust-dark:#8a3212;
+  --grain:#7a6a58;--mid:#9e8e7e;--mud:#3d2b1f;
+  --border:rgba(90,70,50,0.15);
+  --fd:Impact,'Arial Narrow',Arial,sans-serif;
+  --fb:Arial,Helvetica,sans-serif;
+  --fm:'Courier New',Courier,monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--black);overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--rust)}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem;background:rgba(245,241,234,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:1.8rem;letter-spacing:.1em;color:var(--black);cursor:pointer;display:flex;align-items:center;gap:.5rem}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-family:var(--fm);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--grain);text-decoration:none;cursor:pointer;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--rust)}
+.nav-right{display:flex;gap:.6rem;align-items:center}
+.cart-btn{font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;background:var(--rust);color:#fff;padding:.5rem 1.2rem;border:none;cursor:pointer}
+.cart-btn:hover{background:var(--rust-dark)}
+.auth-btn{font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--grain);padding:.5rem 1rem;border:1px solid var(--border);cursor:pointer;transition:all .2s}
+.auth-btn:hover{border-color:var(--rust);color:var(--rust)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{width:22px;height:1.5px;background:var(--black);display:block}
+.mob-menu{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(245,241,234,.97);padding:1.5rem 2rem;flex-direction:column;gap:1.2rem;border-bottom:1px solid var(--border);z-index:899}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:var(--fm);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grain);text-decoration:none;cursor:pointer}
+.page{display:none;padding-top:72px;min-height:100vh}
+.page.active{display:block}
+.pdp{display:none;padding-top:72px;min-height:100vh}
+.pdp.active{display:block}
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 72px);position:relative;overflow:hidden}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem;z-index:2}
+.hero-title{font-family:var(--fd);font-size:clamp(4rem,8vw,8.5rem);line-height:.92;letter-spacing:.04em;margin-bottom:1.8rem}
+.hero-title em{font-style:italic;font-family:var(--fb);font-weight:300;font-size:.5em;letter-spacing:.1em;color:var(--grain);display:block;line-height:2}
+.hero-sub{font-size:.95rem;font-weight:300;color:var(--grain);line-height:1.8;max-width:360px;margin-bottom:2.5rem}
+.ctas{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-p{font-family:var(--fm);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;background:var(--rust);color:#fff;padding:.9rem 2.2rem;border:none;cursor:pointer;transition:all .2s;display:inline-block}
+.btn-p:hover{background:var(--rust-dark)}
+.btn-o{font-family:var(--fm);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;background:transparent;color:var(--grain);padding:.9rem 2.2rem;border:1px solid rgba(90,70,50,.3);cursor:pointer;transition:all .2s}
+.btn-o:hover{border-color:var(--rust);color:var(--rust)}
+.hero-right{background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hero-visual{width:240px;height:320px;border:1px solid var(--border);position:relative;display:flex;align-items:center;justify-content:center}
+.hero-visual::before{content:'UG';font-family:var(--fd);font-size:9rem;color:rgba(181,69,27,.08);position:absolute}
+.hero-visual-tag{font-family:var(--fm);font-size:.55rem;color:var(--rust);letter-spacing:.2em;text-transform:uppercase;position:absolute;bottom:1.2rem;left:1.2rem}
+.ticker{position:absolute;bottom:0;left:0;right:0;background:var(--rust);padding:.6rem 0;overflow:hidden;z-index:5}
+.ticker-inner{display:flex;gap:4rem;animation:tick 22s linear infinite;white-space:nowrap}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tick-item{font-family:var(--fd);font-size:.8rem;letter-spacing:.2em;color:#fff;flex-shrink:0}
+.feat-bar{display:grid;grid-template-columns:repeat(4,1fr);background:var(--rust)}
+.feat-item{padding:2rem 1.5rem;border-right:1px solid rgba(255,255,255,.15);text-align:center}
+.feat-item:last-child{border-right:none}
+.feat-icon{font-size:1.2rem;display:block;margin-bottom:.6rem}
+.feat-title{font-family:var(--fd);font-size:1rem;letter-spacing:.1em;color:#fff;margin-bottom:.3rem}
+.feat-text{font-size:.75rem;font-weight:300;color:rgba(255,255,255,.65);line-height:1.5}
+.sec{padding:5rem 3rem}
+.sec-label{font-family:var(--fm);font-size:.6rem;letter-spacing:.3em;color:var(--rust);text-transform:uppercase;margin-bottom:.8rem}
+.sec-title{font-family:var(--fd);font-size:clamp(2.2rem,4vw,4rem);letter-spacing:.06em;line-height:1;margin-bottom:.8rem}
+.sec-sub{font-size:.9rem;font-weight:300;color:var(--grain);max-width:460px;line-height:1.75}
+.prod-card{background:var(--white);cursor:pointer;position:relative;overflow:hidden;transition:transform .2s}
+.prod-card:hover{transform:translateY(-3px)}
+.prod-card:hover .prod-img-inner{transform:scale(1.04)}
+.prod-card:hover .prod-overlay{opacity:1}
+.prod-img{width:100%;aspect-ratio:3/4;background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.prod-img-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;transition:transform .5s ease}
+.prod-img-text{font-family:var(--fd);font-size:3.5rem;color:rgba(90,70,50,.1)}
+.prod-badge{position:absolute;top:.8rem;left:.8rem;font-family:var(--fm);font-size:.52rem;letter-spacing:.18em;padding:.2rem .6rem;background:var(--rust);color:#fff;text-transform:uppercase;z-index:2}
+.prod-overlay{position:absolute;inset:0;background:rgba(181,69,27,.07);display:flex;align-items:flex-end;justify-content:center;padding:1.2rem;opacity:0;transition:opacity .3s;z-index:2}
+.btn-quick{font-family:var(--fm);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;background:var(--black);color:#fff;padding:.65rem 1.2rem;border:none;cursor:pointer;width:100%}
+.btn-quick:hover{background:var(--rust)}
+.prod-info{padding:1rem .9rem .9rem;border-top:1px solid var(--border)}
+.prod-cat{font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:var(--rust);text-transform:uppercase;margin-bottom:.3rem}
+.prod-name{font-size:.9rem;font-weight:600;color:var(--black);margin-bottom:.25rem}
+.prod-price{font-family:var(--fm);font-size:.8rem;color:var(--grain)}
+.prod-price del{color:var(--mid);margin-left:.4rem;font-size:.7rem}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.lbook-scroll{display:flex;gap:3px;overflow-x:auto;padding:0 3rem;scrollbar-width:none}
+.lbook-scroll::-webkit-scrollbar{display:none}
+.look{flex-shrink:0;width:300px;height:420px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer}
+.look:nth-child(odd){margin-top:2.5rem}
+.look-num{font-family:var(--fd);font-size:5rem;color:rgba(90,70,50,.07)}
+.look-tag{position:absolute;bottom:1.2rem;left:1.2rem;font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:#f5f1ea;text-transform:uppercase;background:rgba(0,0,0,.5);padding:.35rem .7rem;z-index:2}
+.look-overlay{position:absolute;inset:0;background:rgba(0,0,0,.2);z-index:1}
+.look img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.look:hover img{transform:scale(1.05)}
+.rev-card{background:var(--white);padding:1.8rem;border-left:2px solid var(--rust)}
+.rev-stars{color:var(--rust);font-size:.7rem;margin-bottom:.8rem}
+.rev-text{font-size:.85rem;font-weight:300;color:var(--grain);line-height:1.8;margin-bottom:1.2rem;font-style:italic}
+.rev-author{font-family:var(--fm);font-size:.58rem;letter-spacing:.18em;color:var(--mid);text-transform:uppercase}
+.nl-wrap{background:var(--mud);padding:6rem 3rem;text-align:center;position:relative;overflow:hidden}
+.nl-wrap::before{content:'URBAN GRAIN';font-family:var(--fd);font-size:15rem;color:rgba(181,69,27,.06);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.nl-inner{position:relative;z-index:2;max-width:520px;margin:0 auto}
+.nl-form{display:flex;max-width:400px;margin:2rem auto 0}
+.nl-form input{flex:1;font-family:var(--fm);font-size:.65rem;padding:.9rem 1rem;background:rgba(245,241,234,.1);border:1px solid rgba(245,241,234,.2);border-right:none;color:#f5f1ea;outline:none}
+.nl-form input::placeholder{color:rgba(245,241,234,.4)}
+.nl-form input:focus{border-color:var(--rust)}
+.nl-form button{font-family:var(--fm);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;padding:.9rem 1.3rem;background:var(--rust);color:#fff;border:none;cursor:pointer;white-space:nowrap}
+.shop-hero{background:var(--mud);padding:5rem 3rem 4rem;position:relative;overflow:hidden}
+.shop-hero::before{content:'SHOP';font-family:var(--fd);font-size:18rem;color:rgba(181,69,27,.06);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.shop-hero-inner{position:relative;z-index:2}
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;padding:2rem 3rem;background:var(--bg2);border-bottom:1px solid var(--border)}
+.flt{font-family:var(--fm);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;padding:.45rem 1.1rem;background:transparent;color:var(--grain);border:1px solid var(--border);cursor:pointer;transition:all .2s}
+.flt:hover,.flt.active{background:var(--rust);color:#fff;border-color:var(--rust)}
+.pdp-back{font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grain);cursor:pointer;display:flex;align-items:center;gap:.5rem;padding:1.2rem 3rem;border-bottom:1px solid var(--border);background:var(--bg2);width:100%;border:none;transition:color .2s}
+.pdp-back:hover{color:var(--rust)}
+.pdp-grid{display:grid;grid-template-columns:1fr 1fr;min-height:80vh}
+.pdp-gallery{background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;min-height:520px}
+.pdp-gallery-img{font-family:var(--fd);font-size:12rem;color:rgba(90,70,50,.1)}
+.pdp-badge-lg{position:absolute;top:1.5rem;left:1.5rem;font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;padding:.3rem .8rem;background:var(--rust);color:#fff;text-transform:uppercase}
+.pdp-info{padding:3.5rem;background:var(--white)}
+.pdp-cat{font-family:var(--fm);font-size:.6rem;letter-spacing:.25em;color:var(--rust);text-transform:uppercase;margin-bottom:.6rem}
+.pdp-name{font-family:var(--fd);font-size:clamp(2rem,3.5vw,3rem);letter-spacing:.06em;line-height:1;margin-bottom:1rem}
+.pdp-price-row{display:flex;align-items:baseline;gap:1rem;margin-bottom:.5rem}
+.pdp-price{font-family:var(--fd);font-size:2rem;color:var(--rust)}
+.pdp-old{font-family:var(--fm);font-size:.85rem;color:var(--mid);text-decoration:line-through}
+.pdp-savings{font-family:var(--fm);font-size:.58rem;letter-spacing:.15em;color:#3a6a2a;padding:.2rem .6rem;background:rgba(58,106,42,.1);border:1px solid rgba(58,106,42,.2);margin-bottom:1.5rem;display:inline-block}
+.pdp-divider{height:1px;background:var(--border);margin:1.2rem 0}
+.pdp-label{font-family:var(--fm);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);margin-bottom:.7rem}
+.size-grid{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem}
+.size-btn{font-family:var(--fm);font-size:.62rem;width:52px;height:44px;border:1px solid var(--border);background:var(--white);color:var(--grain);cursor:pointer;transition:all .2s}
+.size-btn:hover{border-color:var(--rust);color:var(--rust)}
+.size-btn.selected{background:var(--black);color:#fff;border-color:var(--black)}
+.size-btn.oos{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.size-guide-link{font-family:var(--fm);font-size:.55rem;letter-spacing:.15em;color:var(--rust);text-decoration:underline;cursor:pointer;margin-bottom:1.2rem;display:inline-block}
+.color-opts{display:flex;gap:.6rem;margin-bottom:1.5rem}
+.color-dot{width:26px;height:26px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .2s}
+.color-dot.selected{border-color:var(--rust)}
+.qty-row{display:flex;align-items:center;margin-bottom:1.5rem;border:1px solid var(--border);width:fit-content}
+.qty-b{width:40px;height:44px;background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--grain);display:flex;align-items:center;justify-content:center}
+.qty-b:hover{background:var(--bg2);color:var(--rust)}
+.qty-val{width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.8rem;border-left:1px solid var(--border);border-right:1px solid var(--border)}
+.btn-atc{font-family:var(--fm);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;background:var(--rust);color:#fff;padding:1.1rem;border:none;cursor:pointer;width:100%;margin-bottom:.7rem}
+.btn-atc:hover{background:var(--rust-dark)}
+.btn-wl{font-family:var(--fm);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;background:transparent;color:var(--grain);padding:1rem;border:1px solid var(--border);cursor:pointer;width:100%}
+.btn-wl:hover{border-color:var(--rust);color:var(--rust)}
+.pdp-details{margin-top:1.5rem}
+.acc-item{border-top:1px solid var(--border)}
+.acc-item:last-child{border-bottom:1px solid var(--border)}
+.acc-head{display:flex;justify-content:space-between;align-items:center;padding:.9rem 0;cursor:pointer;font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--black);background:none;border:none;width:100%}
+.acc-head:hover{color:var(--rust)}
+.acc-arrow{transition:transform .3s;font-size:.7rem;color:var(--mid)}
+.acc-body{display:none;padding-bottom:1rem;font-size:.85rem;font-weight:300;color:var(--grain);line-height:1.8}
+.acc-body.open{display:block}
+.related-sec{padding:4rem 3rem;background:var(--bg2);border-top:1px solid var(--border)}
+.rev-sec{padding:2.5rem 3rem;background:var(--bg);border-top:1px solid var(--border)}
+.rev-form-wrap{background:var(--white);padding:1.5rem;border:1px solid var(--border);margin-bottom:1.5rem}
+.rev-form-wrap h4{font-family:var(--fd);font-size:1.2rem;letter-spacing:.06em;margin-bottom:.9rem}
+.star-select{display:flex;gap:.3rem;margin-bottom:.8rem}
+.star-select span{font-size:1.3rem;cursor:pointer;color:var(--border);transition:color .2s;user-select:none}
+.star-select span.active,.star-select span:hover{color:var(--rust)}
+.rev-list{display:flex;flex-direction:column;gap:2px}
+.rev-item{background:var(--white);padding:1.2rem;border-left:2px solid var(--rust)}
+.rev-item-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;flex-wrap:wrap;gap:.5rem}
+.rev-item-author{font-family:var(--fm);font-size:.6rem;letter-spacing:.15em;color:var(--black);text-transform:uppercase}
+.rev-item-date{font-family:var(--fm);font-size:.52rem;letter-spacing:.12em;color:var(--mid)}
+.rev-item-stars{color:var(--rust);font-size:.7rem;margin-bottom:.4rem}
+.rev-item-text{font-size:.82rem;font-weight:300;color:var(--grain);line-height:1.7;font-style:italic}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-ov.open{display:flex}
+.modal-box{background:var(--white);width:100%;max-width:420px;border-top:3px solid var(--rust);padding:2.5rem;position:relative}
+.modal-box h2{font-family:var(--fd);font-size:2rem;letter-spacing:.08em;margin-bottom:.4rem}
+.modal-sub{font-size:.82rem;color:var(--grain);margin-bottom:2rem}
+.mf{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
+.mf label{font-family:var(--fm);font-size:.56rem;letter-spacing:.18em;color:var(--rust);text-transform:uppercase}
+.mf input{font-family:var(--fb);font-size:.88rem;padding:.8rem .9rem;background:var(--bg2);border:1px solid var(--border);color:var(--black);outline:none}
+.mf input:focus{border-color:var(--rust)}
+.modal-err{font-family:var(--fm);font-size:.58rem;letter-spacing:.1em;margin-bottom:.8rem;display:none;padding:.5rem}
+.modal-err.error{color:var(--rust);background:rgba(181,69,27,.08)}
+.modal-err.info{color:var(--grain);background:var(--bg2)}
+.modal-switch{font-family:var(--fm);font-size:.58rem;color:var(--mid);letter-spacing:.1em;margin-top:1rem;text-align:center}
+.modal-switch span{color:var(--rust);cursor:pointer;text-decoration:underline}
+.modal-close-x{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.2rem;color:var(--mid);cursor:pointer}
+.acc-hero{background:var(--mud);padding:4rem 3rem;position:relative;overflow:hidden}
+.acc-hero::before{content:'ACCOUNT';font-family:var(--fd);font-size:12rem;color:rgba(181,69,27,.06);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.acc-hero-in{position:relative;z-index:2}
+.acc-tabs{display:flex;gap:2px;padding:2rem 3rem;background:var(--bg2);border-bottom:1px solid var(--border)}
+.acc-tab{font-family:var(--fm);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;padding:.5rem 1.2rem;border:1px solid var(--border);background:transparent;color:var(--mid);cursor:pointer;transition:all .2s}
+.acc-tab.active{background:var(--rust);color:#fff;border-color:var(--rust)}
+.acc-panel{display:none;padding:3rem}
+.acc-panel.active{display:block}
+.order-card{background:var(--white);border:1px solid var(--border);margin-bottom:1rem}
+.order-card-head{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
+.order-id{font-family:var(--fm);font-size:.65rem;letter-spacing:.15em;color:var(--rust)}
+.order-date{font-family:var(--fm);font-size:.58rem;color:var(--mid)}
+.order-status{font-family:var(--fm);font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;padding:.2rem .7rem}
+.status-placed{background:rgba(181,69,27,.1);color:var(--rust)}
+.status-shipped{background:rgba(58,106,42,.1);color:#3a6a2a}
+.status-delivered{background:rgba(90,70,50,.1);color:var(--grain)}
+.order-card-body{padding:1rem 1.5rem;font-size:.82rem;color:var(--grain)}
+.order-items-list{font-family:var(--fm);font-size:.58rem;color:var(--mid);margin-top:.4rem}
+.order-total-line{font-family:var(--fm);font-size:.75rem;color:var(--black);margin-top:.5rem}
+.about-hero{background:var(--mud);padding:6rem 3rem;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.about-hero::before{content:'STORY';font-family:var(--fd);font-size:18rem;color:rgba(181,69,27,.05);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.about-hero-in{position:relative;z-index:2}
+.about-cards{position:relative;z-index:2;height:360px}
+.ab-c1,.ab-c2{position:absolute;border:1px solid rgba(245,241,234,.12);display:flex;align-items:center;justify-content:center}
+.ab-c1{width:62%;aspect-ratio:3/4;top:0;left:0;background:rgba(245,241,234,.06)}
+.ab-c2{width:50%;aspect-ratio:3/4;bottom:0;right:0;background:rgba(245,241,234,.04)}
+.ab-text{font-family:var(--fd);font-size:5rem;color:rgba(181,69,27,.2)}
+.about-stats-bar{display:grid;grid-template-columns:repeat(4,1fr);background:var(--rust)}
+.ab-stat{padding:2.5rem 1.5rem;text-align:center;border-right:1px solid rgba(255,255,255,.15)}
+.ab-stat:last-child{border-right:none}
+.ab-num{font-family:var(--fd);font-size:2.8rem;color:#fff}
+.ab-label{font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:rgba(255,255,255,.65);text-transform:uppercase;margin-top:.3rem}
+.about-body-sec{padding:5rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem}
+.about-body-text p{font-size:.9rem;font-weight:300;color:var(--grain);line-height:1.9;margin-bottom:1rem}
+.about-values{display:grid;grid-template-columns:1fr 1fr;gap:1.5px}
+.val-item{background:var(--white);padding:1.5rem;border-top:2px solid var(--rust)}
+.val-title{font-family:var(--fd);font-size:1.1rem;letter-spacing:.08em;margin-bottom:.5rem}
+.val-text{font-size:.8rem;font-weight:300;color:var(--grain);line-height:1.6}
+.timeline-sec{padding:5rem 3rem}
+.timeline{margin-top:2.5rem}
+.tl-item{display:grid;grid-template-columns:100px 1fr;gap:2rem;padding:1.5rem 0;border-bottom:1px solid var(--border)}
+.tl-item:last-child{border-bottom:none}
+.tl-year{font-family:var(--fd);font-size:1.8rem;color:var(--rust)}
+.tl-content h4{font-family:var(--fd);font-size:1.1rem;letter-spacing:.06em;margin-bottom:.4rem}
+.tl-content p{font-size:.85rem;font-weight:300;color:var(--grain);line-height:1.7}
+.contact-hero{background:var(--mud);padding:5rem 3rem 4rem;position:relative;overflow:hidden}
+.contact-hero::before{content:'HELLO';font-family:var(--fd);font-size:18rem;color:rgba(181,69,27,.06);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.contact-hero-in{position:relative;z-index:2}
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;background:var(--white)}
+.contact-sidebar{background:var(--bg2);padding:3.5rem 2.5rem;border-right:1px solid var(--border)}
+.contact-detail{display:flex;gap:1.2rem;margin-bottom:2rem;align-items:flex-start}
+.contact-icon{width:2.2rem;height:2.2rem;background:var(--rust);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--fd);font-size:.9rem;color:#fff}
+.contact-lbl{font-family:var(--fm);font-size:.58rem;letter-spacing:.2em;color:var(--rust);text-transform:uppercase;margin-bottom:.3rem}
+.contact-val{font-size:.85rem;font-weight:300;color:var(--grain);line-height:1.6}
+.contact-socials{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)}
+.soc-btn{font-family:var(--fm);font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;padding:.5rem .9rem;border:1px solid var(--border);color:var(--mid);cursor:pointer;background:transparent;transition:all .2s}
+.soc-btn:hover{border-color:var(--rust);color:var(--rust)}
+.contact-faq{margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)}
+.faq-label{font-family:var(--fm);font-size:.58rem;letter-spacing:.2em;color:var(--rust);text-transform:uppercase;margin-bottom:1rem}
+.faq-item{margin-bottom:1rem}
+.faq-q{font-size:.8rem;font-weight:600;color:var(--black);margin-bottom:.2rem}
+.faq-a{font-size:.78rem;font-weight:300;color:var(--grain);line-height:1.6}
+.contact-form-wrap{padding:3.5rem 2.5rem}
+.contact-form-wrap h3{font-family:var(--fd);font-size:2rem;letter-spacing:.06em;margin-bottom:.5rem}
+.form-sub{font-size:.85rem;font-weight:300;color:var(--grain);margin-bottom:2rem}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
+.fg label{font-family:var(--fm);font-size:.56rem;letter-spacing:.18em;color:var(--rust);text-transform:uppercase}
+.fg input,.fg select,.fg textarea{font-family:var(--fb);font-size:.88rem;padding:.8rem .9rem;background:var(--bg2);border:1px solid var(--border);color:var(--black);outline:none;resize:vertical}
+.fg input:focus,.fg textarea:focus{border-color:var(--rust)}
+.form-success{display:none;font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;color:#3a6a2a;padding:.9rem;border:1px solid #3a6a2a;text-transform:uppercase;text-align:center;margin-top:1rem}
+.map-bar{background:var(--bg3);padding:2rem 3rem;border-top:1px solid var(--border)}
+.map-inner{max-width:900px;margin:0 auto;display:flex;gap:3rem;align-items:center;flex-wrap:wrap}
+.map-box{width:120px;height:80px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.7rem;color:var(--rust);flex-shrink:0}
+.map-city-name{font-family:var(--fd);font-size:1.1rem;color:var(--black)}
+.map-city-sub{font-family:var(--fm);font-size:.55rem;color:var(--mid);text-transform:uppercase}
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1800;opacity:0;pointer-events:none;transition:opacity .3s}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-side{position:fixed;top:0;right:-420px;width:420px;height:100vh;background:var(--white);border-left:1px solid var(--border);z-index:1900;display:flex;flex-direction:column;transition:right .35s cubic-bezier(.4,0,.2,1)}
+.cart-side.open{right:0}
+.cart-head{padding:1.4rem 2rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.cart-head h2{font-family:var(--fd);font-size:1.5rem;letter-spacing:.1em}
+.cart-x{font-size:1.1rem;color:var(--mid);cursor:pointer;background:none;border:none;padding:.4rem}
+.cart-x:hover{color:var(--rust)}
+.cart-body{flex:1;overflow-y:auto;padding:1.5rem 2rem}
+.cart-empty-msg{text-align:center;padding:4rem 0;font-family:var(--fm);font-size:.65rem;letter-spacing:.15em;color:var(--mid);text-transform:uppercase}
+.cart-item{display:flex;gap:1rem;padding:.9rem 0;border-bottom:1px solid var(--border)}
+.ci-img{width:65px;height:82px;background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1.4rem;color:rgba(90,70,50,.15);overflow:hidden}
+.ci-detail{flex:1}
+.ci-name{font-size:.88rem;font-weight:600;margin-bottom:.2rem}
+.ci-meta{font-family:var(--fm);font-size:.54rem;letter-spacing:.12em;color:var(--mid);text-transform:uppercase;margin-bottom:.4rem}
+.ci-price{font-family:var(--fm);font-size:.78rem;color:var(--grain)}
+.ci-qty{display:flex;align-items:center;gap:.6rem;margin-top:.5rem}
+.qty-btn{width:22px;height:22px;border:1px solid var(--border);background:transparent;color:var(--grain);cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.qty-btn:hover{border-color:var(--rust);color:var(--rust)}
+.qty-num{font-family:var(--fm);font-size:.7rem;color:var(--black);min-width:20px;text-align:center}
+.ci-remove{font-family:var(--fm);font-size:.54rem;color:var(--rust);background:none;border:none;cursor:pointer;letter-spacing:.1em;text-transform:uppercase;margin-left:auto;align-self:flex-start;padding:0}
+.cart-foot{padding:1.4rem 2rem;border-top:1px solid var(--border);background:var(--bg2)}
+.cart-total-row{display:flex;justify-content:space-between;margin-bottom:1.2rem}
+.cart-total-lbl{font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;color:var(--mid);text-transform:uppercase}
+.cart-total-val{font-family:var(--fd);font-size:1.5rem;color:var(--black)}
+.btn-checkout{display:block;width:100%;font-family:var(--fm);font-size:.67rem;letter-spacing:.18em;text-transform:uppercase;background:var(--rust);color:#fff;padding:.95rem;border:none;cursor:pointer}
+.btn-checkout:hover{background:var(--rust-dark)}
+.checkout-wrap{max-width:1100px;margin:0 auto;padding:3rem;display:grid;grid-template-columns:1.3fr 1fr;gap:3rem;align-items:start}
+.co-left h2{font-family:var(--fd);font-size:2.2rem;letter-spacing:.06em;margin-bottom:.4rem}
+.co-step{margin-bottom:2.2rem}
+.co-step-title{font-family:var(--fm);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--rust);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.cog2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.cof{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem}
+.cof.full{grid-column:1/-1}
+.cof label{font-family:var(--fm);font-size:.54rem;letter-spacing:.18em;color:var(--rust);text-transform:uppercase}
+.cof input,.cof select{font-family:var(--fb);font-size:.88rem;padding:.78rem .9rem;background:var(--white);border:1px solid var(--border);color:var(--black);outline:none}
+.cof input:focus,.cof select:focus{border-color:var(--rust)}
+.ship-opts{display:flex;flex-direction:column;gap:.7rem}
+.ship-opt{display:flex;align-items:center;gap:1rem;padding:.9rem 1rem;background:var(--white);border:1px solid var(--border);cursor:pointer;transition:border-color .2s}
+.ship-opt.sel{border-color:var(--rust);background:rgba(181,69,27,.03)}
+.ship-opt input[type=radio]{accent-color:var(--rust)}
+.ship-info{flex:1}
+.ship-name{font-size:.85rem;font-weight:600}
+.ship-days{font-family:var(--fm);font-size:.54rem;letter-spacing:.1em;color:var(--mid);margin-top:.15rem}
+.ship-price{font-family:var(--fm);font-size:.78rem;color:var(--rust)}
+.pay-tabs{display:flex;gap:2px;margin-bottom:1.2rem}
+.pay-tab{font-family:var(--fm);font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;padding:.6rem 1.1rem;border:1px solid var(--border);background:var(--white);color:var(--mid);cursor:pointer;transition:all .2s}
+.pay-tab.active{background:var(--rust);color:#fff;border-color:var(--rust)}
+.pay-panel{display:none}
+.pay-panel.active{display:block}
+.upi-row{display:flex}
+.upi-row input{flex:1;font-family:var(--fb);font-size:.88rem;padding:.78rem .9rem;background:var(--white);border:1px solid var(--border);border-right:none;color:var(--black);outline:none}
+.upi-verify{font-family:var(--fm);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;padding:.78rem 1rem;background:var(--bg3);border:1px solid var(--border);color:var(--grain);cursor:pointer;white-space:nowrap}
+.upi-verify:hover{background:var(--rust);color:#fff;border-color:var(--rust)}
+.ord-sum{background:var(--white);border:1px solid var(--border);padding:1.8rem;position:sticky;top:90px}
+.ord-sum h3{font-family:var(--fd);font-size:1.5rem;letter-spacing:.06em;margin-bottom:1.2rem;padding-bottom:.9rem;border-bottom:1px solid var(--border)}
+.ord-items{max-height:280px;overflow-y:auto;margin-bottom:1.2rem}
+.ord-item{display:flex;gap:.9rem;padding:.7rem 0;border-bottom:1px solid var(--border)}
+.ord-item-img{width:50px;height:64px;background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1rem;color:rgba(90,70,50,.15);position:relative;overflow:hidden}
+.ord-qty-badge{position:absolute;top:-5px;right:-5px;width:16px;height:16px;background:var(--rust);border-radius:50%;font-family:var(--fm);font-size:.5rem;color:#fff;display:flex;align-items:center;justify-content:center}
+.ord-item-name{font-size:.8rem;font-weight:600;margin-bottom:.15rem}
+.ord-item-meta{font-family:var(--fm);font-size:.52rem;letter-spacing:.1em;color:var(--mid)}
+.ord-item-price{font-family:var(--fm);font-size:.72rem;color:var(--grain);margin-left:auto;white-space:nowrap}
+.promo-row{display:flex;margin-bottom:1.2rem}
+.promo-row input{flex:1;font-family:var(--fm);font-size:.65rem;padding:.7rem .9rem;background:var(--bg2);border:1px solid var(--border);border-right:none;color:var(--black);outline:none;text-transform:uppercase}
+.promo-row button{font-family:var(--fm);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;padding:.7rem 1rem;background:var(--bg3);border:1px solid var(--border);color:var(--grain);cursor:pointer}
+.promo-row button:hover{background:var(--rust);color:#fff;border-color:var(--rust)}
+.ord-line{display:flex;justify-content:space-between;padding:.4rem 0;font-size:.82rem;color:var(--grain)}
+.ord-total{font-family:var(--fd);font-size:1.3rem;color:var(--black);padding-top:.9rem;margin-top:.4rem;border-top:1px solid var(--border);display:flex;justify-content:space-between}
+.ord-total span:last-child{font-family:var(--fm)}
+.btn-place{display:block;width:100%;font-family:var(--fm);font-size:.67rem;letter-spacing:.18em;text-transform:uppercase;background:var(--rust);color:#fff;padding:1rem;border:none;cursor:pointer;margin-top:1.2rem}
+.btn-place:hover{background:var(--rust-dark)}
+.secure-lbl{text-align:center;font-family:var(--fm);font-size:.52rem;letter-spacing:.12em;color:var(--mid);margin-top:.9rem;text-transform:uppercase}
+.order-ok{display:none;text-align:center;padding:5rem 2rem;max-width:600px;margin:0 auto}
+.ok-icon{font-size:3rem;margin-bottom:1.5rem}
+.ok-title{font-family:var(--fd);font-size:3rem;letter-spacing:.1em;margin-bottom:.8rem}
+.ok-sub{font-size:.9rem;font-weight:300;color:var(--grain);line-height:1.8;margin-bottom:1.5rem}
+.ok-id{font-family:var(--fm);font-size:.62rem;letter-spacing:.2em;color:var(--rust);text-transform:uppercase;margin-bottom:2.5rem}
+footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(200,184,154,.06)}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3.5rem}
+.footer-logo{font-family:var(--fd);font-size:1.8rem;letter-spacing:.1em;color:#f5f1ea;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;cursor:pointer}
+.footer-tagline{font-size:.82rem;font-weight:300;color:rgba(245,241,234,.45);line-height:1.7;max-width:260px}
+.footer-col h4{font-family:var(--fm);font-size:.56rem;letter-spacing:.25em;text-transform:uppercase;color:var(--rust);margin-bottom:1.3rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+.footer-col a{font-size:.82rem;font-weight:300;color:rgba(245,241,234,.4);text-decoration:none;cursor:pointer;transition:color .2s}
+.footer-col a:hover{color:var(--rust)}
+.footer-bottom{border-top:1px solid rgba(200,184,154,.07);padding-top:1.8rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-copy{font-family:var(--fm);font-size:.56rem;letter-spacing:.12em;color:rgba(245,241,234,.3)}
+.footer-links{display:flex;gap:2rem}
+.footer-links a{font-family:var(--fm);font-size:.56rem;letter-spacing:.12em;color:rgba(245,241,234,.3);text-decoration:none;cursor:pointer}
+.footer-links a:hover{color:var(--rust)}
+.pol-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2500;overflow-y:auto;padding:2rem 1rem}
+.pol-ov.open{display:block}
+.pol-box{max-width:780px;margin:0 auto;background:var(--white);border-top:3px solid var(--rust)}
+.pol-head{display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--white);z-index:2}
+.pol-title{font-family:var(--fd);font-size:1.6rem;letter-spacing:.08em;color:var(--black)}
+.pol-close{font-family:var(--fm);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;background:none;border:1px solid var(--border);color:var(--mid);padding:.4rem .9rem;cursor:pointer}
+.pol-body{padding:2rem;font-size:.88rem;font-weight:300;color:var(--grain);line-height:1.85}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--black);border:1px solid var(--rust);padding:.75rem 1.4rem;font-family:var(--fm);font-size:.6rem;letter-spacing:.15em;color:var(--bg);text-transform:uppercase;z-index:3000;transition:transform .4s cubic-bezier(.4,0,.2,1);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+@media(max-width:900px){
+  nav{padding:.9rem 1.5rem}.nav-links{display:none}.hamburger{display:flex}
+  .hero{grid-template-columns:1fr}.hero-right{display:none}.hero-left{padding:3.5rem 1.5rem 3rem}
+  .sec{padding:3.5rem 1.5rem}.feat-bar{grid-template-columns:repeat(2,1fr)}
+  .grid-4,.grid-3,.rev-grid{grid-template-columns:repeat(2,1fr)}
+  .about-hero,.about-body-sec,.contact-grid,.checkout-wrap{grid-template-columns:1fr}
+  .about-cards{display:none}.footer-top{grid-template-columns:1fr 1fr}
+  .cart-side{width:100%;right:-100%}.cog2{grid-template-columns:1fr}
+  .filter-bar,.shop-hero,.about-hero,.contact-hero{padding-left:1.5rem;padding-right:1.5rem}
+  .about-stats-bar{grid-template-columns:repeat(2,1fr)}.pdp-grid{grid-template-columns:1fr}
+  .pdp-info{padding:2rem 1.5rem}.pdp-back{padding:.9rem 1.5rem}
+  .related-sec,.rev-sec{padding:3rem 1.5rem}.ord-sum{position:static}.cf-row{grid-template-columns:1fr}
+  .acc-panel{padding:2rem 1.5rem}
+}
+@media(max-width:560px){
+  .grid-4,.grid-3,.rev-grid{grid-template-columns:1fr}
+  .about-stats-bar{grid-template-columns:1fr 1fr}.feat-bar{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr}.about-values{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo" onclick="goPage('home')">
+    <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/Image.png" alt="UG" style="height:36px;width:auto;border-radius:2px" onerror="this.style.display='none'"/>
+    URBAN GRAIN
+  </span>
+  <ul class="nav-links">
+    <li><a id="nl-home" onclick="goPage('home')">Home</a></li>
+    <li><a id="nl-shop" onclick="goPage('shop')">Shop</a></li>
+    <li><a id="nl-about" onclick="goPage('about')">About</a></li>
+    <li><a id="nl-contact" onclick="goPage('contact')">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="auth-btn" id="btnLogin" onclick="openAuth('login')">LOGIN</button>
+    <button class="auth-btn" id="btnAccount" onclick="goPage('account')" style="display:none">MY ACCOUNT</button>
+    <button class="auth-btn" id="btnLogout" onclick="doLogout()" style="display:none">LOGOUT</button>
+    <button class="cart-btn" onclick="toggleCart()">BAG (<span id="cart-count">0</span>)</button>
+    <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <a onclick="goPage('home');toggleMob()">Home</a>
+  <a onclick="goPage('shop');toggleMob()">Shop</a>
+  <a onclick="goPage('about');toggleMob()">About</a>
+  <a onclick="goPage('contact');toggleMob()">Contact</a>
+  <a id="mobAuth" onclick="openAuth('login');toggleMob()">Login / Sign Up</a>
+</div>
+
+<div class="modal-ov" id="authModal">
+  <div class="modal-box">
+    <button class="modal-close-x" onclick="closeAuth()">✕</button>
+    <div id="fmLogin">
+      <h2>WELCOME BACK</h2>
+      <p class="modal-sub">Sign in to your Urban Grain account.</p>
+      <div class="mf"><label>Email</label><input type="email" id="lEmail" placeholder="arjun@email.com"/></div>
+      <div class="mf"><label>Password</label><input type="password" id="lPass" placeholder="••••••••"/></div>
+      <div class="modal-err" id="lErr"></div>
+      <button class="btn-p" style="width:100%;margin-top:.5rem" onclick="doLogin()">SIGN IN</button>
+      <p class="modal-switch">No account? <span onclick="openAuth('signup')">SIGN UP</span></p>
+    </div>
+    <div id="fmSignup" style="display:none">
+      <h2>JOIN THE GRAIN</h2>
+      <p class="modal-sub">Create your Urban Grain account.</p>
+      <div class="mf"><label>Full Name</label><input type="text" id="sName" placeholder="Arjun Kumar"/></div>
+      <div class="mf"><label>Email</label><input type="email" id="sEmail" placeholder="arjun@email.com"/></div>
+      <div class="mf"><label>Phone</label><input type="tel" id="sPhone" placeholder="+91 98765 43210"/></div>
+      <div class="mf"><label>Password (min 6 chars)</label><input type="password" id="sPass" placeholder="••••••••"/></div>
+      <div class="modal-err" id="sErr"></div>
+      <button class="btn-p" style="width:100%;margin-top:.5rem" onclick="doSignup()">CREATE ACCOUNT</button>
+      <p class="modal-switch">Have an account? <span onclick="openAuth('login')">SIGN IN</span></p>
+    </div>
+  </div>
+</div>
+
+<div class="cart-overlay" id="cOverlay" onclick="toggleCart()"></div>
+<div class="cart-side" id="cSide">
+  <div class="cart-head"><h2>YOUR BAG</h2><button class="cart-x" onclick="toggleCart()">✕</button></div>
+  <div class="cart-body" id="cBody"><div class="cart-empty-msg">YOUR BAG IS EMPTY</div></div>
+  <div class="cart-foot">
+    <div class="cart-total-row"><span class="cart-total-lbl">Total</span><span class="cart-total-val">₹<span id="cTotal">0</span></span></div>
+    <button class="btn-checkout" onclick="goCheckout()">PROCEED TO CHECKOUT</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="pol-ov" id="polOv" onclick="if(event.target===this)closePolBtn()">
+  <div class="pol-box">
+    <div class="pol-head"><div class="pol-title" id="polTitle"></div><button class="pol-close" onclick="closePolBtn()">✕ CLOSE</button></div>
+    <div class="pol-body" id="polBody"></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="page active" id="pg-home">
+  <section class="hero">
+    <div class="hero-left">
+      <h1 class="hero-title">
+        <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/Image.png" alt="UG" style="height:80px;width:auto;display:block;margin-bottom:.8rem;border-radius:4px" onerror="this.style.display='none'"/>
+        URBAN<br>GRAIN<em>— Threads With Thoughts</em>
+      </h1>
+      <p class="hero-sub">Raw. Unfiltered. Built for those who move through the city on their own terms.</p>
+      <div class="ctas">
+        <button class="btn-p" onclick="goPage('shop')">SHOP NOW</button>
+        <button class="btn-o" onclick="goPage('about')">OUR STORY</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual"><div class="hero-visual-tag">UG26 / LOOK 01</div></div>
+      <div class="ticker"><div class="ticker-inner" id="tickerEl"></div></div>
+    </div>
+  </section>
+  <div class="feat-bar">
+    <div class="feat-item"><span class="feat-icon">⬡</span><div class="feat-title">FREE SHIPPING</div><div class="feat-text">All orders above ₹2499</div></div>
+    <div class="feat-item"><span class="feat-icon">◈</span><div class="feat-title">OWN THE EXCLUSIVE</div><div class="feat-text">Once gone, its history</div></div>
+    <div class="feat-item"><span class="feat-icon">⬟</span><div class="feat-title">7-DAY RETURNS</div><div class="feat-text">Hassle-free exchange policy</div></div>
+    <div class="feat-item"><span class="feat-icon">◉</span><div class="feat-title">HANDCRAFTED</div><div class="feat-text">Sewn with obsessive detail</div></div>
+  </div>
+  <section class="sec" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem">
+      <div><p class="sec-label">// Latest Drops</p><h2 class="sec-title">FRESH OFF THE LINE</h2></div>
+      <button class="btn-o" onclick="goPage('shop')">VIEW ALL →</button>
+    </div>
+    <div class="grid-4" id="home-drops"></div>
+  </section>
+
+  <!-- LOOKBOOK -->
+  <section class="sec" style="padding-left:0;padding-right:0;background:var(--bg)">
+    <div style="padding:0 3rem;margin-bottom:2.5rem">
+      <p class="sec-label">// Lookbook UG26</p>
+      <h2 class="sec-title">CONCRETE ROOTS</h2>
+    </div>
+    <div class="lbook-scroll" id="lookbook-scroll">
+      <!-- filled by renderLookbook() -->
+    </div>
+  </section>
+  <section class="sec" style="background:var(--bg2)">
+    <p class="sec-label">// Community</p>
+    <h2 class="sec-title">REAL PEOPLE, REAL FITS</h2>
+    <div class="rev-grid">
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"The quality is insane for the price — thick fabric, great fit, clean design."</p><p class="rev-author">— Arjun K., Mumbai</p></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Been waiting for an Indian streetwear brand that gets it. Urban Grain is exactly that."</p><p class="rev-author">— Priya S., Bangalore</p></div>
+      <div class="rev-card"><div class="rev-stars">★★★★☆</div><p class="rev-text">"Heavy weight, great print, washes perfectly. The Tees are my daily now."</p><p class="rev-author">— Dev R., Delhi</p></div>
+    </div>
+  </section>
+  <div class="nl-wrap">
+    <div class="nl-inner">
+      <p class="sec-label" style="color:rgba(181,69,27,.7)">// Stay In The Loop</p>
+      <h2 class="sec-title" style="color:#f5f1ea">FIRST TO THE DROP</h2>
+      <p class="sec-sub" style="color:rgba(245,241,234,.55);max-width:100%">Early access. Exclusive discounts. Behind the scenes.</p>
+      <form class="nl-form" onsubmit="handleNL(event)"><input type="email" placeholder="YOUR EMAIL ADDRESS" required/><button type="submit">JOIN</button></form>
+    </div>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div class="page" id="pg-shop">
+  <div class="shop-hero"><div class="shop-hero-inner">
+    <p class="sec-label" style="color:rgba(181,69,27,.7)">// UG26 Collection</p>
+    <h1 class="sec-title" style="color:#f5f1ea;font-size:clamp(2.5rem,5vw,5rem)">THE FULL DROP</h1>
+    <p class="sec-sub" style="color:rgba(245,241,234,.55)">Limited pieces. Designed in Chennai. Worn everywhere.</p>
+  </div></div>
+  <div class="filter-bar">
+    <button class="flt active" onclick="filterProd('all',this)">ALL</button>
+    <button class="flt" onclick="filterProd('hoodie',this)">HOODIES</button>
+    <button class="flt" onclick="filterProd('tee',this)">TEES</button>
+    <button class="flt" onclick="filterProd('cargo',this)">CARGOS</button>
+    <button class="flt" onclick="filterProd('jacket',this)">JACKETS</button>
+    <button class="flt" onclick="filterProd('accessory',this)">ACCESSORIES</button>
+  </div>
+  <div style="padding:2rem 3rem;background:var(--bg)"><div class="grid-3" id="shop-grid"></div></div>
+  <div class="nl-wrap">
+    <div class="nl-inner">
+      <p class="sec-label" style="color:rgba(181,69,27,.7)">// Never Miss a Drop</p>
+      <h2 class="sec-title" style="color:#f5f1ea">GET EARLY ACCESS</h2>
+      <p class="sec-sub" style="color:rgba(245,241,234,.55);max-width:100%">Join 2,000+ streetwear heads on the list.</p>
+      <form class="nl-form" onsubmit="handleNL(event)"><input type="email" placeholder="YOUR EMAIL ADDRESS" required/><button type="submit">JOIN</button></form>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT PAGE -->
+<div class="pdp" id="pg-product">
+  <button class="pdp-back" onclick="goBackPDP()">← BACK TO SHOP</button>
+  <div class="pdp-grid">
+    <div class="pdp-gallery" id="pdp-gallery">
+      <div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:520px">
+        <div class="pdp-gallery-img">UG</div>
+      </div>
+      <div id="pdp-badge-wrap"></div>
+    </div>
+    <div class="pdp-info">
+      <div class="pdp-cat" id="pdp-cat"></div>
+      <div class="pdp-name" id="pdp-name"></div>
+      <div class="pdp-price-row">
+        <div class="pdp-price" id="pdp-price"></div>
+        <div class="pdp-old" id="pdp-old" style="display:none"></div>
+      </div>
+      <div id="pdp-savings" class="pdp-savings" style="display:none"></div>
+      <div class="pdp-divider"></div>
+      <div class="pdp-label">COLOR — <span id="pdp-clr-name" style="color:var(--black);font-weight:600"></span></div>
+      <div class="color-opts" id="pdp-colors"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem">
+        <div class="pdp-label" style="margin-bottom:0">SELECT SIZE</div>
+        <span class="size-guide-link" onclick="showToast('Size guide coming soon!')">SIZE GUIDE</span>
+      </div>
+      <div class="size-grid" id="pdp-sizes"></div>
+      <div id="pdp-size-err" style="font-family:var(--fm);font-size:.58rem;color:var(--rust);margin-bottom:.8rem;display:none">PLEASE SELECT A SIZE</div>
+      <div class="pdp-label">QUANTITY</div>
+      <div class="qty-row">
+        <button class="qty-b" onclick="changePdpQty(-1)">−</button>
+        <div class="qty-val" id="pdp-qty">1</div>
+        <button class="qty-b" onclick="changePdpQty(1)">+</button>
+      </div>
+      <button class="btn-atc" onclick="pdpAddToCart()">ADD TO BAG</button>
+      <button class="btn-wl" onclick="showToast('Added to wishlist!')">♡ ADD TO WISHLIST</button>
+      <div class="pdp-details">
+        <div class="acc-item"><button class="acc-head" onclick="toggleAcc(this)"><span>PRODUCT DETAILS</span><span class="acc-arrow">▾</span></button><div class="acc-body open" id="pdp-desc"></div></div>
+        <div class="acc-item"><button class="acc-head" onclick="toggleAcc(this)"><span>FABRIC & CARE</span><span class="acc-arrow">▾</span></button><div class="acc-body">180-220gsm+ 100% combed cotton. Machine wash cold, inside out. Do not tumble dry.</div></div>
+        <div class="acc-item"><button class="acc-head" onclick="toggleAcc(this)"><span>SHIPPING & RETURNS</span><span class="acc-arrow">▾</span></button><div class="acc-body">Ships within 1–2 business days. Free shipping above ₹2499. 7-day exchange on unworn items.</div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Reviews -->
+  <div class="rev-sec">
+    <p class="sec-label">// Customer Reviews</p>
+    <h2 class="sec-title" style="font-size:2rem;margin-bottom:1.5rem">WHAT PEOPLE SAY</h2>
+    <div class="rev-form-wrap">
+      <h4>WRITE A REVIEW</h4>
+      <div class="star-select" id="starSelect">
+        <span onclick="setRating(1)">★</span><span onclick="setRating(2)">★</span>
+        <span onclick="setRating(3)">★</span><span onclick="setRating(4)">★</span>
+        <span onclick="setRating(5)">★</span>
+      </div>
+      <div class="fg"><label>Your Name</label><input type="text" id="rev-name" placeholder="Arjun K."/></div>
+      <div class="fg"><label>Review</label><textarea id="rev-text" rows="3" placeholder="Tell others what you think..."></textarea></div>
+      <button class="btn-p" onclick="submitReview()">SUBMIT REVIEW →</button>
+    </div>
+    <div class="rev-list" id="rev-list"></div>
+  </div>
+  <!-- Related -->
+  <div class="related-sec">
+    <p class="sec-label">// You May Also Like</p>
+    <h2 class="sec-title" style="font-size:2rem;margin-bottom:2rem">RELATED PICKS</h2>
+    <div class="grid-4" id="related-grid"></div>
+  </div>
+</div>
+
+<!-- ACCOUNT -->
+<div class="page" id="pg-account">
+  <div class="acc-hero"><div class="acc-hero-in">
+    <p class="sec-label" style="color:rgba(181,69,27,.7)">// My Account</p>
+    <h1 class="sec-title" style="color:#f5f1ea;font-size:clamp(2rem,4vw,4rem)" id="accWelcome">WELCOME BACK</h1>
+    <p style="color:rgba(245,241,234,.55);font-size:.85rem" id="accEmailDisp"></p>
+  </div></div>
+  <div class="acc-tabs">
+    <button class="acc-tab active" onclick="switchAccTab('orders',this)">MY ORDERS</button>
+    <button class="acc-tab" onclick="switchAccTab('profile',this)">PROFILE</button>
+  </div>
+  <div class="acc-panel active" id="tab-orders">
+    <p class="sec-label">// Order History</p>
+    <h2 class="sec-title" style="font-size:1.8rem;margin-bottom:2rem">YOUR ORDERS</h2>
+    <div id="orders-list"></div>
+  </div>
+  <div class="acc-panel" id="tab-profile">
+    <p class="sec-label">// Your Details</p>
+    <h2 class="sec-title" style="font-size:1.8rem;margin-bottom:2rem">PROFILE</h2>
+    <div style="max-width:500px;display:flex;flex-direction:column;gap:.5rem">
+      <div class="mf"><label>Full Name</label><input type="text" id="pName"/></div>
+      <div class="mf"><label>Email</label><input type="email" id="pEmail" readonly style="opacity:.6"/></div>
+      <div class="mf"><label>Phone</label><input type="tel" id="pPhone"/></div>
+      <div class="mf"><label>City</label><input type="text" id="pCity"/></div>
+      <button class="btn-p" style="margin-top:.5rem" onclick="saveProfile()">SAVE CHANGES</button>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="pg-about">
+  <div class="about-hero">
+    <div class="about-hero-in">
+      <p class="sec-label" style="color:rgba(181,69,27,.7)">// Who We Are</p>
+      <h1 class="sec-title" style="color:#f5f1ea;font-size:clamp(2.5rem,5vw,5rem)">BORN FROM THE STREETS</h1>
+      <p class="sec-sub" style="color:rgba(245,241,234,.6);max-width:100%">Urban Grain started in Chennai with a clear mission: make streetwear that speaks the language of Indian cities.</p>
+      <button class="btn-p" style="margin-top:2rem" onclick="goPage('shop')">SHOP THE COLLECTION</button>
+    </div>
+    <div class="about-cards">
+      <div class="ab-c1"><div class="ab-text">UG</div></div>
+      <div class="ab-c2"><div class="ab-text">26</div></div>
+    </div>
+  </div>
+  <div class="about-stats-bar">
+    <div class="ab-stat"><div class="ab-num">2025</div><div class="ab-label">Founded In</div></div>
+    <div class="ab-stat"><div class="ab-num">195</div><div class="ab-label">Customers</div></div>
+    <div class="ab-stat"><div class="ab-num">0</div><div class="ab-label">Drops Released</div></div>
+    <div class="ab-stat"><div class="ab-num">100%</div><div class="ab-label">India Made</div></div>
+  </div>
+  <div class="about-body-sec">
+    <div class="about-body-text">
+      <p class="sec-label">// The Story</p>
+      <h2 class="sec-title" style="font-size:2.2rem;margin-bottom:1.2rem">FROM ONE ROOM TO EVERY CITY</h2>
+      <p>It started with frustration. We were tired of paying premium prices for brands that didn't understand the Indian street.</p>
+      <p>In 2025, we set up in Chennai with a clear mission: make streetwear that speaks the language of Indian cities.</p>
+      <p>Urban Grain ships pan-India. Heavy fabrics, real stories, real streets.</p>
+    </div>
+    <div>
+      <p class="sec-label">// Our Values</p>
+      <h3 style="font-family:var(--fd);font-size:2.2rem;letter-spacing:.06em;margin-bottom:1.5rem">WHAT WE STAND FOR</h3>
+      <div class="about-values">
+        <div class="val-item"><div class="val-title">QUALITY FIRST</div><div class="val-text">180-220gsm+ cotton only. If it doesn't hold up after 100 washes, it doesn't ship.</div></div>
+        <div class="val-item"><div class="val-title">MADE LOCAL</div><div class="val-text">Designed and produced in India. Fair wages, small units.</div></div>
+        <div class="val-item"><div class="val-title">REAL LIMITED</div><div class="val-text">No restocks. Every drop has a fixed number.</div></div>
+        <div class="val-item"><div class="val-title">COMMUNITY</div><div class="val-text">Our community shapes what we make.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="timeline-sec">
+    <p class="sec-label">// Our Journey</p>
+    <h2 class="sec-title">HOW WE GOT HERE</h2>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-year">2025</div><div class="tl-content"><h4>THE BEGINNING</h4><p>Urban Grain founded in Chennai. Building the brand from scratch.</p></div></div>
+      <div class="tl-item"><div class="tl-year">2026</div><div class="tl-content"><h4>FIRST DROP COMING SOON</h4><p>Our debut collection is in the works. Stay tuned.</p></div></div>
+    </div>
+  </div>
+  <div class="nl-wrap">
+    <div class="nl-inner">
+      <p class="sec-label" style="color:rgba(181,69,27,.7)">// Join The Movement</p>
+      <h2 class="sec-title" style="color:#f5f1ea">WEAR THE CITY</h2>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem">
+        <button class="btn-p" onclick="goPage('shop')">SHOP NOW</button>
+        <button class="btn-o" style="border-color:rgba(245,241,234,.3);color:rgba(245,241,234,.6)" onclick="goPage('contact')">GET IN TOUCH</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="pg-contact">
+  <div class="contact-hero"><div class="contact-hero-in">
+    <p class="sec-label" style="color:rgba(181,69,27,.7)">// We'd Love To Hear From You</p>
+    <h1 class="sec-title" style="color:#f5f1ea;font-size:clamp(2.5rem,5vw,5rem)">LET'S TALK</h1>
+    <p class="sec-sub" style="color:rgba(245,241,234,.55)">Orders, collabs, press, wholesale — hit us up.</p>
+  </div></div>
+  <div class="contact-grid">
+    <div class="contact-sidebar">
+      <p class="sec-label">// Reach Us</p>
+      <h3 style="font-family:var(--fd);font-size:2rem;letter-spacing:.06em;margin-bottom:2rem">GET IN TOUCH</h3>
+      <div class="contact-detail"><div class="contact-icon">@</div><div><div class="contact-lbl">Email</div><div class="contact-val">urbangrain25@gmail.com</div></div></div>
+      <div class="contact-detail"><div class="contact-icon">◷</div><div><div class="contact-lbl">Hours</div><div class="contact-val">Mon – Fri: 10am – 7pm IST</div></div></div>
+
+      <div class="contact-socials"><a class="soc-btn" href="https://www.instagram.com/urban_grain25?igsh=ZzVlYXNhemNiM3Nr&utm_source=qr" target="_blank">INSTAGRAM</a></div>
+      <div class="contact-faq">
+        <div class="faq-label">// Quick Answers</div>
+        <div class="faq-item"><div class="faq-q">When will my order ship?</div><div class="faq-a">Orders ship within 1–2 business days.</div></div>
+        <div class="faq-item"><div class="faq-q">Do you do custom orders?</div><div class="faq-a">Yes — minimum 50 pieces. Email urbangrain25@gmail.com</div></div>
+        <div class="faq-item"><div class="faq-q">What's your return policy?</div><div class="faq-a">7-day exchange for unworn items.</div></div>
+      </div>
+    </div>
+    <div class="contact-form-wrap">
+      <h3>SEND A MESSAGE</h3>
+      <p class="form-sub">We reply within 24 hours on weekdays.</p>
+      <form onsubmit="handleContact(event)">
+        <div class="cf-row">
+          <div class="fg"><label>First Name</label><input type="text" id="cf-fn" required/></div>
+          <div class="fg"><label>Last Name</label><input type="text" id="cf-ln" required/></div>
+        </div>
+        <div class="fg"><label>Email</label><input type="email" id="cf-em" required/></div>
+        <div class="fg"><label>Subject</label><select id="cf-sub"><option>Order Enquiry</option><option>Returns & Exchange</option><option>Collaboration</option><option>Press / Media</option><option>Wholesale / Bulk</option><option>Other</option></select></div>
+        <div class="fg"><label>Message</label><textarea rows="5" id="cf-msg" required></textarea></div>
+        <button type="submit" class="btn-p" style="width:100%">SEND MESSAGE →</button>
+        <div class="form-success" id="fSuccess">MESSAGE SENT — WE'LL HIT YOU BACK WITHIN 24HRS.</div>
+      </form>
+    </div>
+  </div>
+  <div class="map-bar">
+    <div class="map-inner">
+      <div class="map-box">PAN INDIA</div>
+      <div style="display:flex;gap:2rem;flex-wrap:wrap">
+        <div><div class="map-city-name">CHENNAI</div><div class="map-city-sub">HQ & Studio</div></div>
+        <div><div class="map-city-name">ALL INDIA</div><div class="map-city-sub">2–5 Days</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="page" id="pg-checkout">
+  <div class="checkout-wrap" id="coWrap">
+    <div class="co-left">
+      <p class="sec-label">// Secure Checkout</p>
+      <h2>ORDER DETAILS</h2>
+      <div style="height:1.8rem"></div>
+      <div class="co-step">
+        <div class="co-step-title">01 — Contact Information</div>
+        <div class="cog2">
+          <div class="cof"><label>First Name</label><input type="text" id="co-fn"/></div>
+          <div class="cof"><label>Last Name</label><input type="text" id="co-ln"/></div>
+          <div class="cof"><label>Email</label><input type="email" id="co-em"/></div>
+          <div class="cof"><label>Phone</label><input type="tel" id="co-ph"/></div>
+        </div>
+      </div>
+      <div class="co-step">
+        <div class="co-step-title">02 — Shipping Address</div>
+        <div class="cog2">
+          <div class="cof full"><label>Address Line 1</label><input type="text" id="co-a1"/></div>
+          <div class="cof full"><label>Address Line 2</label><input type="text" id="co-a2"/></div>
+          <div class="cof"><label>City</label><input type="text" id="co-cy"/></div>
+          <div class="cof"><label>State</label><select id="co-st">
+            <optgroup label="States">
+              <option>Andhra Pradesh</option>
+              <option>Arunachal Pradesh</option>
+              <option>Assam</option>
+              <option>Bihar</option>
+              <option>Chhattisgarh</option>
+              <option>Goa</option>
+              <option>Gujarat</option>
+              <option>Haryana</option>
+              <option>Himachal Pradesh</option>
+              <option>Jharkhand</option>
+              <option>Karnataka</option>
+              <option>Kerala</option>
+              <option>Madhya Pradesh</option>
+              <option>Maharashtra</option>
+              <option>Manipur</option>
+              <option>Meghalaya</option>
+              <option>Mizoram</option>
+              <option>Nagaland</option>
+              <option>Odisha</option>
+              <option>Punjab</option>
+              <option>Rajasthan</option>
+              <option>Sikkim</option>
+              <option>Tamil Nadu</option>
+              <option>Telangana</option>
+              <option>Tripura</option>
+              <option>Uttar Pradesh</option>
+              <option>Uttarakhand</option>
+              <option>West Bengal</option>
+            </optgroup>
+            <optgroup label="Union Territories">
+              <option>Andaman and Nicobar Islands</option>
+              <option>Chandigarh</option>
+              <option>Dadra and Nagar Haveli and Daman and Diu</option>
+              <option>Delhi</option>
+              <option>Jammu and Kashmir</option>
+              <option>Ladakh</option>
+              <option>Lakshadweep</option>
+              <option>Puducherry</option>
+            </optgroup>
+          </select></div>
+          <div class="cof"><label>PIN Code</label><input type="text" id="co-pi" maxlength="6"/></div>
+          <div class="cof"><label>Country</label><input type="text" value="India" readonly style="opacity:.6"/></div>
+        </div>
+      </div>
+      <div class="co-step">
+        <div class="co-step-title">03 — Shipping Method</div>
+        <div class="ship-opts">
+          <label class="ship-opt sel" onclick="setShip(this,99,'Standard Delivery')"><input type="radio" name="ship" checked/><div class="ship-info"><div class="ship-name">Standard Delivery</div><div class="ship-days">5–7 Business Days</div></div><div class="ship-price">₹99</div></label>
+        </div>
+      </div>
+      <div class="co-step">
+        <div class="co-step-title">04 — Payment</div>
+        <div class="pay-tabs">
+          <button class="pay-tab active" type="button" onclick="switchPay('card',this)">CARD</button>
+          <button class="pay-tab" type="button" onclick="switchPay('upi',this)">UPI</button>
+        </div>
+        <div class="pay-panel active" id="pp-card">
+          <p style="font-family:var(--fm);font-size:.65rem;color:var(--grain);letter-spacing:.1em;padding:1rem;background:var(--bg2);border:1px solid var(--border)">Enter your card details securely in the payment popup. Visa · Mastercard · RuPay supported.</p>
+        </div>
+        <div class="pay-panel" id="pp-upi">
+          <p style="font-family:var(--fm);font-size:.65rem;color:var(--grain);letter-spacing:.1em;padding:1rem;background:var(--bg2);border:1px solid var(--border)">Pay via UPI on Razorpay's secure page. GPAY · PHONEPE · PAYTM · BHIM supported.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ord-sum">
+      <h3>YOUR ORDER</h3>
+      <div class="ord-items" id="ordItems"></div>
+      <div class="promo-row"><input type="text" placeholder="PROMO CODE" id="promoInp"/><button type="button" onclick="applyPromo()">APPLY</button></div>
+      <div class="ord-line"><span>Subtotal</span><span>₹<span id="co-sub">0</span></span></div>
+      <div class="ord-line"><span>Shipping</span><span id="co-ship">₹99</span></div>
+      <div class="ord-line"><span>Discount</span><span id="co-disc" style="color:var(--rust)">—</span></div>
+      <div class="ord-total"><span>TOTAL</span><span>₹<span id="co-tot">0</span></span></div>
+      <button class="btn-place" onclick="placeOrder()">PAY NOW →</button>
+      <p class="secure-lbl">🔒 SECURED BY RAZORPAY</p>
+    </div>
+  </div>
+  <div class="order-ok" id="orderOk">
+    <div class="ok-icon">✓</div>
+    <h2 class="ok-title">ORDER PLACED!</h2>
+    <p class="ok-sub">Payment successful. Your order is confirmed and saved.</p>
+    <p class="ok-id" id="okId">ORDER #UG-000000</p>
+    <button class="btn-p" onclick="goPage('home')">BACK TO HOME</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <span class="footer-logo" onclick="goPage('home')">
+        <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/Image.png" alt="UG" style="height:32px;width:auto;border-radius:2px" onerror="this.style.display='none'"/>
+        URBAN GRAIN
+      </span>
+      <p class="footer-tagline">Streetwear built for the city. Limited drops. Real quality. Made in India.</p>
+    </div>
+    <div class="footer-col"><h4>Shop</h4><ul>
+      <li><a onclick="goPage('shop')">New Arrivals</a></li>
+      <li><a onclick="filterAndGo('hoodie')">Hoodies</a></li>
+      <li><a onclick="filterAndGo('tee')">Tees</a></li>
+      <li><a onclick="filterAndGo('cargo')">Cargos</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Info</h4><ul>
+      <li><a onclick="goPage('about')">Our Story</a></li>
+      <li><a onclick="goPage('contact')">Contact Us</a></li>
+      <li><a>Size Guide</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Follow</h4><ul>
+      <li><a href="https://www.instagram.com/urban_grain25?igsh=ZzVlYXNhemNiM3Nr&utm_source=qr" target="_blank">Instagram</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 URBAN GRAIN. ALL RIGHTS RESERVED.</p>
+    <div class="footer-links">
+      <a onclick="openPol('refund')">Returns Policy</a>
+      <a onclick="openPol('privacy')">Privacy</a>
+      <a onclick="openPol('terms')">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+/* ═══════════════════════════ SUPABASE ═══════════════════════════ */
+var SB_URL='https://jylkltzzrlzldrvmepkw.supabase.co';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5bGtsdHp6cmx6bGRydm1lcGt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3NjcwNDksImV4cCI6MjA5MjM0MzA0OX0.L0t3rJSzPPXFrsvW0Z9UxYOdHaUKHDVxER9pm_RKlec';
+var SB_TOKEN=null;
+var IS_PREVIEW=false;
+var RZP_KEY='rzp_live_Sk0GjPQhdqD1Pe';
+var LOGO_URL='https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/Image.png';
+
+/* detect preview sandbox */
+try{var _h=window.location.hostname;if(!_h||_h.includes('claude')||_h.includes('anthropic'))IS_PREVIEW=true;}catch(_){IS_PREVIEW=true;}
+
+/* ── local storage helpers for preview ── */
+function uid(){return 'xx'+Math.random().toString(36).slice(2)+Date.now().toString(36);}
+function hashPass(p){var h=0;for(var i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0;}return h.toString(36);}
+async function lsGet(k){try{var r=await window.storage.get(k);return r?JSON.parse(r.value):null;}catch(_){return null;}}
+async function lsSet(k,v){try{await window.storage.set(k,JSON.stringify(v));}catch(_){}}
+async function lsList(p){try{var r=await window.storage.list(p);return r?r.keys:[];}catch(_){return[];}}
+
+/* ── preview auth ── */
+async function previewSignUp(e,p){
+  var ex=await lsGet('pv:u:'+e);
+  if(ex)return{user:null,confirmed:false,error:'Email already registered. Please sign in.'};
+  var u={id:uid(),email:e,created_at:new Date().toISOString()};
+  await lsSet('pv:u:'+e,Object.assign({},u,{pass:hashPass(p)}));
+  await lsSet('pv:sess',u);
+  return{user:u,confirmed:true,error:null};
+}
+async function previewSignIn(e,p){
+  var s=await lsGet('pv:u:'+e);
+  if(!s)return{user:null,error:'No account found. Please sign up first.'};
+  if(s.pass!==hashPass(p))return{user:null,error:'Incorrect password.'};
+  var u={id:s.id,email:s.email};await lsSet('pv:sess',u);return{user:u,error:null};
+}
+async function previewSignOut(){await lsSet('pv:sess',null);}
+async function previewGetSession(){return await lsGet('pv:sess');}
+async function previewInsert(t,o){var k='pv:'+t+':'+(o.id||o.email||uid());await lsSet(k,Object.assign({},o,{created_at:new Date().toISOString()}));return{error:null};}
+async function previewUpsert(t,o){var k='pv:'+t+':'+(o.id||o.email||uid());var ex=await lsGet(k)||{};await lsSet(k,Object.assign({},ex,o));return{error:null};}
+async function previewSelect(t,f){
+  var keys=await lsList('pv:'+t+':');
+  var rows=await Promise.all(keys.map(function(k){return lsGet(k);}));
+  var valid=rows.filter(Boolean);
+  if(!f)return{data:valid,error:null};
+  return{data:valid.filter(function(r){return Object.entries(f).every(function(e){return String(r[e[0]])===String(e[1]);});}),error:null};
+}
+async function previewSelectOne(t,f){var r=await previewSelect(t,f);return{data:r.data.length?r.data[0]:null,error:null};}
+
+/* ── real Supabase ── */
+function sbH(x){var h={'apikey':SB_KEY,'Content-Type':'application/json'};if(SB_TOKEN)h['Authorization']='Bearer '+SB_TOKEN;if(x)Object.assign(h,x);return h;}
+async function sbFetch(url,opts){
+  try{var r=await fetch(url,opts);var d;try{d=await r.json();}catch(_){d={};}return{ok:r.ok,status:r.status,data:d};}
+  catch(e){return{ok:false,status:0,data:{error:e.message}};}
+}
+async function sbSignUp(email,password){
+  if(IS_PREVIEW)return previewSignUp(email,password);
+  var x=await sbFetch(SB_URL+'/auth/v1/signup',{method:'POST',headers:sbH(),body:JSON.stringify({email,password})});
+  var d=x.data;
+  if(d.code==='user_already_exists'||(d.message&&d.message.includes('already')))return{user:null,confirmed:false,error:'Email already registered. Please sign in.'};
+  if(d.access_token){SB_TOKEN=d.access_token;try{localStorage.setItem('ug_tok',SB_TOKEN);localStorage.setItem('ug_usr',JSON.stringify(d.user));}catch(_){}return{user:d.user,confirmed:true,error:null};}
+  if(d.user&&d.user.id)return{user:d.user,confirmed:false,error:null};
+  if(x.status===429)return{user:null,confirmed:false,error:'Too many attempts. Wait a minute.'};
+  return{user:null,confirmed:false,error:d.error_description||d.message||'Signup failed.'};
+}
+async function sbSignIn(email,password){
+  if(IS_PREVIEW)return previewSignIn(email,password);
+  var x=await sbFetch(SB_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:sbH(),body:JSON.stringify({email,password})});
+  var d=x.data;
+  if(d.access_token){SB_TOKEN=d.access_token;try{localStorage.setItem('ug_tok',SB_TOKEN);localStorage.setItem('ug_usr',JSON.stringify(d.user));}catch(_){}return{user:d.user,error:null};}
+  if(d.error_code==='email_not_confirmed')return{user:null,error:'Please verify your email first — check your inbox.'};
+  return{user:null,error:d.error_description||'Invalid email or password.'};
+}
+async function sbSignOut(){
+  if(IS_PREVIEW){await previewSignOut();return;}
+  try{await sbFetch(SB_URL+'/auth/v1/logout',{method:'POST',headers:sbH()});}catch(_){}
+  SB_TOKEN=null;try{localStorage.removeItem('ug_tok');localStorage.removeItem('ug_usr');}catch(_){}
+}
+async function sbGetSession(){
+  if(IS_PREVIEW)return previewGetSession();
+  var tok,usr;try{tok=localStorage.getItem('ug_tok');usr=localStorage.getItem('ug_usr');}catch(_){}
+  if(!tok||!usr)return null;
+  var x=await sbFetch(SB_URL+'/auth/v1/user',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+tok}});
+  if(x.ok){SB_TOKEN=tok;try{return JSON.parse(usr);}catch(_){return null;}}
+  try{localStorage.removeItem('ug_tok');localStorage.removeItem('ug_usr');}catch(_){}
+  return null;
+}
+async function sbInsert(t,o){
+  if(IS_PREVIEW)return previewInsert(t,o);
+  var x=await sbFetch(SB_URL+'/rest/v1/'+t,{method:'POST',headers:sbH({Prefer:'return=minimal'}),body:JSON.stringify(o)});
+  return{error:x.ok?null:(x.data.message||x.data.hint||'Insert failed')};
+}
+async function sbUpsert(t,o){
+  if(IS_PREVIEW)return previewUpsert(t,o);
+  var x=await sbFetch(SB_URL+'/rest/v1/'+t,{method:'POST',headers:sbH({Prefer:'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify(o)});
+  return{error:x.ok?null:(x.data.message||'Upsert failed')};
+}
+async function sbSelect(t,f){
+  if(IS_PREVIEW)return previewSelect(t,f);
+  var url=SB_URL+'/rest/v1/'+t+'?select=*&order=id.asc';
+  if(f)Object.entries(f).forEach(function(e){url+='&'+e[0]+'=eq.'+encodeURIComponent(e[1]);});
+  var x=await sbFetch(url,{headers:sbH()});
+  return{data:x.ok&&Array.isArray(x.data)?x.data:[],error:x.ok?null:'Fetch failed'};
+}
+async function sbSelectOne(t,f){
+  if(IS_PREVIEW)return previewSelectOne(t,f);
+  var r=await sbSelect(t,f);return{data:r.data.length?r.data[0]:null,error:r.error};
+}
+
+/* ═══════════════════════════ PRODUCTS ═══════════════════════════ */
+var PRODS=[];
+var SIZES=['XS','S','M','L','XL','XXL'];
+var COLORS=[{name:'Black',hex:'#1a1410'},{name:'Cream',hex:'#f0ead8'},{name:'Rust',hex:'#b5451b'},{name:'Olive',hex:'#5a6040'}];
+var FALLBACK=[
+  {id:1,name:'Concrete Roots Hoodie',cat:'hoodie',price:2299,old:2899,tag:'NEW',clr:'CHARCOAL',desc:'Our signature heavyweight hoodie. Dropped shoulders, kangaroo pocket, ribbed cuffs.',oos:['XS'],image_url:null},
+  {id:2,name:'Grain Oversized Tee',cat:'tee',price:1199,old:null,tag:'HOT',clr:'RUST/BLACK',desc:'280gsm oversized fit tee. Screen-printed UG graphic on the chest.',oos:['XXL'],image_url:null},
+  {id:3,name:'Asphalt Cargo Pants',cat:'cargo',price:3499,old:3999,tag:'NEW',clr:'OLIVE',desc:'6-pocket cargo in heavy cotton twill.',oos:[],image_url:null},
+  {id:4,name:'Urban Grain Track Jacket',cat:'jacket',price:2799,old:null,tag:'LIMITED',clr:'CREAM/BLACK',desc:'Retro-inspired track jacket with contrast taping.',oos:['XS','S'],image_url:null},
+  {id:5,name:'Street Archive Hoodie',cat:'hoodie',price:2499,old:2899,tag:null,clr:'BONE',desc:'Clean minimal hoodie with tonal UG badge.',oos:[],image_url:null},
+  {id:6,name:'Rust Wash Tee',cat:'tee',price:999,old:null,tag:'SALE',clr:'RUST WASH',desc:'Garment-washed for that worn-in softness.',oos:['M'],image_url:null},
+  {id:7,name:'Grain Cargo Shorts',cat:'cargo',price:1799,old:1999,tag:null,clr:'CHARCOAL',desc:'Mid-thigh cargo shorts in cotton-linen blend.',oos:[],image_url:null},
+  {id:8,name:'Logo Block Tee',cat:'tee',price:1099,old:null,tag:'HOT',clr:'BLACK/WHITE',desc:'Blocked UG logo across the chest.',oos:['XS'],image_url:null},
+  {id:9,name:'UG Beanie',cat:'accessory',price:599,old:null,tag:'NEW',clr:'BLACK/GRAIN',desc:'Ribbed knit beanie with woven UG label.',oos:[],image_url:null},
+  {id:10,name:'Grain Tote Bag',cat:'accessory',price:699,old:null,tag:null,clr:'NATURAL',desc:'Heavy canvas tote with screen-printed UG graphic.',oos:[],image_url:null},
+  {id:11,name:'Heavy Coach Jacket',cat:'jacket',price:3299,old:3799,tag:'LIMITED',clr:'BLACK',desc:'Woven nylon shell, mesh lining, snap button front.',oos:['XXL'],image_url:null},
+  {id:12,name:'Cropped Logo Hoodie',cat:'hoodie',price:1999,old:null,tag:'NEW',clr:'CREAM',desc:'Cropped at the hip with raw-edge hem.',oos:['L','XL'],image_url:null},
+  {id:13,name:'Trust Your Cardiac Compass T-Shirt',cat:'tee',price:1999,old:null,tag:'NEW',clr:'BLACK/WHITE',desc:'Heavy 220gsm T-shirt with dropped shoulders.',oos:[],image_url:null},
+];
+
+function parseOos(v){if(!v)return[];if(Array.isArray(v))return v.filter(Boolean);return String(v).replace(/[{}"'\[\]]/g,'').split(',').map(function(s){return s.trim();}).filter(Boolean);}
+function mapRow(p){
+  var img=p.image_url||null;
+  if(img&&!img.startsWith('http'))img=SB_URL+'/storage/v1/object/public/products/'+img;
+  return{id:p.id,name:p.name,cat:p.cat,price:p.price,old:p.old_price||null,tag:p.tag||null,clr:p.clr||'',desc:p.description||'',oos:parseOos(p.oos),image_url:img};
+}
+function prodImg(p){
+  if(p.image_url)return '<img src="'+p.image_url+'" alt="'+p.name+'" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display=\'none\'"/>';
+  return '<div class="prod-img-text">UG</div>';
+}
+function prodCard(p){
+  return '<div class="prod-card" onclick="openProd('+p.id+')">'
+    +'<div class="prod-img"><div class="prod-img-inner">'+prodImg(p)+'</div>'
+    +(p.tag?'<div class="prod-badge">'+p.tag+'</div>':'')
+    +'<div class="prod-overlay"><button class="btn-quick" onclick="event.stopPropagation();openProd('+p.id+')">VIEW PRODUCT</button></div></div>'
+    +'<div class="prod-info"><div class="prod-cat">'+p.cat+'</div><div class="prod-name">'+p.name+'</div>'
+    +'<div class="prod-price">₹'+p.price.toLocaleString('en-IN')+(p.old?'<del>₹'+p.old.toLocaleString('en-IN')+'</del>':'')+'</div></div></div>';
+}
+function renderLookbook(){
+  var el=document.getElementById('lookbook-scroll');
+  if(!el)return;
+  var withImg=PRODS.filter(function(p){return p.image_url;});
+  var list=withImg.length?withImg:PRODS;
+  el.innerHTML=list.slice(0,8).map(function(p,i){
+    var num=i<9?'0'+(i+1):i+1;
+    if(p.image_url){
+      return '<div class="look" onclick="openProd('+p.id+')">'
+        +'<img src="'+p.image_url+'" alt="'+p.name+'" onerror="this.style.display=\'none\'"/>'
+        +'<div class="look-overlay"></div>'
+        +'<div class="look-tag">'+p.cat.toUpperCase()+' / '+p.name.toUpperCase()+'</div>'
+        +'</div>';
+    }
+    return '<div class="look" onclick="openProd('+p.id+')">'
+      +'<div class="look-num">'+num+'</div>'
+      +'<div class="look-tag">'+p.name.toUpperCase()+'</div>'
+      +'</div>';
+  }).join('');
+}
+function renderHome(){
+  var el=document.getElementById('home-drops');
+  if(el)el.innerHTML=PRODS.slice(0,4).map(prodCard).join('')||'<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid)">NO PRODUCTS YET</p>';
+  renderLookbook();
+}
+function renderShop(f){
+  var el=document.getElementById('shop-grid');if(!el)return;
+  var list=f==='all'?PRODS:PRODS.filter(function(p){return p.cat===f;});
+  el.innerHTML=list.map(prodCard).join('')||'<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid);padding:2rem">NO PRODUCTS IN THIS CATEGORY</p>';
+}
+async function loadProducts(){
+  try{
+    var r=await sbSelect('products',{active:true});
+    PRODS=(r.data&&r.data.length)?r.data.map(mapRow):FALLBACK;
+  }catch(_){PRODS=FALLBACK;}
+  renderHome();renderShop('all');
+}
+function filterProd(c,b){
+  curFilter=c;
+  document.querySelectorAll('.flt').forEach(function(x){x.classList.remove('active');});
+  if(b)b.classList.add('active');
+  renderShop(c);
+}
+function filterAndGo(c){
+  curFilter=c;goPage('shop');
+  setTimeout(function(){
+    document.querySelectorAll('.flt').forEach(function(b){b.classList.remove('active');if(b.textContent.toLowerCase().includes(c))b.classList.add('active');});
+    renderShop(c);
+  },60);
+}
+
+/* ═══════════════════════════ STATE ═══════════════════════════ */
+var cart=[],shipCost=99,shipMethod='Standard Delivery',payMethod='card',discount=0;
+var curFilter='all',prevPage='shop';
+var pdpState={prod:null,size:null,qty:1,color:0};
+var currentUser=null;
+
+/* ═══════════════════════════ AUTH ═══════════════════════════ */
+async function initAuth(){var u=await sbGetSession();if(u)await afterLogin(u);}
+async function afterLogin(user){
+  currentUser=user;
+  document.getElementById('btnLogin').style.display='none';
+  document.getElementById('btnAccount').style.display='block';
+  document.getElementById('btnLogout').style.display='block';
+  document.getElementById('mobAuth').textContent='My Account';
+  document.getElementById('accEmailDisp').textContent=user.email||'';
+  document.getElementById('pEmail').value=user.email||'';
+  document.getElementById('co-em').value=user.email||'';
+  var r=await sbSelectOne('customers',{id:user.id});
+  if(r.data){
+    var d=r.data;
+    document.getElementById('pName').value=d.full_name||'';
+    document.getElementById('pPhone').value=d.phone||'';
+    document.getElementById('pCity').value=d.city||'';
+    var fn=(d.full_name||'').split(' ');
+    document.getElementById('co-fn').value=fn[0]||'';
+    document.getElementById('co-ln').value=fn.slice(1).join(' ')||'';
+    document.getElementById('co-ph').value=d.phone||'';
+    document.getElementById('co-cy').value=d.city||'';
+    var nm=(d.full_name||'').split(' ')[0].toUpperCase();
+    document.getElementById('accWelcome').textContent=nm?'WELCOME, '+nm:'WELCOME BACK';
+  }
+}
+function afterLogout(){
+  currentUser=null;
+  document.getElementById('btnLogin').style.display='block';
+  document.getElementById('btnAccount').style.display='none';
+  document.getElementById('btnLogout').style.display='none';
+  document.getElementById('mobAuth').textContent='Login / Sign Up';
+}
+function openAuth(m){
+  document.getElementById('fmLogin').style.display=m==='login'?'block':'none';
+  document.getElementById('fmSignup').style.display=m==='signup'?'block':'none';
+  document.getElementById('lErr').style.display='none';
+  document.getElementById('sErr').style.display='none';
+  document.getElementById('authModal').classList.add('open');
+}
+function closeAuth(){document.getElementById('authModal').classList.remove('open');}
+function showErr(id,msg,type){var el=document.getElementById(id);el.textContent=msg;el.className='modal-err '+(type||'error');el.style.display='block';}
+async function doLogin(){
+  var email=document.getElementById('lEmail').value.trim();
+  var pass=document.getElementById('lPass').value;
+  if(!email||!pass){showErr('lErr','Please fill in all fields.');return;}
+  showErr('lErr','Signing in...','info');
+  var r=await sbSignIn(email,pass);
+  if(r.error){showErr('lErr',r.error);return;}
+  document.getElementById('lErr').style.display='none';
+  await afterLogin(r.user);closeAuth();showToast('Welcome back!');
+}
+async function doSignup(){
+  var name=document.getElementById('sName').value.trim();
+  var email=document.getElementById('sEmail').value.trim();
+  var phone=document.getElementById('sPhone').value.trim();
+  var pass=document.getElementById('sPass').value;
+  if(!name||!email||!pass){showErr('sErr','Please fill in all fields.');return;}
+  if(pass.length<6){showErr('sErr','Password must be at least 6 characters.');return;}
+  showErr('sErr','Creating account...','info');
+  var r=await sbSignUp(email,pass);
+  if(r.error){showErr('sErr',r.error);return;}
+  if(r.user&&r.user.id)await sbUpsert('customers',{id:r.user.id,email:email,full_name:name,phone:phone});
+  document.getElementById('sErr').style.display='none';
+  closeAuth();
+  if(r.confirmed){await afterLogin(r.user);showToast('Welcome to Urban Grain, '+name.split(' ')[0]+'!');}
+  else showToast('Account created! Check your email to verify.');
+}
+async function doLogout(){await sbSignOut();afterLogout();goPage('home');showToast('Logged out.');}
+async function saveProfile(){
+  if(!currentUser){showToast('Please log in first.');return;}
+  var payload={id:currentUser.id,email:currentUser.email,full_name:document.getElementById('pName').value.trim(),phone:document.getElementById('pPhone').value.trim(),city:document.getElementById('pCity').value.trim()};
+  var r=await sbUpsert('customers',payload);
+  if(r.error)r=await sbInsert('customers',payload);
+  showToast(r.error?'Error: '+r.error:'Profile saved!');
+}
+
+/* ═══════════════════════════ ORDERS ═══════════════════════════ */
+async function loadOrders(){
+  var el=document.getElementById('orders-list');
+  if(!currentUser){el.innerHTML='<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid)">PLEASE <span style="color:var(--rust);cursor:pointer;text-decoration:underline" onclick="openAuth(\'login\')">LOGIN</span> TO VIEW ORDERS.</p>';return;}
+  el.innerHTML='<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid)">LOADING...</p>';
+  var r=await sbSelect('orders',{customer_email:currentUser.email});
+  if(!r.data||!r.data.length){el.innerHTML='<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid)">NO ORDERS YET. <span style="color:var(--rust);cursor:pointer;text-decoration:underline" onclick="goPage(\'shop\')">START SHOPPING →</span></p>';return;}
+  var sorted=r.data.slice().sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);});
+  el.innerHTML=sorted.map(function(o){
+    var items=Array.isArray(o.items)?o.items:[];
+    var sum=items.map(function(i){return i.name+' ('+i.size+') x'+i.qty;}).join(', ');
+    var sc='status-'+(o.status||'placed');
+    var dt=new Date(o.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    return '<div class="order-card"><div class="order-card-head"><span class="order-id">'+o.id+'</span><span class="order-date">'+dt+'</span><span class="order-status '+sc+'">'+(o.status||'placed').toUpperCase()+'</span></div><div class="order-card-body"><div class="order-items-list">'+(sum||'—')+'</div><div class="order-total-line">TOTAL: ₹'+(o.total||0).toLocaleString('en-IN')+' · '+(o.shipping_method||'Standard')+'</div></div></div>';
+  }).join('');
+}
+async function saveOrderWithPayment(orderId,rzpId,total){
+  await sbInsert('orders',{
+    id:orderId,customer_email:document.getElementById('co-em').value||(currentUser?currentUser.email:'guest'),
+    customer_id:currentUser?currentUser.id:null,
+    items:cart.map(function(i){return{id:i.id,name:i.name,size:i.size,colorName:i.colorName,qty:i.qty,price:i.price};}),
+    total:total,shipping_cost:shipCost,shipping_method:shipMethod,payment_method:'razorpay',payment_id:rzpId,status:'placed',
+    address:{line1:document.getElementById('co-a1').value,line2:document.getElementById('co-a2').value,city:document.getElementById('co-cy').value,state:document.getElementById('co-st').value,pin:document.getElementById('co-pi').value}
+  });
+}
+async function sendOrderEmail(orderId,email,items,total){
+  if(IS_PREVIEW)return;
+  try{await sbFetch(SB_URL+'/functions/v1/order-confirmation',{method:'POST',headers:sbH({'Content-Type':'application/json'}),body:JSON.stringify({order_id:orderId,customer_email:email,items:items,total:total,shipping_method:shipMethod})});}
+  catch(_){}
+}
+
+/* ═══════════════════════════ RAZORPAY ═══════════════════════════ */
+async function placeOrder(){
+  if(!cart.length){showToast('Your bag is empty!');return;}
+  var sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
+  var total=Math.max(0,sub+shipCost-discount);
+  var orderId='UG-'+Math.floor(100000+Math.random()*900000);
+  var name=(document.getElementById('co-fn').value+' '+document.getElementById('co-ln').value).trim()||'Customer';
+  var email=document.getElementById('co-em').value||(currentUser?currentUser.email:'');
+  var phone=document.getElementById('co-ph').value||'';
+  if(!email){showToast('Please enter your email address.');return;}
+  if(IS_PREVIEW){
+    /* preview mode — skip Razorpay, simulate success */
+    await saveOrderWithPayment(orderId,'preview_'+uid(),total);
+    var cw=document.getElementById('coWrap');var ok=document.getElementById('orderOk');var oi=document.getElementById('okId');
+    if(oi)oi.textContent='ORDER #'+orderId;if(cw)cw.style.display='none';if(ok)ok.style.display='block';
+    cart=[];updateCart();showToast('Order placed! (Preview mode)');return;
+  }
+  var options={
+    key:RZP_KEY,amount:total*100,currency:'INR',
+    name:'Urban Grain',description:'Order '+orderId,
+    prefill:{name:name,email:email,contact:phone},
+    notes:{order_id:orderId},
+    theme:{color:'#b5451b'},
+    modal:{ondismiss:function(){showToast('Payment cancelled.');}},
+    handler:async function(response){
+      await saveOrderWithPayment(orderId,response.razorpay_payment_id,total);
+      await sendOrderEmail(orderId,email,cart.slice(),total);
+      var cw=document.getElementById('coWrap');var ok=document.getElementById('orderOk');var oi=document.getElementById('okId');
+      if(oi)oi.textContent='ORDER #'+orderId;if(cw)cw.style.display='none';if(ok)ok.style.display='block';
+      cart=[];updateCart();showToast('Payment successful!');
+    }
+  };
+  try{var rzp=new Razorpay(options);rzp.on('payment.failed',function(r){showToast('Payment failed: '+r.error.description);});rzp.open();}
+  catch(e){showToast('Payment error. Please try again.');}
+}
+
+/* ═══════════════════════════ PRODUCT PAGE ═══════════════════════════ */
+function openProd(id){
+  var p=PRODS.find(function(x){return x.id===id;});if(!p)return;
+  pdpState={prod:p,size:null,qty:1,color:0};
+  var a=document.querySelector('.page.active,.pdp.active');
+  prevPage=a?a.id.replace('pg-',''):'shop';
+  document.getElementById('pdp-cat').textContent=p.cat.toUpperCase();
+  document.getElementById('pdp-name').textContent=p.name;
+  document.getElementById('pdp-price').textContent='₹'+p.price.toLocaleString('en-IN');
+  var oe=document.getElementById('pdp-old');
+  if(p.old){oe.textContent='₹'+p.old.toLocaleString('en-IN');oe.style.display='block';}else{oe.style.display='none';}
+  var se=document.getElementById('pdp-savings');
+  if(p.old){se.textContent='YOU SAVE '+Math.round((1-p.price/p.old)*100)+'% — ₹'+(p.old-p.price).toLocaleString('en-IN');se.style.display='inline-block';}else{se.style.display='none';}
+  document.getElementById('pdp-desc').textContent=p.desc;
+  document.getElementById('pdp-qty').textContent=1;
+  document.getElementById('pdp-badge-wrap').innerHTML=p.tag?'<div class="pdp-badge-lg">'+p.tag+'</div>':'';
+  /* gallery image */
+  var gal=document.getElementById('pdp-gallery');
+  if(gal){
+    var inner=gal.querySelector('div');
+    if(inner)inner.innerHTML=p.image_url
+      ?'<img src="'+p.image_url+'" alt="'+p.name+'" style="width:100%;height:100%;max-height:600px;object-fit:cover;display:block;" onerror="this.outerHTML=\'<div class=pdp-gallery-img>UG</div>\'"/>'
+      :'<div class="pdp-gallery-img">UG</div>';
+  }
+  document.getElementById('pdp-colors').innerHTML=COLORS.map(function(c,i){return '<div class="color-dot'+(i===0?' selected':'')+'" style="background:'+c.hex+';border-color:'+(i===0?'var(--rust)':'transparent')+'" onclick="selColor('+i+',\''+c.name+'\')" title="'+c.name+'"></div>';}).join('');
+  document.getElementById('pdp-clr-name').textContent=COLORS[0].name;
+  document.getElementById('pdp-sizes').innerHTML=SIZES.map(function(s){var oos=p.oos&&p.oos.includes(s);return '<button class="size-btn'+(oos?' oos':'')+'" '+(oos?'disabled':'')+' onclick="'+(oos?'':'selSize(this,\''+s+'\')')+'">'+s+'</button>';}).join('');
+  document.getElementById('pdp-size-err').style.display='none';
+  var rg=document.getElementById('related-grid');
+  if(rg)rg.innerHTML=PRODS.filter(function(x){return x.id!==id&&x.cat===p.cat;}).slice(0,4).map(prodCard).join('');
+  currentRating=0;
+  document.querySelectorAll('#starSelect span').forEach(function(s){s.classList.remove('active');});
+  loadReviews(id);
+  document.querySelectorAll('.page,.pdp').forEach(function(pg){pg.classList.remove('active');});
+  document.getElementById('pg-product').classList.add('active');
+  window.scrollTo(0,0);setNavActive('');
+}
+function goBackPDP(){
+  document.querySelectorAll('.page,.pdp').forEach(function(pg){pg.classList.remove('active');});
+  var t=document.getElementById('pg-'+prevPage)||document.getElementById('pg-shop');
+  t.classList.add('active');window.scrollTo(0,0);setNavActive(prevPage);
+}
+function selSize(b,s){document.querySelectorAll('.size-btn').forEach(function(x){x.classList.remove('selected');});b.classList.add('selected');pdpState.size=s;document.getElementById('pdp-size-err').style.display='none';}
+function selColor(i,n){pdpState.color=i;document.getElementById('pdp-clr-name').textContent=n;document.querySelectorAll('.color-dot').forEach(function(d,j){d.classList.toggle('selected',j===i);d.style.borderColor=j===i?'var(--rust)':'transparent';});}
+function changePdpQty(d){pdpState.qty=Math.max(1,Math.min(10,pdpState.qty+d));document.getElementById('pdp-qty').textContent=pdpState.qty;}
+function pdpAddToCart(){
+  if(!pdpState.size){document.getElementById('pdp-size-err').style.display='block';return;}
+  var p=pdpState.prod;var key=p.id+'-'+pdpState.size+'-'+pdpState.color;
+  var ex=cart.find(function(x){return x.key===key;});var cn=COLORS[pdpState.color].name;
+  if(ex)ex.qty+=pdpState.qty;else cart.push(Object.assign({},p,{key:key,size:pdpState.size,colorName:cn,qty:pdpState.qty}));
+  updateCart();showToast(p.name+' ('+pdpState.size+') — Added to bag');
+}
+function toggleAcc(h){var b=h.nextElementSibling;var a=h.querySelector('.acc-arrow');b.classList.toggle('open');a.style.transform=b.classList.contains('open')?'':'rotate(-90deg)';}
+
+/* ═══════════════════════════ REVIEWS ═══════════════════════════ */
+var currentRating=0;
+function setRating(r){currentRating=r;document.querySelectorAll('#starSelect span').forEach(function(s,i){s.classList.toggle('active',i<r);});}
+async function submitReview(){
+  if(!currentUser){openAuth('login');showToast('Please log in to leave a review.');return;}
+  if(!currentRating){showToast('Please select a star rating.');return;}
+  var name=document.getElementById('rev-name').value.trim();
+  var text=document.getElementById('rev-text').value.trim();
+  if(!name||!text){showToast('Please fill in your name and review.');return;}
+  if(!pdpState.prod)return;
+  var review={product_id:pdpState.prod.id,user_id:currentUser.id,author_name:name,rating:currentRating,review_text:text,created_at:new Date().toISOString()};
+  await sbInsert('reviews',review);
+  document.getElementById('rev-name').value='';document.getElementById('rev-text').value='';
+  currentRating=0;document.querySelectorAll('#starSelect span').forEach(function(s){s.classList.remove('active');});
+  showToast('Review submitted! Thank you.');loadReviews(pdpState.prod.id);
+}
+async function loadReviews(productId){
+  var list=document.getElementById('rev-list');if(!list)return;
+  var r=await sbSelect('reviews',{product_id:productId});
+  var reviews=r.data||[];
+  if(!reviews.length){list.innerHTML='';return;}
+  reviews.sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);});
+  list.innerHTML=reviews.map(function(rv){
+    var stars='★'.repeat(rv.rating||5)+'☆'.repeat(5-(rv.rating||5));
+    var date=new Date(rv.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    return '<div class="rev-item"><div class="rev-item-head"><span class="rev-item-author">'+rv.author_name+'</span><span class="rev-item-date">'+date+'</span></div><div class="rev-item-stars">'+stars+'</div><div class="rev-item-text">"'+rv.review_text+'"</div></div>';
+  }).join('');
+}
+
+/* ═══════════════════════════ CART ═══════════════════════════ */
+function removeFromCart(key){cart=cart.filter(function(x){return x.key!==key;});updateCart();}
+function changeQty(key,d){var i=cart.find(function(x){return x.key===key;});if(!i)return;i.qty+=d;if(i.qty<=0)cart=cart.filter(function(x){return x.key!==key;});updateCart();}
+function updateCart(){
+  var total=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
+  var count=cart.reduce(function(s,i){return s+i.qty;},0);
+  document.getElementById('cart-count').textContent=count;
+  document.getElementById('cTotal').textContent=total.toLocaleString('en-IN');
+  var body=document.getElementById('cBody');
+  if(!cart.length){body.innerHTML='<div class="cart-empty-msg">YOUR BAG IS EMPTY</div>';return;}
+  body.innerHTML=cart.map(function(i){
+    var imgHtml=i.image_url?'<img src="'+i.image_url+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>':'UG';
+    return '<div class="cart-item"><div class="ci-img">'+imgHtml+'</div><div class="ci-detail"><div class="ci-name">'+i.name+'</div><div class="ci-meta">SIZE: '+i.size+' · '+i.colorName+'</div><div class="ci-price">₹'+(i.price*i.qty).toLocaleString('en-IN')+'</div><div class="ci-qty"><button class="qty-btn" onclick="changeQty(\''+i.key+'\',-1)">−</button><span class="qty-num">'+i.qty+'</span><button class="qty-btn" onclick="changeQty(\''+i.key+'\',1)">+</button><button class="ci-remove" onclick="removeFromCart(\''+i.key+'\')">REMOVE</button></div></div></div>';
+  }).join('');
+}
+function toggleCart(){document.getElementById('cSide').classList.toggle('open');document.getElementById('cOverlay').classList.toggle('open');}
+function goCheckout(){if(!cart.length){showToast('Your bag is empty!');return;}toggleCart();goPage('checkout');populateSummary();}
+
+/* ═══════════════════════════ CHECKOUT ═══════════════════════════ */
+function populateSummary(){
+  var sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);discount=0;
+  var el=document.getElementById('ordItems');
+  if(el)el.innerHTML=cart.map(function(i){
+    var imgHtml=i.image_url?'<img src="'+i.image_url+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>':'UG';
+    return '<div class="ord-item"><div class="ord-item-img">'+imgHtml+'<div class="ord-qty-badge">'+i.qty+'</div></div><div style="flex:1;padding:.1rem 0"><div class="ord-item-name">'+i.name+'</div><div class="ord-item-meta">SIZE: '+i.size+' · '+i.colorName+'</div></div><div class="ord-item-price">₹'+(i.price*i.qty).toLocaleString('en-IN')+'</div></div>';
+  }).join('');
+  updateTotals(sub);
+}
+function updateTotals(sub){
+  if(sub===undefined)sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
+  var g=function(id){return document.getElementById(id);};
+  if(g('co-sub'))g('co-sub').textContent=sub.toLocaleString('en-IN');
+  if(g('co-ship'))g('co-ship').textContent=shipCost===0?'FREE':'₹'+shipCost;
+  if(g('co-disc'))g('co-disc').textContent=discount>0?'-₹'+discount:'—';
+  if(g('co-tot'))g('co-tot').textContent=Math.max(0,sub+shipCost-discount).toLocaleString('en-IN');
+}
+function setShip(el,cost,method){document.querySelectorAll('.ship-opt').forEach(function(s){s.classList.remove('sel');});el.classList.add('sel');shipCost=cost;shipMethod=method;updateTotals();}
+function switchPay(type,btn){document.querySelectorAll('.pay-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.pay-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');document.getElementById('pp-'+type).classList.add('active');payMethod=type;}
+function applyPromo(){
+  var code=document.getElementById('promoInp').value.trim().toUpperCase();
+  var sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
+  if(code==='GRAIN10'){discount=Math.round(sub*.1);showToast('10% discount applied!');}
+  else if(code==='URBAN200'){discount=200;showToast('₹200 discount applied!');}
+  else{discount=0;showToast('Invalid promo code.');}
+  updateTotals(sub);
+}
+
+/* ═══════════════════════════ NAVIGATION ═══════════════════════════ */
+function setNavActive(page){document.querySelectorAll('.nav-links a').forEach(function(a){a.classList.remove('active');});var nl=document.getElementById('nl-'+page);if(nl)nl.classList.add('active');}
+function goPage(page){
+  document.querySelectorAll('.page,.pdp').forEach(function(p){p.classList.remove('active');});
+  var el=document.getElementById('pg-'+page);if(el)el.classList.add('active');
+  setNavActive(page);window.scrollTo(0,0);
+  if(page==='shop'){loadProducts();}
+  if(page==='home')renderHome();
+  if(page==='account')loadOrders();
+  if(page==='checkout'){var cw=document.getElementById('coWrap');var ok=document.getElementById('orderOk');if(cw)cw.style.display='grid';if(ok)ok.style.display='none';}
+}
+function switchAccTab(tab,btn){document.querySelectorAll('.acc-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.acc-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');document.getElementById('tab-'+tab).classList.add('active');if(tab==='orders')loadOrders();}
+function toggleMob(){document.getElementById('mobMenu').classList.toggle('open');}
+
+/* ═══════════════════════════ FORMS ═══════════════════════════ */
+async function handleNL(e){e.preventDefault();var em=e.target.querySelector('input[type=email]').value.trim();await sbUpsert('newsletter_subscribers',{email:em});showToast("You're in! Welcome to the Urban Grain fam.");e.target.reset();}
+async function handleContact(e){
+  e.preventDefault();
+  await sbInsert('contact_messages',{name:document.getElementById('cf-fn').value+' '+document.getElementById('cf-ln').value,email:document.getElementById('cf-em').value,subject:document.getElementById('cf-sub').value,message:document.getElementById('cf-msg').value});
+  document.getElementById('fSuccess').style.display='block';
+  ['cf-fn','cf-ln','cf-em','cf-msg'].forEach(function(id){document.getElementById(id).value='';});
+  setTimeout(function(){document.getElementById('fSuccess').style.display='none';},5000);
+}
+
+/* ═══════════════════════════ POLICIES ═══════════════════════════ */
+var POLS={
+  refund:{title:'Returns Policy',sections:[{h:'1. Return Eligibility',items:['Returns accepted within 7 days of delivery.','Items must be unused, unwashed, in original packaging with tags intact.']},{h:'2. Non-Returnable Items',items:['Customized or made-to-order products.','Clearance / sale items.']},{h:'3. Refund Timeline',items:['UPI / Bank transfer: 3–5 working days.','Original payment method: 5–7 working days.']}]},
+  privacy:{title:'Privacy Policy',sections:[{h:'1. Information We Collect',items:['Name, phone, email, address.','Payment details via third-party gateways.']},{h:'2. How We Use Your Data',items:['Order processing and delivery.','Customer support.']},{h:'3. Data Protection',items:['Industry-standard security measures.','Payment info not stored on our servers.']}]},
+  terms:{title:'Terms & Conditions',sections:[{h:'1. General',items:['By using this website, you agree to all terms.']},{h:'2. Pricing',items:['All prices in INR.','Prices may change without prior notice.']},{h:'3. Governing Law',items:['Governed by the laws of India.']}]},
+};
+function openPol(key){
+  var p=POLS[key];if(!p)return;
+  document.getElementById('polTitle').textContent=p.title;
+  document.getElementById('polBody').innerHTML=p.sections.map(function(s){return '<div style="margin-bottom:1.8rem"><div style="font-family:var(--fd);font-size:1.1rem;color:var(--black);margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)">'+s.h+'</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem">'+s.items.map(function(i){return '<li style="display:flex;gap:.7rem"><span style="color:var(--rust)">▸</span><span>'+i+'</span></li>';}).join('')+'</ul></div>';}).join('');
+  document.getElementById('polOv').classList.add('open');document.body.style.overflow='hidden';
+}
+function closePolBtn(){document.getElementById('polOv').classList.remove('open');document.body.style.overflow='';}
+
+/* ═══════════════════════════ TOAST ═══════════════════════════ */
+function showToast(msg){var t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2800);}
+
+/* ═══════════════════════════ REALTIME ═══════════════════════════ */
+function startRealtime(){
+  if(IS_PREVIEW||typeof supabase==='undefined')return;
+  try{
+    var client=supabase.createClient(SB_URL,SB_KEY);
+    client.channel('products-live').on('postgres_changes',{event:'*',schema:'public',table:'products'},function(payload){
+      if(payload.eventType==='INSERT'){PRODS.push(mapRow(payload.new));renderHome();renderShop(curFilter);}
+      else if(payload.eventType==='UPDATE'){var idx=PRODS.findIndex(function(x){return x.id===payload.new.id;});if(idx>-1)PRODS[idx]=mapRow(payload.new);renderHome();renderShop(curFilter);}
+      else if(payload.eventType==='DELETE'){PRODS=PRODS.filter(function(x){return x.id!==payload.old.id;});renderHome();renderShop(curFilter);}
+    }).subscribe();
+    if(currentUser&&currentUser.email){
+      client.channel('orders-live').on('postgres_changes',{event:'UPDATE',schema:'public',table:'orders',filter:'customer_email=eq.'+currentUser.email},function(payload){
+        var o=payload.new;var msgs={shipped:'Your order '+o.id+' has been SHIPPED! 🚚',delivered:'Your order '+o.id+' has been DELIVERED! ✓'};
+        if(msgs[o.status])showToast(msgs[o.status]);
+        var ap=document.getElementById('pg-account');if(ap&&ap.classList.contains('active'))loadOrders();
+      }).subscribe();
+    }
+  }catch(e){console.log('Realtime:',e.message);}
+}
+
+/* ═══════════════════════════ INIT ═══════════════════════════ */
+document.addEventListener('DOMContentLoaded',function(){
+  /* ticker */
+  var te=document.getElementById('tickerEl');
+  if(te){var items=['NEW DROP — URBAN GRAIN','FREE SHIPPING OVER ₹2499','UG26 COLLECTION','MADE IN INDIA'];var all=items.concat(items).map(function(t){return '<span class="tick-item">'+t+'</span>';}).join('');te.innerHTML=all+all;}
+  /* load products first — use fallback immediately, then fetch */
+  PRODS=FALLBACK;
+  renderHome();
+  renderShop('all');
+  /* then fetch real data from Supabase */
+  loadProducts();
+  /* auth */
+  initAuth().then(function(){setTimeout(startRealtime,1500);});
+});
+</script>
+</body>
+</html>
