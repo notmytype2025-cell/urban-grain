@@ -924,7 +924,7 @@ var SB_URL='https://jylkltzzrlzldrvmepkw.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5bGtsdHp6cmx6bGRydm1lcGt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3NjcwNDksImV4cCI6MjA5MjM0MzA0OX0.L0t3rJSzPPXFrsvW0Z9UxYOdHaUKHDVxER9pm_RKlec';
 var SB_TOKEN=null;
 var IS_PREVIEW=false;
-var RZP_KEY='rzp_live_Sk0GjPQhdqD1Pe';
+var RZP_KEY='rzp_test_SkQL5lJJ792UDi';
 var LOGO_URL='https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/Image.png';
 
 /* detect preview sandbox */
@@ -1028,7 +1028,28 @@ async function sbSelectOne(t,f){
 /* ═══════════════════════════ PRODUCTS ═══════════════════════════ */
 var PRODS=[];
 var SIZES=['XS','S','M','L','XL','XXL'];
-var COLORS=[{name:'Black',hex:'#1a1410'},{name:'Cream',hex:'#f0ead8'},{name:'Rust',hex:'#b5451b'},{name:'Olive',hex:'#5a6040'}];
+/* default color palette fallback */
+var DEFAULT_COLORS=[{name:'Black',hex:'#1a1410'},{name:'Cream',hex:'#f0ead8'},{name:'Rust',hex:'#b5451b'},{name:'Olive',hex:'#5a6040'},{name:'White',hex:'#ffffff'},{name:'Grey',hex:'#888888'},{name:'Navy',hex:'#1a1f3a'},{name:'Brown',hex:'#5c3a1e'},{name:'Charcoal',hex:'#2d2d2d'},{name:'Bone',hex:'#e8dcc8'}];
+
+function getColorHex(name){
+  var n=name.toLowerCase().trim();
+  var map={black:'#1a1410',cream:'#f0ead8',rust:'#b5451b',olive:'#5a6040',white:'#f5f5f5',grey:'#888888',gray:'#888888',navy:'#1a1f3a',brown:'#5c3a1e',charcoal:'#2d2d2d',bone:'#e8dcc8',green:'#3a6040',red:'#c0392b',blue:'#2c5f8a',pink:'#e8a0a0',yellow:'#e8c840',orange:'#e87820',purple:'#6a3a8a'};
+  return map[n]||'#9e8e7e';
+}
+
+function buildColorDots(product){
+  /* use product-specific colors if available, else fallback to DEFAULT_COLORS */
+  var cols=[];
+  if(product.colors&&product.colors.length){
+    cols=product.colors.map(function(n){return{name:n,hex:getColorHex(n)};});
+  } else {
+    /* fallback: parse clr field */
+    var clrStr=product.clr||'';
+    var parts=clrStr.split('/').map(function(s){return s.trim();}).filter(Boolean);
+    cols=parts.length?parts.map(function(n){return{name:n,hex:getColorHex(n)};}):[{name:'Black',hex:'#1a1410'}];
+  }
+  return cols;
+}
 var FALLBACK=[
   {id:1,name:'Concrete Roots Hoodie',cat:'hoodie',price:2299,old:2899,tag:'NEW',clr:'CHARCOAL',desc:'Our signature heavyweight hoodie. Dropped shoulders, kangaroo pocket, ribbed cuffs.',oos:['XS'],image_url:null},
   {id:2,name:'Grain Oversized Tee',cat:'tee',price:1199,old:null,tag:'HOT',clr:'RUST/BLACK',desc:'280gsm oversized fit tee. Screen-printed UG graphic on the chest.',oos:['XXL'],image_url:null},
@@ -1047,9 +1068,12 @@ var FALLBACK=[
 
 function parseOos(v){if(!v)return[];if(Array.isArray(v))return v.filter(Boolean);return String(v).replace(/[{}"'\[\]]/g,'').split(',').map(function(s){return s.trim();}).filter(Boolean);}
 function mapRow(p){
-  var img=p.image_url||null;
-  if(img&&!img.startsWith('http'))img=SB_URL+'/storage/v1/object/public/products/'+img;
-  return{id:p.id,name:p.name,cat:p.cat,price:p.price,old:p.old_price||null,tag:p.tag||null,clr:p.clr||'',desc:p.description||'',oos:parseOos(p.oos),image_url:img};
+  var imgUrl=p.image_url||null;
+  if(imgUrl&&!imgUrl.startsWith('http'))imgUrl=SB_URL+'/storage/v1/object/public/products/'+imgUrl;
+  var colors=[];
+  if(p.colors&&Array.isArray(p.colors)&&p.colors.length){colors=p.colors;}
+  else if(p.colors&&typeof p.colors==='string'){colors=p.colors.replace(/[{}"'\[\]]/g,'').split(',').map(function(s){return s.trim();}).filter(Boolean);}
+  return{id:p.id,name:p.name,cat:p.cat,price:p.price,old:p.old_price||null,tag:p.tag||null,clr:p.clr||'',colors:colors,desc:p.description||'',oos:parseOos(p.oos),image_url:imgUrl};
 }
 function prodImg(p){
   if(p.image_url)return '<img src="'+p.image_url+'" alt="'+p.name+'" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display=\'none\'"/>';
@@ -1238,30 +1262,72 @@ async function placeOrder(){
   var email=document.getElementById('co-em').value||(currentUser?currentUser.email:'');
   var phone=document.getElementById('co-ph').value||'';
   if(!email){showToast('Please enter your email address.');return;}
+
+  /* preview mode — skip Razorpay */
   if(IS_PREVIEW){
-    /* preview mode — skip Razorpay, simulate success */
     await saveOrderWithPayment(orderId,'preview_'+uid(),total);
     var cw=document.getElementById('coWrap');var ok=document.getElementById('orderOk');var oi=document.getElementById('okId');
     if(oi)oi.textContent='ORDER #'+orderId;if(cw)cw.style.display='none';if(ok)ok.style.display='block';
     cart=[];updateCart();showToast('Order placed! (Preview mode)');return;
   }
-  var options={
-    key:RZP_KEY,amount:total*100,currency:'INR',
-    name:'Urban Grain',description:'Order '+orderId,
-    prefill:{name:name,email:email,contact:phone},
-    notes:{order_id:orderId},
-    theme:{color:'#b5451b'},
-    modal:{ondismiss:function(){showToast('Payment cancelled.');}},
-    handler:async function(response){
-      await saveOrderWithPayment(orderId,response.razorpay_payment_id,total);
-      await sendOrderEmail(orderId,email,cart.slice(),total);
-      var cw=document.getElementById('coWrap');var ok=document.getElementById('orderOk');var oi=document.getElementById('okId');
-      if(oi)oi.textContent='ORDER #'+orderId;if(cw)cw.style.display='none';if(ok)ok.style.display='block';
-      cart=[];updateCart();showToast('Payment successful!');
-    }
-  };
-  try{var rzp=new Razorpay(options);rzp.on('payment.failed',function(r){showToast('Payment failed: '+r.error.description);});rzp.open();}
-  catch(e){showToast('Payment error. Please try again.');}
+
+  try{
+    /* STEP 1 — create order via Netlify function */
+    showToast('Preparing payment...');
+    var createRes=await fetch('/.netlify/functions/create-order',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({amount:total*100,receipt:orderId})
+    });
+    if(!createRes.ok){showToast('Payment setup failed. Please try again.');return;}
+    var createData=await createRes.json();
+    if(!createData.order_id){showToast('Payment setup failed. Please try again.');return;}
+
+    /* STEP 2 — open Razorpay modal */
+    var options={
+      key:RZP_KEY,
+      amount:createData.amount,
+      currency:'INR',
+      name:'Urban Grain',
+      description:'Order '+orderId,
+      order_id:createData.order_id,
+      prefill:{name:name,email:email,contact:phone},
+      notes:{order_id:orderId},
+      theme:{color:'#b5451b'},
+      modal:{ondismiss:function(){showToast('Payment cancelled.');}},
+      handler:async function(response){
+        /* STEP 3 — verify payment signature via Netlify function */
+        var verifyRes=await fetch('/.netlify/functions/verify-payment',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            razorpay_order_id:response.razorpay_order_id,
+            razorpay_payment_id:response.razorpay_payment_id,
+            razorpay_signature:response.razorpay_signature,
+          })
+        });
+        var verifyData=await verifyRes.json();
+        if(!verifyRes.ok||!verifyData.success){
+          showToast('Payment verification failed. Contact support.');return;
+        }
+        /* payment verified — save order */
+        await saveOrderWithPayment(orderId,response.razorpay_payment_id,total);
+        await sendOrderEmail(orderId,email,cart.slice(),total);
+        var cw=document.getElementById('coWrap');var ok=document.getElementById('orderOk');var oi=document.getElementById('okId');
+        if(oi)oi.textContent='ORDER #'+orderId;
+        if(cw)cw.style.display='none';
+        if(ok)ok.style.display='block';
+        cart=[];updateCart();
+        showToast('Payment successful! Order confirmed.');
+      }
+    };
+    var rzp=new Razorpay(options);
+    rzp.on('payment.failed',function(r){showToast('Payment failed: '+r.error.description);});
+    rzp.open();
+  }catch(e){
+    showToast('Payment error. Please try again.');
+    console.error('Razorpay error:',e);
+  }
 }
 
 /* ═══════════════════════════ PRODUCT PAGE ═══════════════════════════ */
@@ -1288,8 +1354,16 @@ function openProd(id){
       ?'<img src="'+p.image_url+'" alt="'+p.name+'" style="width:100%;height:100%;max-height:600px;object-fit:cover;display:block;" onerror="this.outerHTML=\'<div class=pdp-gallery-img>UG</div>\'"/>'
       :'<div class="pdp-gallery-img">UG</div>';
   }
-  document.getElementById('pdp-colors').innerHTML=COLORS.map(function(c,i){return '<div class="color-dot'+(i===0?' selected':'')+'" style="background:'+c.hex+';border-color:'+(i===0?'var(--rust)':'transparent')+'" onclick="selColor('+i+',\''+c.name+'\')" title="'+c.name+'"></div>';}).join('');
-  document.getElementById('pdp-clr-name').textContent=COLORS[0].name;
+  /* build color dots from product's own colors */
+  var productColors=buildColorDots(p);
+  pdpState.color=0;
+  pdpState.colorName=productColors[0].name;
+  document.getElementById('pdp-colors').innerHTML=productColors.map(function(c,i){
+    return '<div class="color-dot'+(i===0?' selected':'')+'" style="background:'+c.hex+';border-color:'+(i===0?'var(--rust)':'transparent')+'" onclick="selColor('+i+',\''+c.name+'\',this)" title="'+c.name+'"></div>';
+  }).join('');
+  document.getElementById('pdp-clr-name').textContent=productColors[0].name;
+  /* store colors on pdpState for selColor */
+  pdpState.productColors=productColors;
   document.getElementById('pdp-sizes').innerHTML=SIZES.map(function(s){var oos=p.oos&&p.oos.includes(s);return '<button class="size-btn'+(oos?' oos':'')+'" '+(oos?'disabled':'')+' onclick="'+(oos?'':'selSize(this,\''+s+'\')')+'">'+s+'</button>';}).join('');
   document.getElementById('pdp-size-err').style.display='none';
   var rg=document.getElementById('related-grid');
@@ -1307,14 +1381,23 @@ function goBackPDP(){
   t.classList.add('active');window.scrollTo(0,0);setNavActive(prevPage);
 }
 function selSize(b,s){document.querySelectorAll('.size-btn').forEach(function(x){x.classList.remove('selected');});b.classList.add('selected');pdpState.size=s;document.getElementById('pdp-size-err').style.display='none';}
-function selColor(i,n){pdpState.color=i;document.getElementById('pdp-clr-name').textContent=n;document.querySelectorAll('.color-dot').forEach(function(d,j){d.classList.toggle('selected',j===i);d.style.borderColor=j===i?'var(--rust)':'transparent';});}
+function selColor(i,name,el){
+  pdpState.color=i;
+  pdpState.colorName=name;
+  document.getElementById('pdp-clr-name').textContent=name;
+  document.querySelectorAll('.color-dot').forEach(function(d){d.classList.remove('selected');d.style.borderColor='transparent';});
+  if(el){el.classList.add('selected');el.style.borderColor='var(--rust)';}
+}
 function changePdpQty(d){pdpState.qty=Math.max(1,Math.min(10,pdpState.qty+d));document.getElementById('pdp-qty').textContent=pdpState.qty;}
 function pdpAddToCart(){
   if(!pdpState.size){document.getElementById('pdp-size-err').style.display='block';return;}
-  var p=pdpState.prod;var key=p.id+'-'+pdpState.size+'-'+pdpState.color;
-  var ex=cart.find(function(x){return x.key===key;});var cn=COLORS[pdpState.color].name;
-  if(ex)ex.qty+=pdpState.qty;else cart.push(Object.assign({},p,{key:key,size:pdpState.size,colorName:cn,qty:pdpState.qty}));
-  updateCart();showToast(p.name+' ('+pdpState.size+') — Added to bag');
+  var p=pdpState.prod;
+  var colorName=pdpState.colorName||pdpState.productColors&&pdpState.productColors[pdpState.color]?pdpState.productColors[pdpState.color].name:(p.clr||'Default');
+  var key=p.id+'-'+pdpState.size+'-'+colorName.replace(/\s/g,'_');
+  var ex=cart.find(function(x){return x.key===key;});
+  if(ex)ex.qty+=pdpState.qty;
+  else cart.push(Object.assign({},p,{key:key,size:pdpState.size,colorName:colorName,qty:pdpState.qty}));
+  updateCart();showToast(p.name+' ('+pdpState.size+' / '+colorName+') — Added to bag');
 }
 function toggleAcc(h){var b=h.nextElementSibling;var a=h.querySelector('.acc-arrow');b.classList.toggle('open');a.style.transform=b.classList.contains('open')?'':'rotate(-90deg)';}
 
