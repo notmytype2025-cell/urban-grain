@@ -1,21 +1,49 @@
-const Razorpay = require('razorpay');
+const https = require('https');
+
 exports.handler = async (event) => {
-  const { amount, receipt } = JSON.parse(event.body);
-  const rzp = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-  });
-  try {
-    const order = await rzp.orders.create({
-      amount: amount,
-      currency: 'INR',
-      receipt: receipt,
+  if(event.httpMethod !== 'POST'){
+    return{statusCode:405,body:'Method not allowed'};
+  }
+  try{
+    const{amount,receipt} = JSON.parse(event.body);
+    if(!amount||amount<100){
+      return{statusCode:400,body:JSON.stringify({error:'Invalid amount'})};
+    }
+    const KEY_ID = process.env.RAZORPAY_KEY_ID;
+    const KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
+    if(!KEY_ID||!KEY_SECRET){
+      return{statusCode:500,body:JSON.stringify({error:'Missing Razorpay credentials'})};
+    }
+    const orderData = JSON.stringify({amount,currency:'INR',receipt:receipt||'receipt_1'});
+    const auth = Buffer.from(KEY_ID+':'+KEY_SECRET).toString('base64');
+    const result = await new Promise((resolve,reject)=>{
+      const req = https.request({
+        hostname:'api.razorpay.com',
+        path:'/v1/orders',
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Basic '+auth,
+          'Content-Length':Buffer.byteLength(orderData)
+        }
+      },(res)=>{
+        let data='';
+        res.on('data',(chunk)=>data+=chunk);
+        res.on('end',()=>resolve({status:res.statusCode,data:JSON.parse(data)}));
+      });
+      req.on('error',reject);
+      req.write(orderData);
+      req.end();
     });
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ order_id: order.id, amount: order.amount }),
+    if(result.status!==200){
+      return{statusCode:500,body:JSON.stringify({error:result.data.error||'Razorpay error'})};
+    }
+    return{
+      statusCode:200,
+      headers:{'Content-Type':'application/json','Access-Control-Allow-Origin':'*'},
+      body:JSON.stringify({order_id:result.data.id,amount:result.data.amount,currency:result.data.currency})
     };
-  } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+  }catch(e){
+    return{statusCode:500,body:JSON.stringify({error:e.message})};
   }
 };
