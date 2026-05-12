@@ -1,18 +1,19 @@
 const https = require('https');
 
-exports.handler = async (event) => {
+exports.handler = async function(event) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
   }
 
   try {
-    const { amount, receipt } = JSON.parse(event.body);
+    const body = JSON.parse(event.body);
+    const amount = body.amount;
+    const receipt = body.receipt || 'receipt_' + Date.now();
 
-    // amount should be in paise (e.g., ₹500 = 50000)
     if (!amount || amount < 100) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Invalid amount. Must be in paise, minimum 100.' })
+        body: JSON.stringify({ error: 'Invalid amount' })
       };
     }
 
@@ -27,15 +28,14 @@ exports.handler = async (event) => {
     }
 
     const orderData = JSON.stringify({
-      amount,
+      amount: amount,
       currency: 'INR',
-      receipt: receipt || receipt_${Date.now()},  // fallback receipt
-      payment_capture: 1
+      receipt: receipt
     });
 
     const auth = Buffer.from(KEY_ID + ':' + KEY_SECRET).toString('base64');
 
-    const result = await new Promise((resolve, reject) => {
+    const result = await new Promise(function(resolve, reject) {
       const req = https.request({
         hostname: 'api.razorpay.com',
         path: '/v1/orders',
@@ -45,13 +45,12 @@ exports.handler = async (event) => {
           'Authorization': 'Basic ' + auth,
           'Content-Length': Buffer.byteLength(orderData)
         }
-      }, (res) => {
+      }, function(res) {
         let data = '';
-        res.on('data', (chunk) => data += chunk);
-        res.on('end', () => resolve({
-          status: res.statusCode,
-          data: JSON.parse(data)
-        }));
+        res.on('data', function(chunk) { data += chunk; });
+        res.on('end', function() {
+          resolve({ status: res.statusCode, data: JSON.parse(data) });
+        });
       });
 
       req.on('error', reject);
@@ -79,7 +78,7 @@ exports.handler = async (event) => {
       })
     };
 
-  } catch (e) {
+  } catch(e) {
     return {
       statusCode: 500,
       body: JSON.stringify({ error: e.message })
