@@ -924,7 +924,7 @@ var SB_URL='https://jylkltzzrlzldrvmepkw.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5bGtsdHp6cmx6bGRydm1lcGt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3NjcwNDksImV4cCI6MjA5MjM0MzA0OX0.L0t3rJSzPPXFrsvW0Z9UxYOdHaUKHDVxER9pm_RKlec';
 var SB_TOKEN=null;
 var IS_PREVIEW=false;
-var RZP_KEY='rzp_test_SkQL5lJJ792UDi';
+var RZP_KEY='rzp_live_So6DUAtlXCISjg';
 var LOGO_URL='https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/Image.png';
 
 /* detect preview sandbox */
@@ -1263,70 +1263,63 @@ async function placeOrder(){
   var phone=document.getElementById('co-ph').value||'';
   if(!email){showToast('Please enter your email address.');return;}
 
-  /* preview mode — skip Razorpay */
+  /* preview mode */
   if(IS_PREVIEW){
     await saveOrderWithPayment(orderId,'preview_'+uid(),total);
-    var cw=document.getElementById('coWrap');var ok=document.getElementById('orderOk');var oi=document.getElementById('okId');
-    if(oi)oi.textContent='ORDER #'+orderId;if(cw)cw.style.display='none';if(ok)ok.style.display='block';
-    cart=[];updateCart();showToast('Order placed! (Preview mode)');return;
+    var cw=document.getElementById('coWrap');
+    var ok=document.getElementById('orderOk');
+    var oi=document.getElementById('okId');
+    if(oi)oi.textContent='ORDER #'+orderId;
+    if(cw)cw.style.display='none';
+    if(ok)ok.style.display='block';
+    cart=[];updateCart();
+    showToast('Order placed! (Preview mode)');
+    return;
   }
 
-  try{
-    /* STEP 1 — create order via Netlify function */
-    showToast('Preparing payment...');
-    var createRes=await fetch('/.netlify/functions/create-order',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({amount:total*100,receipt:orderId})
-    });
-    if(!createRes.ok){showToast('Payment setup failed. Please try again.');return;}
-    var createData=await createRes.json();
-    if(!createData.order_id){showToast('Payment setup failed. Please try again.');return;}
+  /* open Razorpay directly — no backend needed */
+  if(typeof Razorpay==='undefined'){
+    showToast('Payment gateway loading. Please try again.');
+    return;
+  }
 
-    /* STEP 2 — open Razorpay modal */
-    var options={
-      key:RZP_KEY,
-      amount:createData.amount,
-      currency:'INR',
-      name:'Urban Grain',
-      description:'Order '+orderId,
-      order_id:createData.order_id,
-      prefill:{name:name,email:email,contact:phone},
-      notes:{order_id:orderId},
-      theme:{color:'#b5451b'},
-      modal:{ondismiss:function(){showToast('Payment cancelled.');}},
-      handler:async function(response){
-        /* STEP 3 — verify payment signature via Netlify function */
-        var verifyRes=await fetch('/.netlify/functions/verify-payment',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            razorpay_order_id:response.razorpay_order_id,
-            razorpay_payment_id:response.razorpay_payment_id,
-            razorpay_signature:response.razorpay_signature,
-          })
-        });
-        var verifyData=await verifyRes.json();
-        if(!verifyRes.ok||!verifyData.success){
-          showToast('Payment verification failed. Contact support.');return;
-        }
-        /* payment verified — save order */
-        await saveOrderWithPayment(orderId,response.razorpay_payment_id,total);
-        await sendOrderEmail(orderId,email,cart.slice(),total);
-        var cw=document.getElementById('coWrap');var ok=document.getElementById('orderOk');var oi=document.getElementById('okId');
-        if(oi)oi.textContent='ORDER #'+orderId;
-        if(cw)cw.style.display='none';
-        if(ok)ok.style.display='block';
-        cart=[];updateCart();
-        showToast('Payment successful! Order confirmed.');
-      }
-    };
+  var options={
+    key:RZP_KEY,
+    amount:total*100,
+    currency:'INR',
+    name:'Urban Grain',
+    description:'Order '+orderId,
+    image:LOGO_URL,
+    prefill:{name:name,email:email,contact:phone},
+    notes:{order_id:orderId},
+    theme:{color:'#b5451b'},
+    modal:{
+      ondismiss:function(){showToast('Payment cancelled.');}
+    },
+    handler:async function(response){
+      /* payment successful — save order with Razorpay payment ID */
+      await saveOrderWithPayment(orderId,response.razorpay_payment_id,total);
+      await sendOrderEmail(orderId,email,cart.slice(),total);
+      var cw=document.getElementById('coWrap');
+      var ok=document.getElementById('orderOk');
+      var oi=document.getElementById('okId');
+      if(oi)oi.textContent='ORDER #'+orderId;
+      if(cw)cw.style.display='none';
+      if(ok)ok.style.display='block';
+      cart=[];updateCart();
+      showToast('Payment successful! Order confirmed. ✓');
+    }
+  };
+
+  try{
     var rzp=new Razorpay(options);
-    rzp.on('payment.failed',function(r){showToast('Payment failed: '+r.error.description);});
+    rzp.on('payment.failed',function(r){
+      showToast('Payment failed: '+(r.error.description||'Please try again.'));
+    });
     rzp.open();
   }catch(e){
     showToast('Payment error. Please try again.');
-    console.error('Razorpay error:',e);
+    console.error('Razorpay:',e);
   }
 }
 
