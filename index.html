@@ -1219,8 +1219,42 @@ async function saveProfile(){
   var r=await sbUpsert('customers',payload);
   if(r.error)r=await sbInsert('customers',payload);
   showToast(r.error?'Error: '+r.error:'Profile saved!');
- async function placeOrder() { 
-   if(!cart.length){showToast('Your bag is empty!');return;}
+}
+
+/* ═══════════════════════════ ORDERS ═══════════════════════════ */
+async function loadOrders(){
+  var el=document.getElementById('orders-list');
+  if(!currentUser){el.innerHTML='<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid)">PLEASE <span style="color:var(--rust);cursor:pointer;text-decoration:underline" onclick="openAuth(\'login\')">LOGIN</span> TO VIEW ORDERS.</p>';return;}
+  el.innerHTML='<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid)">LOADING...</p>';
+  var r=await sbSelect('orders',{customer_email:currentUser.email});
+  if(!r.data||!r.data.length){el.innerHTML='<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid)">NO ORDERS YET. <span style="color:var(--rust);cursor:pointer;text-decoration:underline" onclick="goPage(\'shop\')">START SHOPPING →</span></p>';return;}
+  var sorted=r.data.slice().sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);});
+  el.innerHTML=sorted.map(function(o){
+    var items=Array.isArray(o.items)?o.items:[];
+    var sum=items.map(function(i){return i.name+' ('+i.size+') x'+i.qty;}).join(', ');
+    var sc='status-'+(o.status||'placed');
+    var dt=new Date(o.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+    return '<div class="order-card"><div class="order-card-head"><span class="order-id">'+o.id+'</span><span class="order-date">'+dt+'</span><span class="order-status '+sc+'">'+(o.status||'placed').toUpperCase()+'</span></div><div class="order-card-body"><div class="order-items-list">'+(sum||'—')+'</div><div class="order-total-line">TOTAL: ₹'+(o.total||0).toLocaleString('en-IN')+' · '+(o.shipping_method||'Standard')+'</div></div></div>';
+  }).join('');
+}
+async function saveOrderWithPayment(orderId,rzpId,total){
+  await sbInsert('orders',{
+    id:orderId,customer_email:document.getElementById('co-em').value||(currentUser?currentUser.email:'guest'),
+    customer_id:currentUser?currentUser.id:null,
+    items:cart.map(function(i){return{id:i.id,name:i.name,size:i.size,colorName:i.colorName,qty:i.qty,price:i.price};}),
+    total:total,shipping_cost:shipCost,shipping_method:shipMethod,payment_method:'razorpay',payment_id:rzpId,status:'placed',
+    address:{line1:document.getElementById('co-a1').value,line2:document.getElementById('co-a2').value,city:document.getElementById('co-cy').value,state:document.getElementById('co-st').value,pin:document.getElementById('co-pi').value}
+  });
+}
+async function sendOrderEmail(orderId,email,items,total){
+  if(IS_PREVIEW)return;
+  try{await sbFetch(SB_URL+'/functions/v1/order-confirmation',{method:'POST',headers:sbH({'Content-Type':'application/json'}),body:JSON.stringify({order_id:orderId,customer_email:email,items:items,total:total,shipping_method:shipMethod})});}
+  catch(_){}
+}
+
+/* ═══════════════════════════ RAZORPAY ═══════════════════════════ */
+async function placeOrder(){
+  if(!cart.length){showToast('Your bag is empty!');return;}
   var sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
   var total=Math.max(0,sub+shipCost-discount);
   var orderId='UG-'+Math.floor(100000+Math.random()*900000);
@@ -1288,40 +1322,6 @@ async function saveProfile(){
     console.error('Razorpay:',e);
   }
 }
-/* ═══════════════════════════ ORDERS ═══════════════════════════ */
-async function loadOrders(){
-  var el=document.getElementById('orders-list');
-  if(!currentUser){el.innerHTML='<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid)">PLEASE <span style="color:var(--rust);cursor:pointer;text-decoration:underline" onclick="openAuth(\'login\')">LOGIN</span> TO VIEW ORDERS.</p>';return;}
-  el.innerHTML='<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid)">LOADING...</p>';
-  var r=await sbSelect('orders',{customer_email:currentUser.email});
-  if(!r.data||!r.data.length){el.innerHTML='<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid)">NO ORDERS YET. <span style="color:var(--rust);cursor:pointer;text-decoration:underline" onclick="goPage(\'shop\')">START SHOPPING →</span></p>';return;}
-  var sorted=r.data.slice().sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);});
-  el.innerHTML=sorted.map(function(o){
-    var items=Array.isArray(o.items)?o.items:[];
-    var sum=items.map(function(i){return i.name+' ('+i.size+') x'+i.qty;}).join(', ');
-    var sc='status-'+(o.status||'placed');
-    var dt=new Date(o.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
-    return '<div class="order-card"><div class="order-card-head"><span class="order-id">'+o.id+'</span><span class="order-date">'+dt+'</span><span class="order-status '+sc+'">'+(o.status||'placed').toUpperCase()+'</span></div><div class="order-card-body"><div class="order-items-list">'+(sum||'—')+'</div><div class="order-total-line">TOTAL: ₹'+(o.total||0).toLocaleString('en-IN')+' · '+(o.shipping_method||'Standard')+'</div></div></div>';
-  }).join('');
-}
-async function saveOrderWithPayment(orderId,rzpId,total){
-  await sbInsert('orders',{
-    id:orderId,customer_email:document.getElementById('co-em').value||(currentUser?currentUser.email:'guest'),
-    customer_id:currentUser?currentUser.id:null,
-    items:cart.map(function(i){return{id:i.id,name:i.name,size:i.size,colorName:i.colorName,qty:i.qty,price:i.price};}),
-    total:total,shipping_cost:shipCost,shipping_method:shipMethod,payment_method:'razorpay',payment_id:rzpId,status:'placed',
-    address:{line1:document.getElementById('co-a1').value,line2:document.getElementById('co-a2').value,city:document.getElementById('co-cy').value,state:document.getElementById('co-st').value,pin:document.getElementById('co-pi').value}
-  });
-}
-async function sendOrderEmail(orderId,email,items,total){
-  if(IS_PREVIEW)return;
-  try{await sbFetch(SB_URL+'/functions/v1/order-confirmation',{method:'POST',headers:sbH({'Content-Type':'application/json'}),body:JSON.stringify({order_id:orderId,customer_email:email,items:items,total:total,shipping_method:shipMethod})});}
-  catch(_){}
-}
-
-/* ═══════════════════════════ RAZORPAY ═══════════════════════════ */
-async function placeOrder(){
-
 
 /* ═══════════════════════════ PRODUCT PAGE ═══════════════════════════ */
 function openProd(id){
