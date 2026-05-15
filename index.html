@@ -7,7 +7,8 @@
 <meta name="description" content="Urban Grain is an Indian streetwear brand from Chennai. Shop limited drop hoodies, tees, cargos and jackets."/>
 <meta name="keywords" content="Urban Grain, Indian streetwear, Chennai streetwear, limited drop clothing, hoodies India"/>
 <meta name="robots" content="index, follow"/>
-<meta name="google-site-verification" content="myr0AKW7BvarjPJZrbHHflYsWqxOWotYmYDAQbrrE2E"/>
+<link rel="icon" type="image/png" href="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/favion.png"/>
+<link rel="apple-touch-icon" href="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/favion.png"/>
 <meta property="og:title" content="Urban Grain — Indian Streetwear"/>
 <meta property="og:description" content="Limited drops. Real quality. Made in India."/>
 <meta property="og:url" content="https://urban-grain.netlify.app"/>
@@ -556,8 +557,6 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
     <button class="flt" onclick="filterProd('hoodie',this)">HOODIES</button>
     <button class="flt" onclick="filterProd('tee',this)">TEES</button>
     <button class="flt" onclick="filterProd('cargo',this)">CARGOS</button>
-    <button class="flt" onclick="filterProd('jacket',this)">JACKETS</button>
-    <button class="flt" onclick="filterProd('accessory',this)">ACCESSORIES</button>
   </div>
   <div style="padding:2rem 3rem;background:var(--bg)"><div class="grid-3" id="shop-grid"></div></div>
   <div class="nl-wrap">
@@ -921,7 +920,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
 'use strict';
 /* ═══════════════════════════ SUPABASE ═══════════════════════════ */
 var SB_URL='https://jylkltzzrlzldrvmepkw.supabase.co';
-var SB_KEY='sb_publishable_CIrI7dbRQtTX9_T9p9r__A_MSF86lrh';
+var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5bGtsdHp6cmx6bGRydm1lcGt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3NjcwNDksImV4cCI6MjA5MjM0MzA0OX0.L0t3rJSzPPXFrsvW0Z9UxYOdHaUKHDVxER9pm_RKlec';
 var SB_TOKEN=null;
 var IS_PREVIEW=false;
 var RZP_KEY='rzp_live_So6DUAtlXCISjg';
@@ -1118,6 +1117,7 @@ function renderShop(f){
   el.innerHTML=list.map(prodCard).join('')||'<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid);padding:2rem">NO PRODUCTS IN THIS CATEGORY</p>';
 }
 async function loadProducts(){
+  if(IS_PREVIEW){PRODS=FALLBACK;renderHome();renderShop('all');return;}
   try{
     var r=await sbSelect('products',{active:true});
     PRODS=(r.data&&r.data.length)?r.data.map(mapRow):FALLBACK;
@@ -1219,6 +1219,93 @@ async function saveProfile(){
   var r=await sbUpsert('customers',payload);
   if(r.error)r=await sbInsert('customers',payload);
   showToast(r.error?'Error: '+r.error:'Profile saved!');
+ async function placeOrder(){
+  if(!cart.length){showToast('Your bag is empty!');return;}
+  var sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
+  var total=Math.max(0,sub+shipCost-discount);
+  var orderId='UG-'+Math.floor(100000+Math.random()*900000);
+  var name=(document.getElementById('co-fn').value+' '+document.getElementById('co-ln').value).trim()||'Customer';
+  var email=document.getElementById('co-em').value||(currentUser?currentUser.email:'');
+  var phone=document.getElementById('co-ph').value||'';
+  if(!email){showToast('Please enter your email address.');return;}
+
+  if(typeof Razorpay==='undefined'){
+    showToast('Payment gateway loading. Please try again.');
+    return;
+  }
+
+  try{
+    showToast('Setting up payment...');
+
+    var res=await fetch('/.netlify/functions/create-order',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({amount:total*100,receipt:orderId})
+    });
+
+    if(!res.ok){
+      showToast('Payment setup failed. Please try again.');
+      return;
+    }
+
+    var order=await res.json();
+
+    if(!order.order_id){
+      showToast('Payment setup failed. Please try again.');
+      return;
+    }
+
+    var options={
+      key:RZP_KEY,
+      amount:order.amount,
+      currency:order.currency,
+      name:'Urban Grain',
+      description:'Order '+orderId,
+      image:LOGO_URL,
+      order_id:order.order_id,
+      prefill:{name:name,email:email,contact:phone},
+      notes:{order_id:orderId},
+      theme:{color:'#b5451b'},
+      modal:{ondismiss:function(){showToast('Payment cancelled.');}},
+      handler:async function(response){
+        try{
+          var vRes=await fetch('/.netlify/functions/verify-payment',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+              razorpay_order_id:response.razorpay_order_id,
+              razorpay_payment_id:response.razorpay_payment_id,
+              razorpay_signature:response.razorpay_signature
+            })
+          });
+          var vData=await vRes.json();
+          if(vData.success){
+            await saveOrderWithPayment(orderId,response.razorpay_payment_id,total);
+            await sendOrderEmail(orderId,email,cart.slice(),total);
+            document.getElementById('coWrap').style.display='none';
+            document.getElementById('orderOk').style.display='block';
+            document.getElementById('okId').textContent='ORDER #'+orderId;
+            cart=[];updateCart();
+            showToast('Payment successful! Order confirmed. ✓');
+          }else{
+            showToast('Payment verification failed. Contact support.');
+          }
+        }catch(e){
+          showToast('Verification error. Contact support.');
+        }
+      }
+    };
+
+    var rzp=new Razorpay(options);
+    rzp.on('payment.failed',function(r){
+      showToast('Payment failed: '+(r.error.description||'Please try again.'));
+    });
+    rzp.open();
+
+  }catch(e){
+    showToast('Payment error. Please try again.');
+    console.error('Razorpay:',e);
+  }
 }
 
 /* ═══════════════════════════ ORDERS ═══════════════════════════ */
@@ -1254,74 +1341,7 @@ async function sendOrderEmail(orderId,email,items,total){
 
 /* ═══════════════════════════ RAZORPAY ═══════════════════════════ */
 async function placeOrder(){
-  if(!cart.length){showToast('Your bag is empty!');return;}
-  var sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
-  var total=Math.max(0,sub+shipCost-discount);
-  var orderId='UG-'+Math.floor(100000+Math.random()*900000);
-  var name=(document.getElementById('co-fn').value+' '+document.getElementById('co-ln').value).trim()||'Customer';
-  var email=document.getElementById('co-em').value||(currentUser?currentUser.email:'');
-  var phone=document.getElementById('co-ph').value||'';
-  if(!email){showToast('Please enter your email address.');return;}
 
-  /* preview mode */
-  if(IS_PREVIEW){
-    await saveOrderWithPayment(orderId,'preview_'+uid(),total);
-    var cw=document.getElementById('coWrap');
-    var ok=document.getElementById('orderOk');
-    var oi=document.getElementById('okId');
-    if(oi)oi.textContent='ORDER #'+orderId;
-    if(cw)cw.style.display='none';
-    if(ok)ok.style.display='block';
-    cart=[];updateCart();
-    showToast('Order placed! (Preview mode)');
-    return;
-  }
-
-  /* open Razorpay directly — no backend needed */
-  if(typeof Razorpay==='undefined'){
-    showToast('Payment gateway loading. Please try again.');
-    return;
-  }
-
-  var options={
-    key:RZP_KEY,
-    amount:total*100,
-    currency:'INR',
-    name:'Urban Grain',
-    description:'Order '+orderId,
-    image:LOGO_URL,
-    prefill:{name:name,email:email,contact:phone},
-    notes:{order_id:orderId},
-    theme:{color:'#b5451b'},
-    modal:{
-      ondismiss:function(){showToast('Payment cancelled.');}
-    },
-    handler:async function(response){
-      /* payment successful — save order with Razorpay payment ID */
-      await saveOrderWithPayment(orderId,response.razorpay_payment_id,total);
-      await sendOrderEmail(orderId,email,cart.slice(),total);
-      var cw=document.getElementById('coWrap');
-      var ok=document.getElementById('orderOk');
-      var oi=document.getElementById('okId');
-      if(oi)oi.textContent='ORDER #'+orderId;
-      if(cw)cw.style.display='none';
-      if(ok)ok.style.display='block';
-      cart=[];updateCart();
-      showToast('Payment successful! Order confirmed. ✓');
-    }
-  };
-
-  try{
-    var rzp=new Razorpay(options);
-    rzp.on('payment.failed',function(r){
-      showToast('Payment failed: '+(r.error.description||'Please try again.'));
-    });
-    rzp.open();
-  }catch(e){
-    showToast('Payment error. Please try again.');
-    console.error('Razorpay:',e);
-  }
-}
 
 /* ═══════════════════════════ PRODUCT PAGE ═══════════════════════════ */
 function openProd(id){
@@ -1512,23 +1532,100 @@ function closePolBtn(){document.getElementById('polOv').classList.remove('open')
 function showToast(msg){var t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2800);}
 
 /* ═══════════════════════════ REALTIME ═══════════════════════════ */
+var realtimeWs=null;
+
 function startRealtime(){
-  if(IS_PREVIEW||typeof supabase==='undefined')return;
+  if(IS_PREVIEW)return;
+  /* use Supabase Realtime via WebSocket directly — no SDK needed */
+  var wsUrl='wss://jylkltzzrlzldrvmepkw.supabase.co/realtime/v1/websocket?apikey='+SB_KEY+'&vsn=1.0.0';
   try{
-    var client=supabase.createClient(SB_URL,SB_KEY);
-    client.channel('products-live').on('postgres_changes',{event:'*',schema:'public',table:'products'},function(payload){
-      if(payload.eventType==='INSERT'){PRODS.push(mapRow(payload.new));renderHome();renderShop(curFilter);}
-      else if(payload.eventType==='UPDATE'){var idx=PRODS.findIndex(function(x){return x.id===payload.new.id;});if(idx>-1)PRODS[idx]=mapRow(payload.new);renderHome();renderShop(curFilter);}
-      else if(payload.eventType==='DELETE'){PRODS=PRODS.filter(function(x){return x.id!==payload.old.id;});renderHome();renderShop(curFilter);}
-    }).subscribe();
-    if(currentUser&&currentUser.email){
-      client.channel('orders-live').on('postgres_changes',{event:'UPDATE',schema:'public',table:'orders',filter:'customer_email=eq.'+currentUser.email},function(payload){
-        var o=payload.new;var msgs={shipped:'Your order '+o.id+' has been SHIPPED! 🚚',delivered:'Your order '+o.id+' has been DELIVERED! ✓'};
-        if(msgs[o.status])showToast(msgs[o.status]);
-        var ap=document.getElementById('pg-account');if(ap&&ap.classList.contains('active'))loadOrders();
-      }).subscribe();
-    }
-  }catch(e){console.log('Realtime:',e.message);}
+    realtimeWs=new WebSocket(wsUrl);
+
+    realtimeWs.onopen=function(){
+      console.log('✓ Realtime connected');
+      /* subscribe to products table */
+      realtimeWs.send(JSON.stringify({topic:'realtime:public:products',event:'phx_join',payload:{},ref:'1'}));
+      /* subscribe to orders table */
+      realtimeWs.send(JSON.stringify({topic:'realtime:public:orders',event:'phx_join',payload:{},ref:'2'}));
+      /* heartbeat every 30s */
+      setInterval(function(){
+        if(realtimeWs&&realtimeWs.readyState===1){
+          realtimeWs.send(JSON.stringify({topic:'phoenix',event:'heartbeat',payload:{},ref:'hb'}));
+        }
+      },30000);
+    };
+
+    realtimeWs.onmessage=function(e){
+      try{
+        var msg=JSON.parse(e.data);
+        if(!msg.payload||!msg.payload.data)return;
+        var data=msg.payload.data;
+        var table=data.table;
+        var type=data.type; /* INSERT UPDATE DELETE */
+        var record=data.record;
+        var old=data.old_record;
+
+        if(table==='products'){
+          if(type==='INSERT'){
+            /* new product added — appears instantly */
+            var p=mapRow(record);
+            if(p.active!==false){PRODS.push(p);renderHome();renderShop(curFilter);}
+          } else if(type==='UPDATE'){
+            /* price/stock/oos changed — updates instantly */
+            var updated=mapRow(record);
+            var idx=PRODS.findIndex(function(x){return x.id===updated.id;});
+            if(updated.active===false){
+              /* product deactivated — remove from site */
+              PRODS=PRODS.filter(function(x){return x.id!==updated.id;});
+            } else if(idx>-1){
+              PRODS[idx]=updated;
+            } else {
+              PRODS.push(updated);
+            }
+            renderHome();renderShop(curFilter);
+            /* refresh product page if open */
+            if(pdpState.prod&&pdpState.prod.id===updated.id){
+              pdpState.prod=updated;
+              document.getElementById('pdp-sizes').innerHTML=SIZES.map(function(s){
+                var oos=updated.oos&&updated.oos.includes(s);
+                return '<button class="size-btn'+(oos?' oos':'')+'" '+(oos?'disabled':'')+' onclick="'+(oos?'':'selSize(this,\''+s+'\')')+'">'+s+'</button>';
+              }).join('');
+            }
+          } else if(type==='DELETE'){
+            /* product deleted */
+            PRODS=PRODS.filter(function(x){return x.id!==(old&&old.id);});
+            renderHome();renderShop(curFilter);
+          }
+        }
+
+        if(table==='orders'&&type==='UPDATE'&&currentUser){
+          /* order status changed — notify customer */
+          if(record.customer_email===currentUser.email){
+            var msgs={
+              shipped:'🚚 Your order '+record.id+' has been SHIPPED!',
+              delivered:'✓ Your order '+record.id+' has been DELIVERED!',
+              cancelled:'Your order '+record.id+' has been cancelled.'
+            };
+            if(msgs[record.status])showToast(msgs[record.status]);
+            var ap=document.getElementById('pg-account');
+            if(ap&&ap.classList.contains('active'))loadOrders();
+          }
+        }
+      }catch(_){}
+    };
+
+    realtimeWs.onclose=function(){
+      console.log('Realtime disconnected — reconnecting in 5s...');
+      setTimeout(startRealtime,5000); /* auto-reconnect */
+    };
+
+    realtimeWs.onerror=function(e){
+      console.log('Realtime error:',e);
+    };
+
+  }catch(e){
+    console.log('Realtime init failed:',e.message);
+  }
 }
 
 /* ═══════════════════════════ INIT ═══════════════════════════ */
