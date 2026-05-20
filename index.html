@@ -498,12 +498,14 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       </div>
     </div>
     <div class="hero-right">
-      <div class="hero-visual"><div class="hero-visual-tag">UG26 / LOOK 01</div></div>
+      <div class="hero-visual" id="hero-visual" onclick="goPage('shop')" style="cursor:pointer;overflow:hidden;">
+        <div class="hero-visual-tag" id="hero-visual-tag">SHOP NOW</div>
+      </div>
       <div class="ticker"><div class="ticker-inner" id="tickerEl"></div></div>
     </div>
   </section>
   <div class="feat-bar">
-    <div class="feat-item"><span class="feat-icon">⬡</span><div class="feat-title">FREE SHIPPING</div><div class="feat-text">All orders above ₹2499</div></div>
+    <div class="feat-item"><span class="feat-icon">⬡</span><div class="feat-title">FREE SHIPPING</div><div class="feat-text">All orders above ₹1299</div></div>
     <div class="feat-item"><span class="feat-icon">◈</span><div class="feat-title">OWN THE EXCLUSIVE</div><div class="feat-text">Once gone, its history</div></div>
     <div class="feat-item"><span class="feat-icon">⬟</span><div class="feat-title">7-DAY RETURNS</div><div class="feat-text">Hassle-free exchange policy</div></div>
     <div class="feat-item"><span class="feat-icon">◉</span><div class="feat-title">HANDCRAFTED</div><div class="feat-text">Sewn with obsessive detail</div></div>
@@ -1106,10 +1108,29 @@ function renderLookbook(){
       +'</div>';
   }).join('');
 }
+function updateHeroImage(){
+  var visual=document.getElementById('hero-visual');
+  var tag=document.getElementById('hero-visual-tag');
+  if(!visual)return;
+  /* pick first product with an image */
+  var featured=PRODS.find(function(p){return p.image_url;})||PRODS[0];
+  if(featured&&featured.image_url){
+    visual.style.backgroundImage='url('+featured.image_url+')';
+    visual.style.backgroundSize='cover';
+    visual.style.backgroundPosition='center';
+    visual.querySelector('::before');
+    /* hide the UG pseudo element by adding overlay */
+    visual.innerHTML='<div style="position:absolute;inset:0;background:rgba(0,0,0,.15)"></div>'
+      +'<div class="hero-visual-tag" style="z-index:2;color:#f5f1ea">'+featured.cat.toUpperCase()+' · '+featured.name+'</div>';
+  } else {
+    if(tag)tag.textContent='SHOP NOW';
+  }
+}
 function renderHome(){
   var el=document.getElementById('home-drops');
   if(el)el.innerHTML=PRODS.slice(0,4).map(prodCard).join('')||'<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid)">NO PRODUCTS YET</p>';
   renderLookbook();
+  updateHeroImage();
 }
 function renderShop(f){
   var el=document.getElementById('shop-grid');if(!el)return;
@@ -1234,7 +1255,20 @@ async function loadOrders(){
     var sum=items.map(function(i){return i.name+' ('+i.size+') x'+i.qty;}).join(', ');
     var sc='status-'+(o.status||'placed');
     var dt=new Date(o.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
-    return '<div class="order-card"><div class="order-card-head"><span class="order-id">'+o.id+'</span><span class="order-date">'+dt+'</span><span class="order-status '+sc+'">'+(o.status||'placed').toUpperCase()+'</span></div><div class="order-card-body"><div class="order-items-list">'+(sum||'—')+'</div><div class="order-total-line">TOTAL: ₹'+(o.total||0).toLocaleString('en-IN')+' · '+(o.shipping_method||'Standard')+'</div></div></div>';
+    var trackingHtml='';
+    if(o.waybill||o.tracking_number){
+      var wb=o.waybill||o.tracking_number;
+      trackingHtml='<div style="background:var(--bg2);padding:.8rem 1.5rem;border-top:1px solid var(--border);font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;color:var(--grain);display:flex;justify-content:space-between;align-items:center;">'
+        +'<span>TRACKING: '+wb+'</span>'
+        +'<a href="https://www.delhivery.com/track/package/'+wb+'" target="_blank" style="color:var(--rust);text-decoration:none;font-size:.55rem">TRACK →</a>'
+        +'</div>';
+    }
+    return '<div class="order-card">'
+      +'<div class="order-card-head"><span class="order-id">'+o.id+'</span><span class="order-date">'+dt+'</span><span class="order-status '+sc+'">'+(o.status||'placed').toUpperCase()+'</span></div>'
+      +'<div class="order-card-body"><div class="order-items-list">'+(sum||'—')+'</div>'
+      +'<div class="order-total-line">TOTAL: ₹'+(o.total||0).toLocaleString('en-IN')+' · '+(o.shipping_method||'Standard')+'</div></div>'
+      +trackingHtml
+      +'</div>';
   }).join('');
 }
 async function saveOrderWithPayment(orderId,rzpId,total){
@@ -1255,13 +1289,29 @@ async function sendOrderEmail(orderId,email,items,total){
 /* ═══════════════════════════ RAZORPAY ═══════════════════════════ */
 async function placeOrder(){
   if(!cart.length){showToast('Your bag is empty!');return;}
+
+  /* ── validate required fields ── */
+  var fn=document.getElementById('co-fn').value.trim();
+  var ln=document.getElementById('co-ln').value.trim();
+  var email=document.getElementById('co-em').value.trim();
+  var phone=document.getElementById('co-ph').value.trim();
+  var a1=document.getElementById('co-a1').value.trim();
+  var city=document.getElementById('co-cy').value.trim();
+  var pin=document.getElementById('co-pi').value.trim();
+
+  if(!fn){showToast('Please enter your first name.');document.getElementById('co-fn').focus();return;}
+  if(!ln){showToast('Please enter your last name.');document.getElementById('co-ln').focus();return;}
+  if(!email){showToast('Please enter your email address.');document.getElementById('co-em').focus();return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showToast('Please enter a valid email address.');document.getElementById('co-em').focus();return;}
+  if(!phone||phone.length<10){showToast('Please enter a valid 10-digit phone number.');document.getElementById('co-ph').focus();return;}
+  if(!a1){showToast('Please enter your address.');document.getElementById('co-a1').focus();return;}
+  if(!city){showToast('Please enter your city.');document.getElementById('co-cy').focus();return;}
+  if(!pin||pin.length!==6){showToast('Please enter a valid 6-digit PIN code.');document.getElementById('co-pi').focus();return;}
+
   var sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
   var total=Math.max(0,sub+shipCost-discount);
   var orderId='UG-'+Math.floor(100000+Math.random()*900000);
-  var name=(document.getElementById('co-fn').value+' '+document.getElementById('co-ln').value).trim()||'Customer';
-  var email=document.getElementById('co-em').value||(currentUser?currentUser.email:'');
-  var phone=document.getElementById('co-ph').value||'';
-  if(!email){showToast('Please enter your email address.');return;}
+  var name=(fn+' '+ln).trim();
 
   /* preview mode */
   if(IS_PREVIEW){
@@ -1277,11 +1327,7 @@ async function placeOrder(){
     return;
   }
 
-  /* open Razorpay directly — no backend needed */
-  if(typeof Razorpay==='undefined'){
-    showToast('Payment gateway loading. Please try again.');
-    return;
-  }
+  if(typeof Razorpay==='undefined'){showToast('Payment gateway loading. Please try again.');return;}
 
   var options={
     key:RZP_KEY,
@@ -1293,13 +1339,19 @@ async function placeOrder(){
     prefill:{name:name,email:email,contact:phone},
     notes:{order_id:orderId},
     theme:{color:'#b5451b'},
-    modal:{
-      ondismiss:function(){showToast('Payment cancelled.');}
-    },
+    modal:{ondismiss:function(){showToast('Payment cancelled.');}},
     handler:async function(response){
-      /* payment successful — save order with Razorpay payment ID */
       await saveOrderWithPayment(orderId,response.razorpay_payment_id,total);
       await sendOrderEmail(orderId,email,cart.slice(),total);
+      /* create Delhivery shipment automatically */
+      var waybill=await createDelhiveryShipment(
+        orderId,name,phone,
+        document.getElementById('co-a1').value+' '+document.getElementById('co-a2').value,
+        document.getElementById('co-cy').value,
+        document.getElementById('co-st').value,
+        document.getElementById('co-pi').value,
+        cart.slice(),total
+      );
       var cw=document.getElementById('coWrap');
       var ok=document.getElementById('orderOk');
       var oi=document.getElementById('okId');
@@ -1307,19 +1359,16 @@ async function placeOrder(){
       if(cw)cw.style.display='none';
       if(ok)ok.style.display='block';
       cart=[];updateCart();
-      showToast('Payment successful! Order confirmed. ✓');
+      showToast(waybill?'Order confirmed! AWB: '+waybill:'Payment successful! Order confirmed. ✓');
     }
   };
 
   try{
     var rzp=new Razorpay(options);
-    rzp.on('payment.failed',function(r){
-      showToast('Payment failed: '+(r.error.description||'Please try again.'));
-    });
+    rzp.on('payment.failed',function(r){showToast('Payment failed: '+(r.error.description||'Please try again.'));});
     rzp.open();
   }catch(e){
     showToast('Payment error. Please try again.');
-    console.error('Razorpay:',e);
   }
 }
 
@@ -1449,6 +1498,7 @@ function populateSummary(){
     var imgHtml=i.image_url?'<img src="'+i.image_url+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>':'UG';
     return '<div class="ord-item"><div class="ord-item-img">'+imgHtml+'<div class="ord-qty-badge">'+i.qty+'</div></div><div style="flex:1;padding:.1rem 0"><div class="ord-item-name">'+i.name+'</div><div class="ord-item-meta">SIZE: '+i.size+' · '+i.colorName+'</div></div><div class="ord-item-price">₹'+(i.price*i.qty).toLocaleString('en-IN')+'</div></div>';
   }).join('');
+  if(sub>=1299){shipCost=0;}
   updateTotals(sub);
 }
 function updateTotals(sub){
@@ -1511,7 +1561,31 @@ function closePolBtn(){document.getElementById('polOv').classList.remove('open')
 /* ═══════════════════════════ TOAST ═══════════════════════════ */
 function showToast(msg){var t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2800);}
 
-/* ═══════════════════════════ REALTIME ═══════════════════════════ */
+/* ═══════════════════════════ DELHIVERY ═══════════════════════════ */
+async function createDelhiveryShipment(orderId,name,phone,address,city,state,pin,items,total){
+  if(IS_PREVIEW)return null;
+  try{
+    var qty=items.reduce(function(s,i){return s+i.qty;},0);
+    var products=items.map(function(i){return i.name+' x'+i.qty;}).join(', ');
+    var r=await fetch('/.netlify/functions/create-shipment',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({order_id:orderId,name:name,phone:phone,address:address,city:city,state:state,pin:pin,products:products,total:total,quantity:qty})
+    });
+    if(!r.ok)return null;
+    var d=await r.json();
+    if(d.waybill){
+      /* update order in Supabase with waybill */
+      await sbFetch(SB_URL+'/rest/v1/orders?id=eq.'+encodeURIComponent(orderId),{
+        method:'PATCH',
+        headers:sbH({Prefer:'return=minimal'}),
+        body:JSON.stringify({waybill:d.waybill,status:'processing'})
+      });
+      return d.waybill;
+    }
+  }catch(e){console.log('Delhivery error:',e.message);}
+  return null;
+}
 var realtimeWs=null;
 
 function startRealtime(){
@@ -1612,7 +1686,7 @@ function startRealtime(){
 document.addEventListener('DOMContentLoaded',function(){
   /* ticker */
   var te=document.getElementById('tickerEl');
-  if(te){var items=['NEW DROP — URBAN GRAIN','FREE SHIPPING OVER ₹2499','UG26 COLLECTION','MADE IN INDIA'];var all=items.concat(items).map(function(t){return '<span class="tick-item">'+t+'</span>';}).join('');te.innerHTML=all+all;}
+  if(te){var items=['NEW DROP — URBAN GRAIN','FREE SHIPPING OVER ₹1299','UG26 COLLECTION','MADE IN INDIA'];var all=items.concat(items).map(function(t){return '<span class="tick-item">'+t+'</span>';}).join('');te.innerHTML=all+all;}
   /* load products first — use fallback immediately, then fetch */
   PRODS=FALLBACK;
   renderHome();
