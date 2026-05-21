@@ -1,0 +1,21 @@
+{
+  "name": "Urban Grain",
+  "short_name": "Urban Grain",
+  "description": "Indian Streetwear — Threads With Thoughts",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f1ea",
+  "theme_color": "#b5451b",
+  "icons": [
+    {
+      "src": "https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/favion.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/favion.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
