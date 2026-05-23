@@ -154,7 +154,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .pdp-back{font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grain);cursor:pointer;display:flex;align-items:center;gap:.5rem;padding:1.2rem 3rem;border-bottom:1px solid var(--border);background:var(--bg2);width:100%;border:none;transition:color .2s}
 .pdp-back:hover{color:var(--rust)}
 .pdp-grid{display:grid;grid-template-columns:1fr 1fr;min-height:80vh}
-.pdp-gallery{background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;min-height:520px}
+/* ── GALLERY SLIDER ── */
+.pdp-gallery{background:var(--bg3);position:relative;min-height:520px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.gallery-track{display:flex;width:100%;height:100%;min-height:520px;transition:transform .4s cubic-bezier(.4,0,.2,1);}
+.gallery-slide{flex-shrink:0;width:100%;height:100%;min-height:520px;display:flex;align-items:center;justify-content:center;background:var(--bg3);}
+.gallery-slide img{width:100%;height:100%;min-height:520px;object-fit:cover;display:block;}
+.gallery-slide .pdp-gallery-img{font-family:var(--fd);font-size:12rem;color:rgba(90,70,50,.1);}
+.gallery-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;z-index:10;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.15);}
+.gallery-arrow:hover{background:var(--rust);color:#fff;}
+.gallery-arrow.prev{left:1rem;}
+.gallery-arrow.next{right:1rem;}
+.gallery-arrow.hidden{opacity:0;pointer-events:none;}
+.gallery-dots{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:.4rem;z-index:10;}
+.gallery-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);border:none;cursor:pointer;transition:all .2s;padding:0;}
+.gallery-dot.active{background:var(--rust);transform:scale(1.2);}
+.gallery-count{position:absolute;top:1rem;right:1rem;font-family:var(--fm);font-size:.55rem;letter-spacing:.15em;color:#fff;background:rgba(0,0,0,.4);padding:.25rem .6rem;z-index:10;}
 .pdp-gallery-img{font-family:var(--fd);font-size:12rem;color:rgba(90,70,50,.1)}
 .pdp-badge-lg{position:absolute;top:1.5rem;left:1.5rem;font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;padding:.3rem .8rem;background:var(--rust);color:#fff;text-transform:uppercase}
 .pdp-info{padding:3.5rem;background:var(--white)}
@@ -585,9 +599,11 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
   <button class="pdp-back" onclick="goBackPDP()">← BACK TO SHOP</button>
   <div class="pdp-grid">
     <div class="pdp-gallery" id="pdp-gallery">
-      <div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:520px">
-        <div class="pdp-gallery-img">UG</div>
-      </div>
+      <div class="gallery-track" id="gallery-track"></div>
+      <button class="gallery-arrow prev" id="gallery-prev" onclick="gallerySlide(-1)">&#8592;</button>
+      <button class="gallery-arrow next" id="gallery-next" onclick="gallerySlide(1)">&#8594;</button>
+      <div class="gallery-dots" id="gallery-dots"></div>
+      <div class="gallery-count" id="gallery-count"></div>
       <div id="pdp-badge-wrap"></div>
     </div>
     <div class="pdp-info">
