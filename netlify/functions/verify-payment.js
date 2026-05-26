@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { createClient } = require('@supabase/supabase-js');
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
@@ -18,8 +19,17 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } 
-      = JSON.parse(event.body);
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      // order details from frontend
+      user_id,
+      user_email,
+      amount,
+      items,
+      address
+    } = JSON.parse(event.body);
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return {
@@ -36,6 +46,7 @@ exports.handler = async (event) => {
       };
     }
 
+    // Verify signature
     const expected = crypto.createHmac('sha256', KEY_SECRET)
       .update(razorpay_order_id + '|' + razorpay_payment_id)
       .digest('hex');
@@ -48,6 +59,32 @@ exports.handler = async (event) => {
       return {
         statusCode: 400,
         body: JSON.stringify({ error: 'Signature mismatch' })
+      };
+    }
+
+    // ✅ SAVE ORDER TO SUPABASE
+    const supabase = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_KEY
+    );
+
+    const { error: dbError } = await supabase.from('orders').insert({
+      user_id: user_id,
+      user_email: user_email,
+      payment_id: razorpay_payment_id,
+      order_id: razorpay_order_id,
+      amount: amount,
+      items: items,
+      address: address,
+      status: 'paid',
+      created_at: new Date().toISOString()
+    });
+
+    if (dbError) {
+      console.error('Supabase error:', dbError);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'Order save failed' })
       };
     }
 
