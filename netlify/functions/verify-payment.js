@@ -23,7 +23,6 @@ exports.handler = async (event) => {
       razorpay_order_id,
       razorpay_payment_id,
       razorpay_signature,
-      // order details from frontend
       user_id,
       user_email,
       amount,
@@ -46,7 +45,6 @@ exports.handler = async (event) => {
       };
     }
 
-    // Verify signature
     const expected = crypto.createHmac('sha256', KEY_SECRET)
       .update(razorpay_order_id + '|' + razorpay_payment_id)
       .digest('hex');
@@ -62,7 +60,6 @@ exports.handler = async (event) => {
       };
     }
 
-    // ✅ SAVE ORDER TO SUPABASE
     const supabase = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_KEY
@@ -82,10 +79,24 @@ exports.handler = async (event) => {
 
     if (dbError) {
       console.error('Supabase error:', dbError);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'Order save failed' })
-      };
+    }
+
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + process.env.RESEND_API_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'onboarding@resend.dev',
+          to: process.env.ADMIN_EMAIL,
+          subject: 'New Order ' + razorpay_order_id,
+          html: '<h2>New Order!</h2><p><b>Order:</b> ' + razorpay_order_id + '</p><p><b>Payment:</b> ' + razorpay_payment_id + '</p><p><b>Amount:</b> Rs.' + amount + '</p><p><b>Customer:</b> ' + user_email + '</p>'
+        })
+      });
+    } catch(emailErr) {
+      console.log('Email error:', emailErr);
     }
 
     return {
@@ -107,4 +118,4 @@ exports.handler = async (event) => {
       body: JSON.stringify({ error: e.message })
     };
   }
-};
+}
