@@ -608,7 +608,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       <div class="color-opts" id="pdp-colors"></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem">
         <div class="pdp-label" style="margin-bottom:0">SELECT SIZE</div>
-        <span class="size-guide-link" onclick="showToast('Size guide coming soon!')">SIZE GUIDE</span>
+        <span class="size-guide-link" onclick="showSG()">SIZE GUIDE</span>
       </div>
       <div class="size-grid" id="pdp-sizes"></div>
       <div id="pdp-size-err" style="font-family:var(--fm);font-size:.58rem;color:var(--rust);margin-bottom:.8rem;display:none">PLEASE SELECT A SIZE</div>
@@ -873,7 +873,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
     <button class="btn-o" style="margin-left:1rem;margin-top:.8rem" onclick="goPage('home')">BACK TO HOME</button>
   </div>
 </div>
-
+<div id="sgm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;overflow-y:auto" onclick="closeSG()"><div style="background:#fff;max-width:600px;margin:2rem auto;padding:1.5rem" onclick="event.stopPropagation()"><button onclick="closeSG()" style="float:right;background:none;border:none;font-size:1.5rem;cursor:pointer">x</button><h2 id="sgt" style="font-family:var(--fd);margin-button:1rem"></h2><img id="sgi" src="" style=width:100%;height:auto"/></div></div>
 <footer>
   <div class="footer-top">
     <div>
@@ -1512,7 +1512,8 @@ function startRealtime(){
     ws.onclose=function(){setTimeout(startRealtime,5000);};
   }catch(e){console.log('Realtime:',e.message);}
 }
-
+function showSG(){var tag=(pdpstate&&pdpstate.prod&&pdpstate.prod.tag)||'';var t=tag.toUpperCase();var imags={'OVERSIZED':'https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/size-guides/size-guides/Oversized.jpeg','ROUND NECK':'https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/size-guides/size-guides/Roundneck.jpeg','SWEATSHIRTS':'https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/size-guides/size-guides/Sweatshirt.jpg'};document.getElementById('sgi').src=imgs[t]||imgs['ROUND NECK'];document.getElementById('sgt').textContent='Size Guide - '+t;document.getElementById('sgm').style.display='block';document.body.style.overflow='hidden';}
+function closeSG(){document.getElementById('sgm').style.display='none';document.body.style.overflow='';}
 /* ═══════════ TOAST ═══════════ */
 function showToast(msg){var t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
 
