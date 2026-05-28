@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
+const nodemailer = require('nodemailer');
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
@@ -82,18 +83,25 @@ exports.handler = async (event) => {
     }
 
     try {
-      await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + process.env.RESEND_API_KEY,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          from: 'onboarding@resend.dev',
-          to: process.env.ADMIN_EMAIL,
-          subject: 'New Order ' + razorpay_order_id,
-          html: '<h2>New Order!</h2><p><b>Order:</b> ' + razorpay_order_id + '</p><p><b>Payment:</b> ' + razorpay_payment_id + '</p><p><b>Amount:</b> Rs.' + amount + '</p><p><b>Customer:</b> ' + user_email + '</p>'
-        })
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.GMAIL_USER,
+          pass: process.env.GMAIL_PASS
+        }
+      });
+
+      await transporter.sendMail({
+        from: process.env.GMAIL_USER,
+        to: process.env.GMAIL_USER,
+        subject: '🛍️ New Order - ' + razorpay_order_id,
+        html: `
+          <h2>New Order Received!</h2>
+          <p><b>Order ID:</b> ${razorpay_order_id}</p>
+          <p><b>Payment ID:</b> ${razorpay_payment_id}</p>
+          <p><b>Amount:</b> ₹${amount}</p>
+          <p><b>Customer:</b> ${user_email}</p>
+        `
       });
     } catch(emailErr) {
       console.log('Email error:', emailErr);
@@ -118,4 +126,4 @@ exports.handler = async (event) => {
       body: JSON.stringify({ error: e.message })
     };
   }
-}
+};
