@@ -1,20 +1,20 @@
 const { createClient } = require('@supabase/supabase-js');
 
 exports.handler = async (event) => {
-  if(event.httpMethod !== 'POST'){
-    return {statusCode: 405, body: 'Method not allowed'};
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method not allowed' };
   }
-  try{
-    const DELHIVERY_KEY = process.env.DELHIVERY_API_KEY;
+
+  try {
     const body = JSON.parse(event.body);
-    
+    const DELHIVERY_KEY = process.env.DELHIVERY_KEY;
     const supabase = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_KEY
     );
 
     const shipmentData = {
-      shipments:[{
+      shipments: [{
         name: body.name,
         add: body.address,
         city: body.city,
@@ -47,7 +47,7 @@ exports.handler = async (event) => {
         shipping_mode: 'Surface',
         address_type: 'home'
       }],
-      pickup_location:{
+      pickup_location: {
         name: 'Urban Grain',
         add: '32/7 Kasi Chetty Street, CMC Complex, Sowcarpet, Chennai',
         city: 'Chennai',
@@ -65,40 +65,55 @@ exports.handler = async (event) => {
         hostname: 'track.delhivery.com',
         path: '/api/cbe/p/create/',
         method: 'POST',
-        headers:{
+        headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': 'Token ' + DELHIVERY_KEY,
           'Content-Length': Buffer.byteLength(formData)
         }
-      },(res)=>{
+      }, (res) => {
         let data = '';
-        res.on('data',(chunk)=>data+=chunk);
-        res.on('end',()=>resolve({status:res.statusCode, data:JSON.parse(data)}));
+        res.on('data', (chunk) => data += chunk);
+        res.on('end', () => resolve({
+          status: res.statusCode,
+          data: JSON.parse(data)
+        }));
       });
       req.on('error', reject);
       req.write(formData);
       req.end();
     });
 
-    // Save waybill to Supabase
-    const waybill = result.data.packages?.[0]?.waybill;
-    if(waybill){
+    // Get waybill from all possible response locations
+    const waybill = result.data?.packages?.[0]?.waybill
+      || result.data?.waybill
+      || result.data?.rmk
+      || null;
+
+    // Save waybill + update status in Supabase
+    if (waybill) {
       await supabase
         .from('orders')
-        .update({ waybill: waybill })
+        .update({ waybill: waybill, status: 'accepted' })
         .eq('id', body.order_id);
     }
 
-    return{
+    return {
       statusCode: 200,
-      headers: {'Content-Type':'application/json', 'Access-Control-Allow-Origin':'*'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
       body: JSON.stringify({
-        success: true,
+        success: !!waybill,
         waybill: waybill || null,
         data: result.data
       })
     };
-  }catch(e){
-    return{statusCode:500, body:JSON.stringify({error:e.message})};
+
+  } catch(e) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: e.message })
+    };
   }
 };
