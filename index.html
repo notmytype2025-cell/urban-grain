@@ -1194,7 +1194,7 @@ async function loadOrders(){
     var sum=items.map(function(i){return i.name+' ('+i.size+') x'+i.qty;}).join(', ');
     var sc='status-'+(o.status||'placed');
     var dt=new Date(o.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
-    var track='';
+    var steps=['placed','accepted','processed','shipped','delivered'];var cur=steps.indexOf(o.status||'placed');var track='<div style="display:flex;justify-content:space-between;margin:.5rem 0">'+steps.map(function(s,i){var done=i<=cur;return'<div style="text-align:center;flex:1"><div style="width:20px;height:20px;border-radius:50%;margin:0 auto;background:'+(done?'#000':'#ccc')+'"></div><small style="font-size:.55rem;color:'+(done?'#000':'#999')+'">'+s.toUpperCase()+'</small></div>';}).join('')+'</div>';
     if(o.waybill||o.tracking_number){
       var wb=o.waybill||o.tracking_number;
       track='<div style="background:var(--bg2);padding:.8rem 1.5rem;border-top:1px solid var(--border);font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;color:var(--grain);display:flex;justify-content:space-between;align-items:center;"><span>TRACKING: '+wb+'</span><a href="https://www.delhivery.com/track/package/'+wb+'" target="_blank" style="color:var(--rust);text-decoration:none">TRACK →</a></div>';
