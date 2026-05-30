@@ -1216,12 +1216,12 @@ async function saveOrderWithPayment(orderId,rzpId,total){
 }
 
 async function sendOrderEmail(orderId,email,items,total){
-  if(IS_PREVIEW)return;
+  
   try{await sbFetch(SB_URL+'/functions/v1/order-confirmation',{method:'POST',headers:sbH({'Content-Type':'application/json'}),body:JSON.stringify({order_id:orderId,customer_email:email,items:items,total:total,shipping_method:shipMethod})});}catch(_){}
 }
 
 async function createDelhiveryShipment(orderId,name,phone,address,city,state,pin,items,total){
-  if(IS_PREVIEW)return null;
+  
   try{
     var qty=items.reduce(function(s,i){return s+i.qty;},0);
     var products=items.map(function(i){return i.name+' x'+i.qty;}).join(', ');
