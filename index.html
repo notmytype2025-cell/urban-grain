@@ -108,7 +108,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .look-num{font-family:var(--fd);font-size:5rem;color:rgba(90,70,50,.07)}
 .look-tag{position:absolute;bottom:1.2rem;left:1.2rem;font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:#f5f1ea;text-transform:uppercase;background:rgba(0,0,0,.5);padding:.35rem .7rem;z-index:2}
 .look-overlay{position:absolute;inset:0;background:rgba(0,0,0,.2);z-index:1}
-.look img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.look img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#f5f5f5;transition:transform .5s}
 .look:hover img{transform:scale(1.05)}
 .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2.5rem}
 .rev-card{background:var(--white);padding:1.8rem;border-left:2px solid var(--rust)}
@@ -461,6 +461,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       <div class="mf"><label>Password</label><input type="password" id="lPass" placeholder="••••••••"/></div>
       <div class="modal-err" id="lErr"></div>
       <button class="btn-p" style="width:100%;margin-top:.5rem" onclick="doLogin()">SIGN IN</button>
+      <p onclick="forgotPassword()" style="cursor:pointer;font-size:.75rem;text-align:center;color:var(--rust);margin-top:.5rem">FORGOT PASSWORD?</p>
       <p class="modal-switch">No account? <span onclick="openAuth('signup')">SIGN UP</span></p>
     </div>
     <div id="fmSignup" style="display:none">
@@ -1000,7 +1001,7 @@ function mapRow(p){
 function getColorHex(n){var m={black:'#1a1410',cream:'#f0ead8',rust:'#b5451b',olive:'#5a6040',white:'#f5f5f5',grey:'#888888',gray:'#888888',navy:'#1a1f3a',brown:'#5c3a1e',charcoal:'#2d2d2d',bone:'#e8dcc8',green:'#3a6040',red:'#c0392b',blue:'#2c5f8a',pink:'#e8a0a0',yellow:'#e8c840',orange:'#e87820',purple:'#6a3a8a'};return m[n.toLowerCase().trim()]||'#9e8e7e';}
 function buildColorDots(p){if(p.colors&&p.colors.length)return p.colors.map(function(n){return{name:n,hex:getColorHex(n)};});var parts=(p.clr||'').split('/').map(function(s){return s.trim();}).filter(Boolean);return parts.length?parts.map(function(n){return{name:n,hex:getColorHex(n)};}):[{name:'Black',hex:'#1a1410'}];}
 
-function prodImg(p){if(p.image_url)return'<img src="'+p.image_url+'" alt="'+p.name+'" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display=\'none\'"/>';return'<div class="prod-img-text">UG</div>';}
+function prodImg(p){if(p.image_url)return'<img src="'+p.image_url+'" alt="'+p.name+'" style="width:100%;height:100%;object-fit:contain;background:#f5f5f5;display:block;" onerror="this.style.display=\'none\'"/>';return'<div class="prod-img-text">UG</div>';}
 function prodCard(p){
   return'<div class="prod-card" onclick="openProd('+p.id+')">'
     +'<div class="prod-img"><div class="prod-img-inner">'+prodImg(p)+'</div>'
@@ -1326,7 +1327,7 @@ function updateCart(){
   var body=document.getElementById('cBody');
   if(!cart.length){body.innerHTML='<div class="cart-empty-msg">YOUR BAG IS EMPTY</div>';return;}
   body.innerHTML=cart.map(function(i){
-    var imgHtml=i.image_url?'<img src="'+i.image_url+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>':'UG';
+    var imgHtml=i.image_url?'<img src="'+i.image_url+'" style="width:100%;height:100%;object-fit:contain;background:#f5f5f5;" onerror="this.style.display=\'none\'"/>':'UG';
     return'<div class="cart-item"><div class="ci-img">'+imgHtml+'</div><div class="ci-detail"><div class="ci-name">'+i.name+'</div><div class="ci-meta">'+i.size+' · '+i.colorName+'</div><div class="ci-price">₹'+(i.price*i.qty).toLocaleString('en-IN')+'</div><div class="ci-qty"><button class="qty-btn" onclick="changeQty(\''+i.key+'\',-1)">−</button><span class="qty-num">'+i.qty+'</span><button class="qty-btn" onclick="changeQty(\''+i.key+'\',1)">+</button><button class="ci-remove" onclick="removeFromCart(\''+i.key+'\')">REMOVE</button></div></div></div>';
   }).join('');
 }
@@ -1360,7 +1361,7 @@ function populateSummary(){
   shipCost=sub>=1299?0:99;
   var el=document.getElementById('ordItems');
   if(el)el.innerHTML=cart.map(function(i){
-    var imgHtml=i.image_url?'<img src="'+i.image_url+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>':'UG';
+    var imgHtml=i.image_url?'<img src="'+i.image_url+'" style="width:100%;height:100%;object-fit:contain;background:#f5f5f5;" onerror="this.style.display=\'none\'"/>':'UG';
     return'<div class="ord-item"><div class="ord-item-img">'+imgHtml+'<div class="ord-qty-badge">'+i.qty+'</div></div><div style="flex:1;padding:.1rem 0"><div class="ord-item-name">'+i.name+'</div><div class="ord-item-meta">'+i.size+' · '+i.colorName+'</div></div><div class="ord-item-price">₹'+(i.price*i.qty).toLocaleString('en-IN')+'</div></div>';
   }).join('');
   updateTotals(sub);
@@ -1512,7 +1513,7 @@ function startRealtime(){
     ws.onclose=function(){setTimeout(startRealtime,5000);};
   }catch(e){console.log('Realtime:',e.message);}
 }
-function closeSG(){var m=document.getElementById('sgm');if(m){m.style.display='none';document.body.style.overflow='';}}function showSG(){var t='';try{t=(pdpState.prod.tag||'').toUpperCase();}catch(e){}var u='https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/size-guides/size-guides/';var s=t==='OVERSIZED'?u+'Oversized.jpeg':t==='SWEATSHIRTS'?u+'Sweatshirt.jpg':u+'Roundneck.jpeg';var m=document.getElementById('sgm');var i=document.getElementById('sgi');var g=document.getElementById('sgt');if(m&&i&&g){i.src=s;g.textContent='Size Guide';m.style.display='block';document.body.style.overflow='hidden';}}
+function forgotPassword(){var e=document.getElementById('lEmail').value;if(!e){alert('Enter your email first');return;}supabase.auth.resetPasswordForEmail(e,{redirectTo:'https://urban-grain.netlify.app/'}).then(function(){alert('Password reset email sent! Check your inbox.');});}function closeSG(){var m=document.getElementById('sgm');if(m){m.style.display='none';document.body.style.overflow='';}}function showSG(){var t='';try{t=(pdpState.prod.tag||'').toUpperCase();}catch(e){}var u='https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/size-guides/size-guides/';var s=t==='OVERSIZED'?u+'Oversized.jpeg':t==='SWEATSHIRTS'?u+'Sweatshirt.jpg':u+'Roundneck.jpeg';var m=document.getElementById('sgm');var i=document.getElementById('sgi');var g=document.getElementById('sgt');if(m&&i&&g){i.src=s;g.textContent='Size Guide';m.style.display='block';document.body.style.overflow='hidden';}}
 /* ═══════════ TOAST ═══════════ */
 function showToast(msg){var t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
 
