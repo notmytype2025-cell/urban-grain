@@ -21,7 +21,7 @@ exports.handler = async (event) => {
           pin: body.pin,
           country: 'India',
           phone: body.phone,
-          order: body.orderId, // ✅ Fixed: changed from order_id to orderId
+          order: body.orderId,
           payment_mode: 'Prepaid',
           return_pin: '600001',
           return_city: 'Chennai',
@@ -31,12 +31,12 @@ exports.handler = async (event) => {
           return_country: 'India',
           products_desc: body.products || 'Clothing Item',
           hsn_code: '61091000',
-          cod_amount: '0',
+          cod_amount: '', // ✅ FIXED: Must be an empty string for Prepaid to avoid API rejection
           order_date: new Date().toISOString().split('T')[0],
           total_amount: String(body.total),
           seller_add: '32/7 Kasi Chetty Street, CMC Complex, Sowcarpet, Chennai',
           seller_name: 'Urban Grain',
-          seller_inv: body.orderId, // ✅ Fixed: changed from order_id to orderId
+          seller_inv: body.orderId,
           quantity: String(body.quantity || 1),
           waybill: '',
           shipment_width: '20',
@@ -61,35 +61,46 @@ exports.handler = async (event) => {
     const https = require('https');
 
     const result = await new Promise((resolve, reject) => {
-      const req = https.request({
-        hostname: 'track.delhivery.com',
-        path: '/api/cbe/p/create/',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Token ' + DELHIVERY_KEY,
-          'Content-Length': Buffer.byteLength(formData)
+      const req = https.request(
+        {
+          hostname: 'track.delhivery.com',
+          path: '/api/cbe/p/create/',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Token ' + DELHIVERY_KEY,
+            'Content-Length': Buffer.byteLength(formData)
+          }
+        },
+        (res) => {
+          let data = '';
+          res.on('data', (chunk) => (data += chunk));
+          res.on('end', () => resolve({ status: res.statusCode, data: JSON.parse(data) }));
         }
-      }, (res) => {
-        let data = '';
-        res.on('data', (chunk) => data += chunk);
-        res.on('end', () => resolve({ status: res.statusCode, data: JSON.parse(data) }));
-      });
+      );
 
       req.on('error', reject);
       req.write(formData);
       req.end();
     });
 
-    // Extract waybill cleanly from the response payload
-    const waybill = result.data?.packages?.[0]?.waybill || result.data?.waybill || result.data?.rmk || null;
+    // ✅ FIXED: Safely extract real waybill strings without falling back to string error responses from rmk
+    let waybill = null;
+    if (result.data?.packages?.[0]?.waybill) {
+      waybill = result.data.packages[0].waybill;
+    } else if (result.data?.package_data?.[0]?.waybill) {
+      waybill = result.data.package_data[0].waybill;
+    }
 
-    // Save waybill + update status in Supabase using the correct frontend variable
-    if (waybill) {
+    // Double check that we received a valid numeric waybill string and not an error string flag
+    const isSuccess = !!waybill && String(waybill).toLowerCase() !== 'failure';
+
+    // Save waybill + update status in Supabase only on absolute success
+    if (isSuccess) {
       await supabase
         .from('orders')
         .update({ waybill: waybill, status: 'accepted' })
-        .eq('id', body.orderId); // ✅ Fixed: changed from order_id to orderId
+        .eq('id', body.orderId);
     }
 
     return {
@@ -99,13 +110,15 @@ exports.handler = async (event) => {
         'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify({
-        success: !!waybill,
-        waybill: waybill || null,
-        data: result.data
+        success: isSuccess,
+        waybill: isSuccess ? waybill : null,
+        data: result.data // Kept for Netlify functions log auditing if the API rejects
       })
     };
-
   } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: e.message })
+    };
   }
 };
