@@ -7,46 +7,46 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const DELHIVERY_KEY = process.env.DELHIVERY_KEY;
-    const supabase = createClient(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_KEY
-    );
+    const DELHIVERY_KEY = process.env.DELHIVERY_API_KEY;
+    const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
+    // Map your Delhivery payload structure directly to your frontend keys
     const shipmentData = {
-      shipments: [{
-        name: body.name,
-        add: body.address,
-        city: body.city,
-        state: body.state,
-        pin: body.pin,
-        country: 'India',
-        phone: body.phone,
-        order: body.order_id,
-        payment_mode: 'Prepaid',
-        return_pin: '600001',
-        return_city: 'Chennai',
-        return_phone: '7397368873',
-        return_add: '32/7 Kasi Chetty Street, CMC Complex, Sowcarpet, Chennai',
-        return_state: 'Tamil Nadu',
-        return_country: 'India',
-        products_desc: body.products,
-        hsn_code: '61091000',
-        cod_amount: '0',
-        order_date: new Date().toISOString().split('T')[0],
-        total_amount: String(body.total),
-        seller_add: '32/7 Kasi Chetty Street, CMC Complex, Sowcarpet, Chennai',
-        seller_name: 'Urban Grain',
-        seller_inv: body.order_id,
-        quantity: String(body.quantity || 1),
-        waybill: '',
-        shipment_width: '20',
-        shipment_height: '5',
-        weight: '400',
-        seller_gst_tin: '',
-        shipping_mode: 'Surface',
-        address_type: 'home'
-      }],
+      shipments: [
+        {
+          name: body.name,
+          add: body.address,
+          city: body.city,
+          state: body.state,
+          pin: body.pin,
+          country: 'India',
+          phone: body.phone,
+          order: body.orderId, // ✅ Fixed: changed from order_id to orderId
+          payment_mode: 'Prepaid',
+          return_pin: '600001',
+          return_city: 'Chennai',
+          return_phone: '7397368873',
+          return_add: '32/7 Kasi Chetty Street, CMC Complex, Sowcarpet, Chennai',
+          return_state: 'Tamil Nadu',
+          return_country: 'India',
+          products_desc: body.products || 'Clothing Item',
+          hsn_code: '61091000',
+          cod_amount: '0',
+          order_date: new Date().toISOString().split('T')[0],
+          total_amount: String(body.total),
+          seller_add: '32/7 Kasi Chetty Street, CMC Complex, Sowcarpet, Chennai',
+          seller_name: 'Urban Grain',
+          seller_inv: body.orderId, // ✅ Fixed: changed from order_id to orderId
+          quantity: String(body.quantity || 1),
+          waybill: '',
+          shipment_width: '20',
+          shipment_height: '5',
+          weight: '400',
+          seller_gst_tin: '',
+          shipping_mode: 'Surface',
+          address_type: 'home'
+        }
+      ],
       pickup_location: {
         name: 'Urban Grain',
         add: '32/7 Kasi Chetty Street, CMC Complex, Sowcarpet, Chennai',
@@ -73,28 +73,23 @@ exports.handler = async (event) => {
       }, (res) => {
         let data = '';
         res.on('data', (chunk) => data += chunk);
-        res.on('end', () => resolve({
-          status: res.statusCode,
-          data: JSON.parse(data)
-        }));
+        res.on('end', () => resolve({ status: res.statusCode, data: JSON.parse(data) }));
       });
+
       req.on('error', reject);
       req.write(formData);
       req.end();
     });
 
-    // Get waybill from all possible response locations
-    const waybill = result.data?.packages?.[0]?.waybill
-      || result.data?.waybill
-      || result.data?.rmk
-      || null;
+    // Extract waybill cleanly from the response payload
+    const waybill = result.data?.packages?.[0]?.waybill || result.data?.waybill || result.data?.rmk || null;
 
-    // Save waybill + update status in Supabase
+    // Save waybill + update status in Supabase using the correct frontend variable
     if (waybill) {
       await supabase
         .from('orders')
         .update({ waybill: waybill, status: 'accepted' })
-        .eq('id', body.order_id);
+        .eq('id', body.orderId); // ✅ Fixed: changed from order_id to orderId
     }
 
     return {
@@ -110,10 +105,7 @@ exports.handler = async (event) => {
       })
     };
 
-  } catch(e) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: e.message })
-    };
+  } catch (e) {
+    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
   }
 };
