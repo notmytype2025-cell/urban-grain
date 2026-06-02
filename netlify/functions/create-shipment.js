@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const https = require('https');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -10,7 +11,6 @@ exports.handler = async (event) => {
     const DELHIVERY_KEY = process.env.DELHIVERY_API_KEY;
     const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
-    // Map your Delhivery payload structure directly to your frontend keys
     const shipmentData = {
       shipments: [
         {
@@ -31,7 +31,7 @@ exports.handler = async (event) => {
           return_country: 'India',
           products_desc: body.products || 'Clothing Item',
           hsn_code: '61091000',
-          cod_amount: '', // ✅ FIXED: Must be an empty string for Prepaid to avoid API rejection
+          cod_amount: '',
           order_date: new Date().toISOString().split('T')[0],
           total_amount: String(body.total),
           seller_add: '32/7 Kasi Chetty Street, CMC Complex, Sowcarpet, Chennai',
@@ -58,13 +58,12 @@ exports.handler = async (event) => {
     };
 
     const formData = 'format=json&data=' + encodeURIComponent(JSON.stringify(shipmentData));
-    const https = require('https');
 
     const result = await new Promise((resolve, reject) => {
       const req = https.request(
         {
           hostname: 'track.delhivery.com',
-          path: '/api/cbe/p/create/',
+          path: '/api/cmu/create.json',
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -75,16 +74,19 @@ exports.handler = async (event) => {
         (res) => {
           let data = '';
           res.on('data', (chunk) => (data += chunk));
-          res.on('end', () => resolve({ status: res.statusCode, data: JSON.parse(data) }));
+          res.on('end', () => {
+            console.log('RAW DELHIVERY RESPONSE:', data);
+            resolve({ status: res.statusCode, data: JSON.parse(data) });
+          });
         }
       );
-
       req.on('error', reject);
       req.write(formData);
       req.end();
     });
 
-    // ✅ FIXED: Safely extract real waybill strings without falling back to string error responses from rmk
+    console.log('DELHIVERY RESULT:', JSON.stringify(result.data));
+
     let waybill = null;
     if (result.data?.packages?.[0]?.waybill) {
       waybill = result.data.packages[0].waybill;
@@ -92,15 +94,25 @@ exports.handler = async (event) => {
       waybill = result.data.package_data[0].waybill;
     }
 
-    // Double check that we received a valid numeric waybill string and not an error string flag
+    console.log('WAYBILL:', waybill);
+
     const isSuccess = !!waybill && String(waybill).toLowerCase() !== 'failure';
 
-    // Save waybill + update status in Supabase only on absolute success
+    console.log('IS SUCCESS:', isSuccess);
+
     if (isSuccess) {
-      await supabase
+      const { error: dbError } = await supabase
         .from('orders')
         .update({ waybill: waybill, status: 'accepted' })
         .eq('id', body.orderId);
+
+      if (dbError) {
+        console.log('SUPABASE ERROR:', JSON.stringify(dbError));
+      } else {
+        console.log('SUPABASE UPDATED for order:', body.orderId);
+      }
+    } else {
+      console.log('NO VALID WAYBILL, full response:', JSON.stringify(result.data));
     }
 
     return {
@@ -112,10 +124,12 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         success: isSuccess,
         waybill: isSuccess ? waybill : null,
-        data: result.data // Kept for Netlify functions log auditing if the API rejects
+        data: result.data
       })
     };
+
   } catch (e) {
+    console.log('ERROR:', e.message);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: e.message })
