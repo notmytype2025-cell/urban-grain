@@ -874,7 +874,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       <div class="ord-line"><span>Shipping</span><span id="co-ship">₹99</span></div>
       <div class="ord-line" id="co-disc-row" style="display:none"><span>Discount</span><span id="co-disc" style="color:var(--rust)">—</span></div>
       <div class="ord-total"><span>TOTAL</span><span>₹<span id="co-tot">0</span></span></div>
-      <button class="btn-place" onclick="placeOrder()">PAY NOW →</button>
+      <button class="btn-place" onclick="">PAY NOW →</button>
       <p class="secure-lbl">🔒 SECURED BY RAZORPAY</p>
     </div>
   </div>
@@ -1470,7 +1470,31 @@ async function placeOrder(){
     handler:async function(response){
       await saveOrderWithPayment(orderId,response.razorpay_payment_id,total);
       await sendOrderEmail(orderId,email,cart.slice(),total);
-      var waybill=await createDelhiveryShipment(orderId,name,phone,a1+' '+document.getElementById('co-a2').value,city,document.getElementById('co-st').value,pin,cart.slice(),total);
+      var waybill = null;
+      try {
+        const shipmentResponse = await fetch('/.netlify/functions/create-shipment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                orderId: orderId,
+                name: name,
+                phone: phone,
+                address: a1 + ' ' + (document.getElementById('co-a2')?.value || ''),
+                city: city,
+                state: document.getElementById('co-st')?.value || '',
+                pin: pin,
+                cart: cart.slice(),
+                total: total
+            })
+        });
+
+        if (shipmentResponse.ok) {
+            const shipmentData = await shipmentResponse.json();
+            waybill = shipmentData.waybill_number || shipmentData.waybill || shipmentData.awb || null;
+        }
+    } catch (shipmentError) {
+        console.error("Automated waybill creation failed:", shipmentError);
+    }
       document.getElementById('coWrap').style.display='none';
       document.getElementById('orderOk').style.display='block';
       document.getElementById('okId').textContent='ORDER #'+orderId;
