@@ -930,7 +930,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       <li><a onclick="showSG()" style="cursor:pointer">Size Guide</a></li>
     </ul></div>
     <div class="footer-col"><h4>Follow</h4><ul>
-      <li><a href="https://www.instagram.com/urban_grain25?igsh=ZzVlYXNhemNiM3Nr&utm_source=qr" target="_blank">Instagram</a></li>
+      <li><a href="https://www.instagram.com/urbangrain.in?igsh=MTF2bXJ5eW92ZmNiaQ==" target="_blank">Instagram</a></li>
     </ul></div>
   </div>
   <div class="footer-bottom">
@@ -1589,7 +1589,7 @@ function startRealtime(){
     ws.onclose=function(){setTimeout(startRealtime,5000);};
   }catch(e){console.log('Realtime:',e.message);}
 }
-function forgotPassword(){var e=document.getElementById('lEmail').value;if(!e){alert('Enter your email first');return;}supabase.auth.resetPasswordForEmail(e,{redirectTo:'https://urban-grain.netlify.app/'}).then(function(){alert('Password reset email sent! Check your inbox.');});}function closeSG(){var m=document.getElementById('sgm');if(m){m.style.display='none';document.body.style.overflow='';}}function showSG(){var t='';try{t=(pdpState.prod.tag||'').toUpperCase();}catch(e){}var u='https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/size-guides/size-guides/';var s=t==='OVERSIZED'?u+'Oversized.jpeg':t==='SWEATSHIRTS'?u+'Sweatshirt.jpg':u+'Roundneck.jpeg';var m=document.getElementById('sgm');var i=document.getElementById('sgi');var g=document.getElementById('sgt');if(m&&i&&g){i.src=s;g.textContent='Size Guide';m.style.display='block';document.body.style.overflow='hidden';}}
+function forgotPassword(){ openAuth('forgot'); }
 /* ═══════════ TOAST ═══════════ */
 function showToast(msg){var t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
 
