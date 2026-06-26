@@ -70,6 +70,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .hero-visual{width:240px;height:320px;border:1px solid var(--border);position:relative;overflow:hidden;cursor:pointer}
 .hero-visual::before{content:'UG';font-family:var(--fd);font-size:9rem;color:rgba(181,69,27,.08);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
 .hero-visual-tag{font-family:var(--fm);font-size:.55rem;color:var(--rust);letter-spacing:.2em;text-transform:uppercase;position:absolute;bottom:1.2rem;left:1.2rem;z-index:2;background:rgba(245,241,234,.9);padding:.2rem .5rem}
+.hero-banner-row{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:8px;align-items:center;padding:1.5rem 0.75rem;min-height:calc(100vh - 72px)}
+.hero-product-col{display:flex;flex-direction:column;gap:8px}
+.hero-product-img{width:100%;height:140px;object-fit:cover;border-radius:8px;cursor:pointer}
+.hero-center{text-align:center;display:flex;flex-direction:column;align-items:center;gap:0.75rem}
+.hero-logo-img{width:60px;margin-bottom:.5rem}
+
+@media(max-width:600px){
+  .hero-banner-row{gap:6px;padding:1rem 0.5rem}
+  .hero-product-img{height:100px}
+  .hero-title{font-size:1.8rem}
+  .hero-sub{font-size:0.85rem}
+  .ctas{flex-direction:column;width:100%}
+  .ctas button{width:100%}
+}  
 .ticker{position:absolute;bottom:0;left:0;right:0;background:var(--rust);padding:.6rem 0;overflow:hidden;z-index:5}
 .ticker-inner{display:flex;gap:4rem;animation:tick 22s linear infinite;white-space:nowrap}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -513,25 +527,32 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
 
 <!-- HOME -->
 <div class="page active" id="pg-home">
-  <section class="hero">
-    <div class="hero-left">
-      <h1 class="hero-title">
-        <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/Image.png" alt="UG" style="height:80px;width:auto;display:block;margin-bottom:.8rem;border-radius:4px" onerror="this.style.display='none'"/>
-        URBAN<br>GRAIN<em>— Threads With Thoughts</em>
-      </h1>
+ <section class="hero">
+  <div class="hero-banner-row">
+    <div class="hero-product-col left">
+      <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/products/Trust%20your%20cardiac%20compass.png" alt="Trust your cardiac compass" class="hero-product-img" onclick="goPage('shop')"/>
+      <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/products/green%20acidwash%20911%20nsv.PNG" alt="Green acidwash 911 NSV" class="hero-product-img" onclick="goPage('shop')"/>
+    </div>
+
+    <div class="hero-center">
+      <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/Image.png" alt="UG" class="hero-logo-img"/>
+      <h1 class="hero-title">URBAN<br>GRAIN<em>— Threads With Thoughts</em></h1>
       <p class="hero-sub">Raw. Unfiltered. Built for those who move through the city on their own terms.</p>
       <div class="ctas">
         <button class="btn-p" onclick="goPage('shop')">SHOP NOW</button>
         <button class="btn-o" onclick="goPage('about')">OUR STORY</button>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="hero-visual" id="hero-visual" onclick="goPage('shop')">
-        <div class="hero-visual-tag" id="hero-visual-tag">SHOP NOW</div>
-      </div>
-      <div class="ticker"><div class="ticker-inner" id="tickerEl"></div></div>
+
+    <div class="hero-product-col right">
+      <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/products/the%20lucky%20birds.PNG" alt="The lucky birds" class="hero-product-img" onclick="goPage('shop')"/>
+      <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/products/Women.PNG" alt="Women" class="hero-product-img" onclick="goPage('shop')"/>
     </div>
-  </section>
+  </div>
+
+  <div class="ticker"><div class="ticker-inner" id="tickerEl"></div></div>
+</section>
+    </div>
   <div class="feat-bar">
     <div class="feat-item"><span class="feat-icon">⬡</span><div class="feat-title">FREE SHIPPING</div><div class="feat-text">All orders above ₹1299</div></div>
     <div class="feat-item"><span class="feat-icon">◈</span><div class="feat-title">OWN THE EXCLUSIVE</div><div class="feat-text">Once gone, its history</div></div>
@@ -766,7 +787,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       <div class="contact-detail"><div class="contact-icon">@</div><div><div class="contact-lbl">Email</div><div class="contact-val">urbangrain25@gmail.com</div></div></div>
       <div class="contact-detail"><div class="contact-icon">◷</div><div><div class="contact-lbl">Hours</div><div class="contact-val">Mon – Fri: 10am – 7pm IST</div></div></div>
       <div class="contact-socials">
-        <a class="soc-btn" href="https://www.instagram.com/urban_grain25?igsh=ZzVlYXNhemNiM3Nr&utm_source=qr" target="_blank">INSTAGRAM</a>
+        <a class="soc-btn" href="https://www.instagram.com/urbangrain.in?igsh=MTF2bXJ5eW92ZmNiaQ==" target="_blank">INSTAGRAM</a>
       </div>
       <div class="contact-faq">
         <div class="faq-label">// Quick Answers</div>
