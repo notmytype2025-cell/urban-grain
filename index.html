@@ -84,7 +84,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
   .ctas{flex-direction:column;width:100%}
   .ctas button{width:100%}
 }  
-.ticker{position:absolute;bottom:0;left:0;right:0;background:var(--rust);padding:.6rem 0;overflow:hidden;z-index:5}
+.ticker{background:var(--rust);padding:.6rem 0;overflow:hidden}
 .ticker-inner{display:flex;gap:4rem;animation:tick 22s linear infinite;white-space:nowrap}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .tick-item{font-family:var(--fd);font-size:.8rem;letter-spacing:.2em;color:#fff;flex-shrink:0}
@@ -105,7 +105,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .prod-img-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;transition:transform .5s ease}
 .prod-img-text{font-family:var(--fd);font-size:3.5rem;color:rgba(90,70,50,.1)}
 .prod-badge{position:absolute;top:.8rem;left:.8rem;font-family:var(--fm);font-size:.52rem;letter-spacing:.18em;padding:.2rem .6rem;background:var(--rust);color:#fff;text-transform:uppercase;z-index:2}
-.prod-overlay{position:absolute;inset:0;background:rgba(181,69,27,.07);display:flex;align-items:flex-end;justify-content:center;padding:1.2rem;opacity:0;transition:opacity .3s;z-index:2}
+.prod-overlay{position:absolute;inset:0;background:rgba(181,69,27,.06);display:flex;align-items:flex-end;justify-content:center;padding:1.2rem;opacity:0;transition:opacity .3s;z-index:2}
 .btn-quick{font-family:var(--fm);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;background:var(--black);color:#fff;padding:.65rem 1.2rem;border:none;cursor:pointer;width:100%}
 .btn-quick:hover{background:var(--rust)}
 .prod-info{padding:1rem .9rem .9rem;border-top:1px solid var(--border)}
@@ -119,7 +119,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .lbook-scroll::-webkit-scrollbar{display:none}
 .look{flex-shrink:0;width:300px;height:420px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer}
 .look:nth-child(odd){margin-top:2.5rem}
-.look-num{font-family:var(--fd);font-size:5rem;color:rgba(90,70,50,.07)}
+.look-num{font-family:var(--fd);font-size:5rem;color:rgba(181,69,27,.06)}
 .look-tag{position:absolute;bottom:1.2rem;left:1.2rem;font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:#f5f1ea;text-transform:uppercase;background:rgba(0,0,0,.5);padding:.35rem .7rem;z-index:2}
 .look-overlay{position:absolute;inset:0;background:rgba(0,0,0,.2);z-index:1}
 .look img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#f5f5f5;transition:transform .5s}
@@ -170,7 +170,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .pdp-price-row{display:flex;align-items:baseline;gap:1rem;margin-bottom:.5rem}
 .pdp-price{font-family:var(--fd);font-size:2rem;color:var(--rust)}
 .pdp-old{font-family:var(--fm);font-size:.85rem;color:var(--mid);text-decoration:line-through}
-.pdp-savings{font-family:var(--fm);font-size:.58rem;letter-spacing:.15em;color:#3a6a2a;padding:.2rem .6rem;background:rgba(58,106,42,.1);border:1px solid rgba(58,106,42,.2);margin-bottom:1.5rem;display:inline-block}
+.pdp-savings{font-family:var(--fm);font-size:.58rem;letter-spacing:.15em;color:#2a7a1a;padding:.2rem .6rem;background:rgba(42,122,26,.1);border:1px solid rgba(42,122,26,.2);margin-bottom:1.5rem;display:inline-block}
 .pdp-divider{height:1px;background:var(--border);margin:1.2rem 0}
 .pdp-label{font-family:var(--fm);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);margin-bottom:.7rem}
 .size-grid{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem}
@@ -320,7 +320,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .cart-body{flex:1;overflow-y:auto;padding:1.5rem 2rem}
 .cart-empty-msg{text-align:center;padding:4rem 0;font-family:var(--fm);font-size:.65rem;letter-spacing:.15em;color:var(--mid);text-transform:uppercase}
 .cart-item{display:flex;gap:1rem;padding:.9rem 0;border-bottom:1px solid var(--border)}
-.ci-img{width:65px;height:82px;background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1.4rem;color:rgba(90,70,50,.15);overflow:hidden}
+.ci-img{width:65px;height:82px;background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1.4rem;color:rgba(181,69,27,.2);overflow:hidden}
 .ci-detail{flex:1}
 .ci-name{font-size:.88rem;font-weight:600;margin-bottom:.2rem}
 .ci-meta{font-family:var(--fm);font-size:.54rem;letter-spacing:.12em;color:var(--mid);text-transform:uppercase;margin-bottom:.4rem}
@@ -365,7 +365,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .ord-sum h3{font-family:var(--fd);font-size:1.5rem;letter-spacing:.06em;margin-bottom:1.2rem;padding-bottom:.9rem;border-bottom:1px solid var(--border)}
 .ord-items{max-height:280px;overflow-y:auto;margin-bottom:1.2rem}
 .ord-item{display:flex;gap:.9rem;padding:.7rem 0;border-bottom:1px solid var(--border)}
-.ord-item-img{width:50px;height:64px;background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1rem;color:rgba(90,70,50,.15);position:relative;overflow:hidden}
+.ord-item-img{width:50px;height:64px;background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1rem;color:rgba(181,69,27,.2);position:relative;overflow:hidden}
 .ord-qty-badge{position:absolute;top:-5px;right:-5px;width:16px;height:16px;background:var(--rust);border-radius:50%;font-family:var(--fm);font-size:.5rem;color:#fff;display:flex;align-items:center;justify-content:center}
 .ord-item-name{font-size:.8rem;font-weight:600;margin-bottom:.15rem}
 .ord-item-meta{font-family:var(--fm);font-size:.52rem;letter-spacing:.1em;color:var(--mid)}
@@ -527,32 +527,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
 
 <!-- HOME -->
 <div class="page active" id="pg-home">
- <section class="hero">
-  <div class="hero-banner-row">
-    <div class="hero-product-col left">
-      <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/products/Trust%20your%20cardiac%20compass.png" alt="Trust your cardiac compass" class="hero-product-img" onclick="goPage('shop')"/>
-      <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/products/green%20acidwash%20911%20nsv.PNG" alt="Green acidwash 911 NSV" class="hero-product-img" onclick="goPage('shop')"/>
-    </div>
-
-    <div class="hero-center">
-      <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/Image.png" alt="UG" class="hero-logo-img"/>
-      <h1 class="hero-title">URBAN<br>GRAIN<em>— Threads With Thoughts</em></h1>
-      <p class="hero-sub">Raw. Unfiltered. Built for those who move through the city on their own terms.</p>
-      <div class="ctas">
-        <button class="btn-p" onclick="goPage('shop')">SHOP NOW</button>
-        <button class="btn-o" onclick="goPage('about')">OUR STORY</button>
-      </div>
-    </div>
-
-    <div class="hero-product-col right">
-      <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/products/the%20lucky%20birds.PNG" alt="The lucky birds" class="hero-product-img" onclick="goPage('shop')"/>
-      <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/products/Women.PNG" alt="Women" class="hero-product-img" onclick="goPage('shop')"/>
-    </div>
-  </div>
-
-  <div class="ticker"><div class="ticker-inner" id="tickerEl"></div></div>
-</section>
-    </div>
+  <div class="ticker" style="position:relative"><div class="ticker-inner" id="tickerEl"></div></div>
   <div class="feat-bar">
     <div class="feat-item"><span class="feat-icon">⬡</span><div class="feat-title">FREE SHIPPING</div><div class="feat-text">All orders above ₹1299</div></div>
     <div class="feat-item"><span class="feat-icon">◈</span><div class="feat-title">OWN THE EXCLUSIVE</div><div class="feat-text">Once gone, its history</div></div>
@@ -753,14 +728,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       </div>
     </div>
   </div>
-  <div class="timeline-sec">
-    <p class="sec-label">// Our Journey</p>
-    <h2 class="sec-title">HOW WE GOT HERE</h2>
-    <div class="timeline">
-      <div class="tl-item"><div class="tl-year">2025</div><div class="tl-content"><h4>THE BEGINNING</h4><p>Urban Grain founded in Chennai. Building the brand from scratch.</p></div></div>
-      <div class="tl-item"><div class="tl-year">2026</div><div class="tl-content"><h4>FIRST DROP COMING SOON</h4><p>Our debut collection is in the works. Stay tuned.</p></div></div>
-    </div>
-  </div>
+
   <div class="nl-wrap">
     <div class="nl-inner">
       <p class="sec-label" style="color:rgba(181,69,27,.7)">// Join The Movement</p>
@@ -908,7 +876,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
     <button class="btn-o" style="margin-left:1rem;margin-top:.8rem" onclick="goPage('home')">BACK TO HOME</button>
   </div>
 </div>
-<div id="sgm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;overflow-y:auto" onclick="closeSG()"><div style="background:#fff;max-width:600px;margin:2rem auto;padding:1.5rem" onclick="event.stopPropagation()"><button onclick="closeSG()" style="float:right;background:none;border:none;font-size:1.5rem;cursor:pointer">x</button><h2 id="sgt" style="font-family:var(--fd);margin-buttom:1rem"></h2><img id="sgi" src="" style="width:100%;height:auto"/></div></div>
+<div id="sgm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;overflow-y:auto" onclick="closeSG()"><div style="background:#fff;max-width:600px;margin:2rem auto;padding:1.5rem" onclick="event.stopPropagation()"><button onclick="closeSG()" style="float:right;background:none;border:none;font-size:1.5rem;cursor:pointer">x</button><h2 id="sgt" style="font-family:var(--fd);margin-bottom:1rem"></h2><img id="sgi" src="" style="width:100%;height:auto"/></div></div>
 <footer>
   <div class="footer-top">
     <div>
@@ -1014,6 +982,7 @@ async function sbPatch(t,filter,updates){if(IS_PREVIEW)return{error:null};var ur
 /* ═══════════ PRODUCTS ═══════════ */
 var SIZES=['XS','S','M','L','XL','XXL'];
 var PRODS=[];
+var curFilter='all';
 var FALLBACK=[
   {id:1,name:'Concrete Roots Hoodie',cat:'hoodie',price:2299,old:2899,tag:'NEW',clr:'CHARCOAL',desc:'Our signature heavyweight hoodie. Dropped shoulders, kangaroo pocket, ribbed cuffs.',oos:['XS'],image_url:null,images:[],colors:[]},
   {id:2,name:'Grain Oversized Tee',cat:'tee',price:1199,old:null,tag:'HOT',clr:'RUST/BLACK',desc:'280gsm oversized fit tee. Screen-printed UG graphic on the chest.',oos:['XXL'],image_url:null,images:[],colors:[]},
@@ -1046,16 +1015,7 @@ function prodCard(p){
 }
 
 function updateHeroImage(){
-  var visual=document.getElementById('hero-visual');
-  if(!visual)return;
-  var featured=PRODS.find(function(p){return p.image_url;})||null;
-  if(featured&&featured.image_url){
-    visual.style.backgroundImage='url('+featured.image_url+')';
-    visual.style.backgroundSize='cover';
-    visual.style.backgroundPosition='center';
-    var tag=document.getElementById('hero-visual-tag');
-    if(tag){tag.textContent=featured.cat.toUpperCase()+' · '+featured.name;tag.style.color='#f5f1ea';}
-  }
+  /* hero section removed — no-op */
 }
 
 function renderLookbook(){
