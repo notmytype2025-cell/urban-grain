@@ -34,6 +34,79 @@
   --fb:Arial,Helvetica,sans-serif;
   --fm:'Courier New',Courier,monospace;
 }
+/* ═══ VAULT ═══ */
+.vault-page{background:#0a0a0a;color:#f0ece4;min-height:100vh;padding-top:72px}
+.vault-gate{min-height:calc(100vh - 72px);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;text-align:center;padding:4rem 2rem}
+.vault-gate::before{content:'VAULT';font-family:var(--fd);font-size:clamp(8rem,22vw,20rem);color:rgba(181,69,27,.04);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:.05em;line-height:1}
+.vault-gate-eyebrow{font-family:var(--fm);font-size:.58rem;letter-spacing:.35em;color:var(--rust);margin-bottom:2rem;display:flex;align-items:center;gap:.8rem}
+.vault-gate-eyebrow::before,.vault-gate-eyebrow::after{content:'';display:block;width:40px;height:1px;background:var(--rust);opacity:.5}
+.vault-gate-title{font-family:var(--fd);font-size:clamp(3.5rem,9vw,8rem);line-height:.9;letter-spacing:.06em;margin-bottom:1.5rem;color:#f0ece4}
+.vault-gate-title span{color:var(--rust)}
+.vault-gate-sub{font-size:.9rem;font-weight:300;color:rgba(240,236,228,.4);line-height:1.9;max-width:420px;margin:0 auto 3rem;font-family:var(--fm);letter-spacing:.06em}
+.vault-count-row{display:flex;gap:3rem;justify-content:center;margin-bottom:3.5rem}
+.vault-count-item{text-align:center}
+.vault-count-num{font-family:var(--fd);font-size:2.8rem;color:var(--rust);line-height:1}
+.vault-count-label{font-family:var(--fm);font-size:.5rem;letter-spacing:.25em;color:rgba(240,236,228,.35);margin-top:.3rem}
+.vault-divider{width:1px;height:60px;background:rgba(240,236,228,.1);margin:auto}
+.vault-enter-btn{font-family:var(--fd);font-size:1rem;letter-spacing:.25em;background:transparent;color:var(--rust);border:1px solid var(--rust);padding:1rem 3rem;cursor:pointer;position:relative;overflow:hidden;transition:color .3s;text-transform:uppercase}
+.vault-enter-btn::before{content:'';position:absolute;inset:0;background:var(--rust);transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);z-index:0}
+.vault-enter-btn:hover::before{transform:translateX(0)}
+.vault-enter-btn:hover{color:#0a0a0a}
+.vault-enter-btn span{position:relative;z-index:1}
+/* vault drop grid */
+.vault-inner{display:none;padding:0 3rem 5rem}
+.vault-inner.open{display:block}
+.vault-header{padding:3rem 0 2.5rem;border-bottom:1px solid rgba(240,236,228,.06);margin-bottom:3rem;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem}
+.vault-header-left p{font-family:var(--fm);font-size:.55rem;letter-spacing:.3em;color:var(--rust);margin-bottom:.6rem}
+.vault-header-left h2{font-family:var(--fd);font-size:clamp(2rem,5vw,4rem);color:#f0ece4;line-height:1;letter-spacing:.05em}
+.vault-header-right{font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:rgba(240,236,228,.3);text-align:right;line-height:1.9}
+.vault-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:rgba(240,236,228,.06)}
+.vault-card{background:#0a0a0a;position:relative;cursor:pointer;overflow:hidden;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:flex-end}
+.vault-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.4,0,.2,1);filter:grayscale(20%)}
+.vault-card:hover .vault-card-img{transform:scale(1.05);filter:grayscale(0%)}
+.vault-card-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:7rem;color:rgba(181,69,27,.08);background:linear-gradient(160deg,#111 0%,#0a0a0a 100%)}
+.vault-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.2) 50%,transparent 100%)}
+.vault-card-body{position:relative;z-index:2;padding:1.5rem}
+.vault-card-edition{font-family:var(--fm);font-size:.48rem;letter-spacing:.3em;color:var(--rust);margin-bottom:.4rem}
+.vault-card-name{font-family:var(--fd);font-size:1.5rem;color:#f0ece4;line-height:1.1;margin-bottom:.6rem;letter-spacing:.05em}
+.vault-card-desc{font-family:var(--fb);font-size:.72rem;color:rgba(240,236,228,.45);line-height:1.6;margin-bottom:1rem}
+.vault-card-footer{display:flex;justify-content:space-between;align-items:center}
+.vault-card-price{font-family:var(--fm);font-size:.75rem;letter-spacing:.1em;color:#f0ece4}
+.vault-card-pcs{font-family:var(--fm);font-size:.48rem;letter-spacing:.2em;color:rgba(240,236,228,.35);display:flex;align-items:center;gap:.4rem}
+.vault-card-pcs::before{content:'';display:block;width:5px;height:5px;background:var(--rust);border-radius:50%}
+.vault-card-badge{position:absolute;top:1.2rem;left:1.2rem;z-index:3;font-family:var(--fm);font-size:.45rem;letter-spacing:.25em;padding:.35rem .7rem;border:1px solid}
+.vault-card-badge.sold{background:rgba(0,0,0,.6);color:rgba(240,236,228,.4);border-color:rgba(240,236,228,.15)}
+.vault-card-badge.live{background:rgba(181,69,27,.15);color:var(--rust);border-color:var(--rust);animation:vault-pulse 2s ease-in-out infinite}
+.vault-card-badge.coming{background:rgba(0,0,0,.6);color:rgba(240,236,228,.55);border-color:rgba(240,236,228,.2)}
+@keyframes vault-pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.vault-card-btn{position:absolute;bottom:0;left:0;right:0;z-index:3;font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;background:var(--rust);color:#f0ece4;border:none;padding:.9rem;cursor:pointer;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);text-transform:uppercase}
+.vault-card:hover .vault-card-btn{transform:translateY(0)}
+.vault-card-btn:hover{background:var(--rust-dark)}
+.vault-card-btn.disabled{background:#333;color:rgba(240,236,228,.35);cursor:default}
+/* vault notice bar */
+.vault-notice{background:rgba(181,69,27,.08);border:1px solid rgba(181,69,27,.18);padding:1rem 1.5rem;margin-bottom:2.5rem;display:flex;align-items:center;gap:1rem}
+.vault-notice-icon{font-size:1.1rem;flex-shrink:0}
+.vault-notice-text{font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;color:rgba(240,236,228,.6);line-height:1.7}
+/* vault bottom strip */
+.vault-strip{background:#080808;border-top:1px solid rgba(240,236,228,.05);padding:3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem;margin-top:4rem}
+.vault-strip-text p:first-child{font-family:var(--fm);font-size:.5rem;letter-spacing:.3em;color:var(--rust);margin-bottom:.4rem}
+.vault-strip-text p:last-child{font-family:var(--fd);font-size:1.6rem;color:#f0ece4;letter-spacing:.05em}
+.vault-strip-form{display:flex;gap:0}
+.vault-strip-form input{font-family:var(--fm);font-size:.6rem;letter-spacing:.1em;padding:.8rem 1.2rem;background:rgba(240,236,228,.05);border:1px solid rgba(240,236,228,.1);border-right:none;color:#f0ece4;outline:none;width:240px}
+.vault-strip-form input::placeholder{color:rgba(240,236,228,.25)}
+.vault-strip-form button{font-family:var(--fm);font-size:.6rem;letter-spacing:.15em;background:var(--rust);color:#f0ece4;border:none;padding:.8rem 1.4rem;cursor:pointer}
+.vault-strip-form button:hover{background:var(--rust-dark)}
+@media(max-width:768px){
+  .vault-inner{padding:0 1rem 3rem}
+  .vault-grid{grid-template-columns:1fr 1fr}
+  .vault-strip{flex-direction:column}
+  .vault-strip-form input{width:100%}
+  .vault-count-row{gap:1.5rem}
+}
+@media(max-width:480px){
+  .vault-grid{grid-template-columns:1fr}
+  .vault-count-row{flex-wrap:wrap;gap:1rem}
+}
 html{scroll-behavior:smooth}
 body{font-family:var(--fb);background:var(--bg);color:var(--black);overflow-x:hidden}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--rust)}
@@ -446,6 +519,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
     <li><a id="nl-shop" onclick="goPage('shop')">Shop</a></li>
     <li><a id="nl-about" onclick="goPage('about')">About</a></li>
     <li><a id="nl-contact" onclick="goPage('contact')">Contact</a></li>
+    <li><a id="nl-vault" onclick="goPage('vault')" style="color:var(--rust);font-weight:700;letter-spacing:.22em">⬡ VAULT</a></li>
   </ul>
   <div class="nav-right">
     <button class="auth-btn" id="btnLogin" onclick="openAuth('login')">LOGIN</button>
@@ -461,6 +535,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
   <a onclick="goPage('shop');toggleMob()">Shop</a>
   <a onclick="goPage('about');toggleMob()">About</a>
   <a onclick="goPage('contact');toggleMob()">Contact</a>
+  <a onclick="goPage('vault');toggleMob()" style="color:var(--rust);font-weight:700">⬡ VAULT</a>
   <a id="mobAuth" onclick="openAuth('login');toggleMob()">Login / Sign Up</a>
 </div>
 
@@ -503,6 +578,68 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       <p class="modal-switch">Have an account? <span onclick="openAuth('login')">SIGN IN</span></p>
     </div>
   </div>
+</div>
+
+<!-- VAULT -->
+<div class="page vault-page" id="pg-vault">
+
+  <!-- GATE SCREEN -->
+  <div class="vault-gate" id="vaultGate">
+    <div class="vault-gate-eyebrow">URBAN GRAIN · VAULT</div>
+    <h1 class="vault-gate-title">THE<br><span>VAULT</span></h1>
+    <p class="vault-gate-sub">NOT EVERYTHING MAKES IT HERE.<br>ONLY THE ONES THAT SHOULDN'T EXIST — BUT DO.</p>
+    <div class="vault-count-row">
+      <div class="vault-count-item">
+        <div class="vault-count-num" id="vaultTotalPcs">—</div>
+        <div class="vault-count-label">PIECES EVER MADE</div>
+      </div>
+      <div class="vault-divider"></div>
+      <div class="vault-count-item">
+        <div class="vault-count-num" id="vaultDrops">—</div>
+        <div class="vault-count-label">VAULT DROPS</div>
+      </div>
+      <div class="vault-divider"></div>
+      <div class="vault-count-item">
+        <div class="vault-count-num" id="vaultLive">—</div>
+        <div class="vault-count-label">AVAILABLE NOW</div>
+      </div>
+    </div>
+    <button class="vault-enter-btn" onclick="enterVault()"><span>ENTER THE VAULT →</span></button>
+  </div>
+
+  <!-- VAULT INNER (hidden until Enter clicked) -->
+  <div class="vault-inner" id="vaultInner">
+    <div class="vault-header">
+      <div class="vault-header-left">
+        <p>// URBAN GRAIN · VAULT DROPS</p>
+        <h2>LIMITED<br>ARCHIVE</h2>
+      </div>
+      <div class="vault-header-right">
+        EACH PIECE IS NUMBERED<br>
+        ONCE SOLD — GONE FOREVER<br>
+        NO RESTOCK · NO EXCEPTIONS
+      </div>
+    </div>
+
+    <div class="vault-notice">
+      <span class="vault-notice-icon">⬡</span>
+      <div class="vault-notice-text">VAULT PIECES ARE MADE IN SINGLE-RUN QUANTITIES ONLY. EVERY ITEM IS INDIVIDUALLY NUMBERED. ONCE A DROP SELLS OUT, IT IS PERMANENTLY RETIRED FROM THE URBAN GRAIN CATALOGUE.</div>
+    </div>
+
+    <div class="vault-grid" id="vaultGrid"></div>
+
+    <div class="vault-strip">
+      <div class="vault-strip-text">
+        <p>// VAULT ALERTS</p>
+        <p>GET NOTIFIED FIRST</p>
+      </div>
+      <form class="vault-strip-form" onsubmit="handleVaultNL(event)">
+        <input type="email" placeholder="YOUR EMAIL — VAULT ACCESS ONLY" required/>
+        <button type="submit">NOTIFY ME</button>
+      </form>
+    </div>
+  </div>
+
 </div>
 
 <!-- CART -->
@@ -1519,6 +1656,163 @@ var POLS={
 };
 function openPol(key){var p=POLS[key];if(!p)return;document.getElementById('polTitle').textContent=p.title;document.getElementById('polBody').innerHTML=p.sections.map(function(s){return'<div style="margin-bottom:1.8rem"><div style="font-family:var(--fd);font-size:1.1rem;color:var(--black);margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)">'+s.h+'</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem">'+s.items.map(function(i){return'<li style="display:flex;gap:.7rem"><span style="color:var(--rust)">▸</span><span>'+i+'</span></li>';}).join('')+'</ul></div>';}).join('');document.getElementById('polOv').classList.add('open');document.body.style.overflow='hidden';}
 function closePolBtn(){document.getElementById('polOv').classList.remove('open');document.body.style.overflow='';}
+
+/* ═══════════ VAULT ═══════════ */
+var VAULT_DROPS=[
+  {
+    id:'v001',
+    edition:'VAULT DROP 001',
+    name:'SHADOW PROTOCOL',
+    desc:'Hand-dyed black-on-black oversized hoodie. Tonal UG embroidery. Triple-stitched seams.',
+    price:4999,
+    pcs:12,
+    sold:9,
+    status:'live',
+    image_url:null,
+    cat:'hoodie'
+  },
+  {
+    id:'v002',
+    edition:'VAULT DROP 002',
+    name:'IRON GRAIN TEE',
+    desc:'380gsm heavyweight tee. Acid-washed by hand in-house. Each piece finishes differently.',
+    price:2999,
+    pcs:20,
+    sold:20,
+    status:'sold',
+    image_url:null,
+    cat:'tee'
+  },
+  {
+    id:'v003',
+    edition:'VAULT DROP 003',
+    name:'DEAD CITY CARGO',
+    desc:'Slate grey waxed canvas cargo. Hidden zip compartments. Garment-dyed post-construction.',
+    price:6499,
+    pcs:8,
+    sold:0,
+    status:'coming',
+    image_url:null,
+    cat:'cargo'
+  },
+  {
+    id:'v004',
+    edition:'VAULT DROP 004',
+    name:'CONCRETE JACKET',
+    desc:'Stone-washed coach jacket. Deconstructed collar. Only 6 exist in this colourway.',
+    price:7999,
+    pcs:6,
+    sold:4,
+    status:'live',
+    image_url:null,
+    cat:'jacket'
+  }
+];
+
+function enterVault(){
+  document.getElementById('vaultGate').style.display='none';
+  document.getElementById('vaultInner').classList.add('open');
+  renderVault();
+}
+
+function renderVault(){
+  var grid=document.getElementById('vaultGrid');
+  if(!grid)return;
+
+  /* update counters */
+  var totalPcs=VAULT_DROPS.reduce(function(s,d){return s+d.pcs;},0);
+  var liveCount=VAULT_DROPS.filter(function(d){return d.status==='live';}).length;
+  document.getElementById('vaultTotalPcs').textContent=totalPcs;
+  document.getElementById('vaultDrops').textContent=VAULT_DROPS.length;
+  document.getElementById('vaultLive').textContent=liveCount;
+
+  grid.innerHTML=VAULT_DROPS.map(function(d){
+    var remaining=d.pcs-d.sold;
+    var pct=Math.round((d.sold/d.pcs)*100);
+    var badgeHtml='';
+    if(d.status==='sold')badgeHtml='<div class="vault-card-badge sold">SOLD OUT</div>';
+    else if(d.status==='live')badgeHtml='<div class="vault-card-badge live">● LIVE NOW</div>';
+    else if(d.status==='coming')badgeHtml='<div class="vault-card-badge coming">COMING SOON</div>';
+
+    var imgHtml=d.image_url
+      ?'<img src="'+d.image_url+'" class="vault-card-img" alt="'+d.name+'" onerror="this.style.display=\'none\'"/>'
+      :'<div class="vault-card-placeholder">UG</div>';
+
+    var btnLabel=d.status==='sold'?'SOLD OUT — ARCHIVED':d.status==='coming'?'DROP INCOMING':'ADD TO BAG';
+    var btnClass=d.status!=='live'?'vault-card-btn disabled':'vault-card-btn';
+    var btnAction=d.status==='live'?'onclick="vaultAddToCart(\''+d.id+'\')"':'';
+
+    var remainBar=d.status==='live'?'<div style="margin-top:.8rem"><div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span style="font-family:var(--fm);font-size:.45rem;letter-spacing:.2em;color:rgba(240,236,228,.35)">'+remaining+' OF '+d.pcs+' REMAINING</span><span style="font-family:var(--fm);font-size:.45rem;letter-spacing:.15em;color:var(--rust)">'+pct+'% CLAIMED</span></div><div style="height:2px;background:rgba(240,236,228,.08);position:relative"><div style="position:absolute;left:0;top:0;height:100%;width:'+pct+'%;background:var(--rust);transition:width .6s ease"></div></div></div>':'';
+
+    return '<div class="vault-card" onclick="vaultCardClick(\''+d.id+'\')">'
+      +imgHtml
+      +badgeHtml
+      +'<div class="vault-card-overlay"></div>'
+      +'<div class="vault-card-body">'
+        +'<div class="vault-card-edition">'+d.edition+'</div>'
+        +'<div class="vault-card-name">'+d.name+'</div>'
+        +'<div class="vault-card-desc">'+d.desc+'</div>'
+        +'<div class="vault-card-footer">'
+          +'<div class="vault-card-price">₹'+d.price.toLocaleString('en-IN')+'</div>'
+          +'<div class="vault-card-pcs">'+d.pcs+' PCS ONLY</div>'
+        +'</div>'
+        +remainBar
+      +'</div>'
+      +'<button class="'+btnClass+'" '+btnAction+' onclick="event.stopPropagation()">'+btnLabel+'</button>'
+      +'</div>';
+  }).join('');
+
+  /* update gate counters even if gate is hidden */
+  document.getElementById('vaultTotalPcs').textContent=totalPcs;
+  document.getElementById('vaultDrops').textContent=VAULT_DROPS.length;
+  document.getElementById('vaultLive').textContent=liveCount;
+}
+
+function vaultCardClick(id){
+  var d=VAULT_DROPS.find(function(x){return x.id===id;});
+  if(!d||d.status!=='live')return;
+  var p=PRODS.find(function(x){return x.name===d.name;});
+  if(p){openProd(p.id);}
+  else{showToast(d.name+' — Select size via "Add to Bag"');}
+}
+
+function vaultAddToCart(id){
+  var d=VAULT_DROPS.find(function(x){return x.id===id;});
+  if(!d||d.status!=='live'){return;}
+  /* try to open actual product page if it exists */
+  var p=PRODS.find(function(x){return x.name===d.name;});
+  if(p){openProd(p.id);return;}
+  /* fallback: direct add with no size (vault items may be one-size) */
+  var key='vault-'+d.id;
+  var ex=cart.find(function(x){return x.key===key;});
+  if(ex){showToast(d.name+' already in your bag.');return;}
+  cart.push({key:key,id:d.id,name:d.name+' [VAULT]',price:d.price,size:'ONE',colorName:'Vault Edition',qty:1,image_url:d.image_url});
+  updateCart();
+  showToast('⬡ '+d.name+' — Added to bag');
+}
+
+function handleVaultNL(e){
+  e.preventDefault();
+  var em=e.target.querySelector('input[type=email]').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showToast('Please enter a valid email.');return;}
+  sbUpsert('newsletter_subscribers',{email:em,vault_access:true});
+  showToast('⬡ You\'re on the Vault list. First to know.');
+  e.target.reset();
+}
+
+/* reset vault gate when leaving page */
+function resetVaultGate(){
+  var gate=document.getElementById('vaultGate');
+  var inner=document.getElementById('vaultInner');
+  if(gate)gate.style.display='';
+  if(inner)inner.classList.remove('open');
+  /* populate gate counters */
+  var totalPcs=VAULT_DROPS.reduce(function(s,d){return s+d.pcs;},0);
+  var liveCount=VAULT_DROPS.filter(function(d){return d.status==='live';}).length;
+  document.getElementById('vaultTotalPcs').textContent=totalPcs;
+  document.getElementById('vaultDrops').textContent=VAULT_DROPS.length;
+  document.getElementById('vaultLive').textContent=liveCount;
+}
 
 /* ═══════════ REALTIME ═══════════ */
 function startRealtime(){
