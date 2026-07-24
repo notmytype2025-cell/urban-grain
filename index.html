@@ -34,6 +34,40 @@
   --fb:Arial,Helvetica,sans-serif;
   --fm:'Courier New',Courier,monospace;
 }
+/* ═══ VAULT QUICK-SHOP MODAL ═══ */
+.vqs-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s}
+.vqs-overlay.open{opacity:1;pointer-events:all}
+.vqs-drawer{position:fixed;bottom:-100%;left:0;right:0;max-height:90vh;overflow-y:auto;background:#111;border-top:1px solid rgba(240,236,228,.1);z-index:2001;transition:bottom .35s cubic-bezier(.4,0,.2,1);padding:2rem}
+.vqs-drawer.open{bottom:0}
+.vqs-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;gap:1rem}
+.vqs-head-left{display:flex;gap:1.2rem;align-items:center}
+.vqs-img{width:64px;height:80px;background:#1a1a1a;flex-shrink:0;overflow:hidden;border:1px solid rgba(240,236,228,.08)}
+.vqs-img img{width:100%;height:100%;object-fit:cover}
+.vqs-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1.2rem;color:rgba(181,69,27,.3)}
+.vqs-edition{font-family:var(--fm);font-size:.48rem;letter-spacing:.3em;color:var(--rust);margin-bottom:.3rem}
+.vqs-name{font-family:var(--fd);font-size:1.3rem;color:#f0ece4;letter-spacing:.04em;line-height:1.1}
+.vqs-price{font-family:var(--fm);font-size:.8rem;letter-spacing:.1em;color:#f0ece4;margin-top:.4rem}
+.vqs-close{font-family:var(--fm);font-size:.55rem;letter-spacing:.15em;color:rgba(240,236,228,.4);background:none;border:none;cursor:pointer;flex-shrink:0;padding:.3rem}
+.vqs-close:hover{color:#f0ece4}
+.vqs-divider{height:1px;background:rgba(240,236,228,.07);margin-bottom:1.5rem}
+.vqs-label{font-family:var(--fm);font-size:.52rem;letter-spacing:.25em;color:rgba(240,236,228,.45);margin-bottom:.7rem}
+.vqs-sizes{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.vqs-size-btn{font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;padding:.55rem .9rem;background:transparent;border:1px solid rgba(240,236,228,.15);color:rgba(240,236,228,.6);cursor:pointer;transition:all .2s;min-width:48px;text-align:center}
+.vqs-size-btn:hover{border-color:rgba(240,236,228,.5);color:#f0ece4}
+.vqs-size-btn.selected{border-color:var(--rust);color:#f0ece4;background:rgba(181,69,27,.12)}
+.vqs-size-btn.oos{opacity:.3;cursor:not-allowed;text-decoration:line-through}
+.vqs-qty-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.vqs-qty-btn{width:32px;height:32px;border:1px solid rgba(240,236,228,.15);background:transparent;color:#f0ece4;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:border-color .2s}
+.vqs-qty-btn:hover{border-color:var(--rust)}
+.vqs-qty-val{font-family:var(--fm);font-size:.75rem;letter-spacing:.1em;color:#f0ece4;min-width:28px;text-align:center}
+.vqs-atc{width:100%;font-family:var(--fm);font-size:.68rem;letter-spacing:.2em;background:var(--rust);color:#f0ece4;border:none;padding:1rem;cursor:pointer;transition:background .2s;text-transform:uppercase}
+.vqs-atc:hover{background:var(--rust-dark)}
+.vqs-err{font-family:var(--fm);font-size:.55rem;letter-spacing:.12em;color:var(--rust);margin-bottom:.8rem;display:none}
+@media(min-width:640px){
+  .vqs-drawer{left:50%;right:auto;transform:translateX(-50%);width:500px;border-radius:0;border:1px solid rgba(240,236,228,.1);border-bottom:none}
+  .vqs-drawer.open{bottom:0}
+}
+
 /* ═══ VAULT ═══ */
 .vault-page{background:#0a0a0a;color:#f0ece4;min-height:100vh;padding-top:72px}
 .vault-gate{min-height:calc(100vh - 72px);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;text-align:center;padding:4rem 2rem}
@@ -1693,7 +1727,8 @@ async function loadVaultDrops(){
           status:row.status||'coming',
           image_url:row.image_url||null,
           images:row.images||[],
-          cat:row.cat||'general'
+          cat:row.cat||'general',
+          oos:row.oos||[]
         };
       });
     }
@@ -1767,27 +1802,94 @@ function renderVault(){
   document.getElementById('vaultLive').textContent=liveCount;
 }
 
+/* ═══ VAULT QUICK-SHOP ═══ */
+var vqsState={drop:null,size:null,qty:1};
+
+function openVQS(id){
+  var d=VAULT_DROPS.find(function(x){return x.id===id;});
+  if(!d||d.status!=='live')return;
+  vqsState={drop:d,size:null,qty:1};
+
+  /* populate header */
+  document.getElementById('vqs-edition').textContent=d.edition;
+  document.getElementById('vqs-name').textContent=d.name;
+  document.getElementById('vqs-price').textContent='₹'+d.price.toLocaleString('en-IN');
+  document.getElementById('vqs-qty').textContent='1';
+  document.getElementById('vqs-err').style.display='none';
+
+  /* image */
+  var imgEl=document.getElementById('vqs-img');
+  imgEl.innerHTML=d.image_url
+    ?'<img src="'+d.image_url+'" alt="'+d.name+'" onerror="this.parentElement.innerHTML=\'<div class=vqs-img-placeholder>UG</div>\'"/>'
+    :'<div class="vqs-img-placeholder">UG</div>';
+
+  /* sizes — use oos array from drop if present, else all sizes available */
+  var oos=d.oos||[];
+  document.getElementById('vqs-sizes').innerHTML=SIZES.map(function(s){
+    var isOos=oos.includes(s);
+    return'<button class="vqs-size-btn'+(isOos?' oos':'')+'" '
+      +(isOos?'disabled':'')+' onclick="vqsSelSize(this,\''+s+'\')">'
+      +s+'</button>';
+  }).join('');
+
+  /* open */
+  document.getElementById('vqsOverlay').classList.add('open');
+  document.getElementById('vqsDrawer').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeVQS(){
+  document.getElementById('vqsOverlay').classList.remove('open');
+  document.getElementById('vqsDrawer').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function vqsSelSize(btn,s){
+  document.querySelectorAll('.vqs-size-btn').forEach(function(b){b.classList.remove('selected');});
+  btn.classList.add('selected');
+  vqsState.size=s;
+  document.getElementById('vqs-err').style.display='none';
+}
+
+function vqsChangeQty(dir){
+  vqsState.qty=Math.max(1,Math.min(10,vqsState.qty+dir));
+  document.getElementById('vqs-qty').textContent=vqsState.qty;
+}
+
+function vqsAddToCart(){
+  if(!vqsState.size){
+    document.getElementById('vqs-err').style.display='block';
+    return;
+  }
+  var d=vqsState.drop;
+  var key='vault-'+d.id+'-'+vqsState.size;
+  var ex=cart.find(function(x){return x.key===key;});
+  if(ex){ex.qty+=vqsState.qty;}
+  else{
+    cart.push({
+      key:key,
+      id:d.id,
+      name:d.name+' [VAULT]',
+      price:d.price,
+      size:vqsState.size,
+      colorName:'Vault Edition',
+      qty:vqsState.qty,
+      image_url:d.image_url
+    });
+  }
+  updateCart();
+  closeVQS();
+  showToast('⬡ '+d.name+' ('+vqsState.size+') — Added to bag');
+}
+
 function vaultCardClick(id){
   var d=VAULT_DROPS.find(function(x){return x.id===id;});
   if(!d||d.status!=='live')return;
-  var p=PRODS.find(function(x){return x.name===d.name;});
-  if(p){openProd(p.id);}
-  else{showToast(d.name+' — Select size via "Add to Bag"');}
+  openVQS(id);
 }
 
 function vaultAddToCart(id){
-  var d=VAULT_DROPS.find(function(x){return x.id===id;});
-  if(!d||d.status!=='live'){return;}
-  /* try to open actual product page if it exists */
-  var p=PRODS.find(function(x){return x.name===d.name;});
-  if(p){openProd(p.id);return;}
-  /* fallback: direct add with no size (vault items may be one-size) */
-  var key='vault-'+d.id;
-  var ex=cart.find(function(x){return x.key===key;});
-  if(ex){showToast(d.name+' already in your bag.');return;}
-  cart.push({key:key,id:d.id,name:d.name+' [VAULT]',price:d.price,size:'ONE',colorName:'Vault Edition',qty:1,image_url:d.image_url});
-  updateCart();
-  showToast('⬡ '+d.name+' — Added to bag');
+  openVQS(id);
 }
 
 function handleVaultNL(e){
@@ -1964,5 +2066,32 @@ document.addEventListener('DOMContentLoaded',function(){
   initAuth().then(function(){setTimeout(startRealtime,1500);});
 });
 </script>
+<!-- VAULT QUICK-SHOP MODAL -->
+<div class="vqs-overlay" id="vqsOverlay" onclick="closeVQS()"></div>
+<div class="vqs-drawer" id="vqsDrawer">
+  <div class="vqs-head">
+    <div class="vqs-head-left">
+      <div class="vqs-img" id="vqs-img"><div class="vqs-img-placeholder">UG</div></div>
+      <div>
+        <div class="vqs-edition" id="vqs-edition"></div>
+        <div class="vqs-name" id="vqs-name"></div>
+        <div class="vqs-price" id="vqs-price"></div>
+      </div>
+    </div>
+    <button class="vqs-close" onclick="closeVQS()">✕ CLOSE</button>
+  </div>
+  <div class="vqs-divider"></div>
+  <div class="vqs-label">SELECT SIZE</div>
+  <div class="vqs-sizes" id="vqs-sizes"></div>
+  <div class="vqs-err" id="vqs-err">PLEASE SELECT A SIZE</div>
+  <div class="vqs-label">QUANTITY</div>
+  <div class="vqs-qty-row">
+    <button class="vqs-qty-btn" onclick="vqsChangeQty(-1)">−</button>
+    <div class="vqs-qty-val" id="vqs-qty">1</div>
+    <button class="vqs-qty-btn" onclick="vqsChangeQty(1)">+</button>
+  </div>
+  <button class="vqs-atc" onclick="vqsAddToCart()">ADD TO BAG</button>
+</div>
+
 </body>
 </html>
