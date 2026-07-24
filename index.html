@@ -769,7 +769,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       <button class="btn-wl" onclick="showToast('Added to wishlist!')">♡ ADD TO WISHLIST</button>
       <div class="pdp-details">
         <div class="acc-item"><button class="acc-head" onclick="toggleAcc(this)"><span>PRODUCT DETAILS</span><span class="acc-arrow">▾</span></button><div class="acc-body open" id="pdp-desc"></div></div>
-        <div class="acc-item"><button class="acc-head" onclick="toggleAcc(this)"><span>FABRIC & CARE</span><span class="acc-arrow">▾</span></button><div class="acc-body">180-220gsm+ 100% combed cotton. Machine wash cold, inside out. Do not tumble dry.</div></div>
+        <div class="acc-item"><button class="acc-head" onclick="toggleAcc(this)"><span>FABRIC & CARE</span><span class="acc-arrow">▾</span></button><div class="acc-body" id="pdp-fabric-care">—</div></div>
         <div class="acc-item"><button class="acc-head" onclick="toggleAcc(this)"><span>SHIPPING & RETURNS</span><span class="acc-arrow">▾</span></button><div class="acc-body">Ships within 2–3 business days. Free shipping above ₹1299. 7-day exchange on unworn items.</div></div>
       </div>
     </div>
@@ -1013,7 +1013,20 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
     <button class="btn-o" style="margin-left:1rem;margin-top:.8rem" onclick="goPage('home')">BACK TO HOME</button>
   </div>
 </div>
-<div id="sgm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;overflow-y:auto" onclick="closeSG()"><div style="background:#fff;max-width:600px;margin:2rem auto;padding:1.5rem" onclick="event.stopPropagation()"><button onclick="closeSG()" style="float:right;background:none;border:none;font-size:1.5rem;cursor:pointer">x</button><h2 id="sgt" style="font-family:var(--fd);margin-bottom:1rem"></h2><img id="sgi" src="" style="width:100%;height:auto"/></div></div>
+<div id="sgm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;overflow-y:auto;padding:2rem 1rem" onclick="closeSG()">
+  <div style="background:var(--bg);max-width:600px;margin:0 auto;padding:2.5rem;position:relative;border:1px solid var(--border)" onclick="event.stopPropagation()">
+    <button onclick="closeSG()" style="position:absolute;top:1rem;right:1.2rem;background:none;border:none;font-family:var(--fm);font-size:.6rem;letter-spacing:.15em;cursor:pointer;color:var(--grain)">✕ CLOSE</button>
+    <p style="font-family:var(--fm);font-size:.5rem;letter-spacing:.3em;color:var(--rust);margin-bottom:.5rem">// FIT REFERENCE</p>
+    <h2 style="font-family:var(--fd);font-size:2rem;letter-spacing:.05em;margin-bottom:.4rem" id="sg-title">SIZE GUIDE</h2>
+    <p style="font-family:var(--fm);font-size:.58rem;color:var(--grain);letter-spacing:.08em;margin-bottom:2rem">All measurements in centimetres (cm). Measure your body, not the garment.</p>
+    <div id="sg-table-wrap"></div>
+    <p style="font-family:var(--fm);font-size:.52rem;letter-spacing:.1em;color:var(--grain);line-height:1.8;margin-top:1.5rem">
+      ▸ All UG pieces are cut oversized — if you want a slimmer fit, size down.<br>
+      ▸ Measurements are of the garment laid flat.<br>
+      ▸ Slight variation of ±1–2cm is normal across pieces.
+    </p>
+  </div>
+</div>
 <footer>
   <div class="footer-top">
     <div>
@@ -1399,6 +1412,7 @@ function openProd(id){
   document.getElementById('pdp-desc').textContent=p.desc;
   document.getElementById('pdp-qty').textContent=1;
   document.getElementById('pdp-badge-wrap').innerHTML=p.tag?'<div class="pdp-badge-lg">'+p.tag+'</div>':'';
+  setFabricCare(p.cat);
   /* build slider */
   buildSlider(p.images&&p.images.length?p.images:(p.image_url?[p.image_url]:[]));
   /* colors */
@@ -1634,6 +1648,7 @@ function goPage(page){
   if(page==='home')renderHome();
   if(page==='account')loadOrders();
   if(page==='checkout')showCheckoutForLoggedIn();
+  if(page==='vault')resetVaultGate();
 }
 function switchAccTab(tab,btn){document.querySelectorAll('.acc-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.acc-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');document.getElementById('tab-'+tab).classList.add('active');if(tab==='orders')loadOrders();}
 function toggleMob(){document.getElementById('mobMenu').classList.toggle('open');}
@@ -1658,61 +1673,40 @@ function openPol(key){var p=POLS[key];if(!p)return;document.getElementById('polT
 function closePolBtn(){document.getElementById('polOv').classList.remove('open');document.body.style.overflow='';}
 
 /* ═══════════ VAULT ═══════════ */
-var VAULT_DROPS=[
-  {
-    id:'v001',
-    edition:'VAULT DROP 001',
-    name:'SHADOW PROTOCOL',
-    desc:'Hand-dyed black-on-black oversized hoodie. Tonal UG embroidery. Triple-stitched seams.',
-    price:4999,
-    pcs:12,
-    sold:9,
-    status:'live',
-    image_url:null,
-    cat:'hoodie'
-  },
-  {
-    id:'v002',
-    edition:'VAULT DROP 002',
-    name:'IRON GRAIN TEE',
-    desc:'380gsm heavyweight tee. Acid-washed by hand in-house. Each piece finishes differently.',
-    price:2999,
-    pcs:20,
-    sold:20,
-    status:'sold',
-    image_url:null,
-    cat:'tee'
-  },
-  {
-    id:'v003',
-    edition:'VAULT DROP 003',
-    name:'DEAD CITY CARGO',
-    desc:'Slate grey waxed canvas cargo. Hidden zip compartments. Garment-dyed post-construction.',
-    price:6499,
-    pcs:8,
-    sold:0,
-    status:'coming',
-    image_url:null,
-    cat:'cargo'
-  },
-  {
-    id:'v004',
-    edition:'VAULT DROP 004',
-    name:'CONCRETE JACKET',
-    desc:'Stone-washed coach jacket. Deconstructed collar. Only 6 exist in this colourway.',
-    price:7999,
-    pcs:6,
-    sold:4,
-    status:'live',
-    image_url:null,
-    cat:'jacket'
-  }
-];
+var VAULT_DROPS=[];
+
+async function loadVaultDrops(){
+  /* fetch from Supabase vault_products table */
+  var url=SB_URL+'/rest/v1/vault_products?select=*&order=created_at.asc&active=is.true';
+  try{
+    var r=await sbFetch(url,{headers:sbH()});
+    if(r.ok&&Array.isArray(r.data)&&r.data.length){
+      VAULT_DROPS=r.data.map(function(row){
+        return{
+          id:row.id,
+          edition:row.edition||'VAULT DROP',
+          name:row.name||'',
+          desc:row.desc||row.description||'',
+          price:row.price||0,
+          pcs:row.pcs_made||0,
+          sold:row.pcs_sold||0,
+          status:row.status||'coming',
+          image_url:row.image_url||null,
+          images:row.images||[],
+          cat:row.cat||'general'
+        };
+      });
+    }
+  }catch(e){console.log('Vault fetch error:',e.message);}
+}
 
 function enterVault(){
   document.getElementById('vaultGate').style.display='none';
   document.getElementById('vaultInner').classList.add('open');
-  renderVault();
+  /* show loading state then fetch and render */
+  var grid=document.getElementById('vaultGrid');
+  if(grid)grid.innerHTML='<div style="grid-column:1/-1;padding:4rem;text-align:center;font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;color:rgba(240,236,228,.3)">LOADING VAULT...</div>';
+  loadVaultDrops().then(function(){renderVault();});
 }
 
 function renderVault(){
@@ -1725,6 +1719,11 @@ function renderVault(){
   document.getElementById('vaultTotalPcs').textContent=totalPcs;
   document.getElementById('vaultDrops').textContent=VAULT_DROPS.length;
   document.getElementById('vaultLive').textContent=liveCount;
+
+  if(!VAULT_DROPS.length){
+    grid.innerHTML='<div style="grid-column:1/-1;padding:5rem 2rem;text-align:center;font-family:var(--fm);font-size:.6rem;letter-spacing:.25em;color:rgba(240,236,228,.25)">NO VAULT DROPS YET — CHECK BACK SOON</div>';
+    return;
+  }
 
   grid.innerHTML=VAULT_DROPS.map(function(d){
     var remaining=d.pcs-d.sold;
@@ -1806,12 +1805,121 @@ function resetVaultGate(){
   var inner=document.getElementById('vaultInner');
   if(gate)gate.style.display='';
   if(inner)inner.classList.remove('open');
-  /* populate gate counters */
-  var totalPcs=VAULT_DROPS.reduce(function(s,d){return s+d.pcs;},0);
-  var liveCount=VAULT_DROPS.filter(function(d){return d.status==='live';}).length;
-  document.getElementById('vaultTotalPcs').textContent=totalPcs;
-  document.getElementById('vaultDrops').textContent=VAULT_DROPS.length;
-  document.getElementById('vaultLive').textContent=liveCount;
+  /* fetch fresh counts to populate gate screen */
+  loadVaultDrops().then(function(){
+    var totalPcs=VAULT_DROPS.reduce(function(s,d){return s+d.pcs;},0);
+    var liveCount=VAULT_DROPS.filter(function(d){return d.status==='live';}).length;
+    document.getElementById('vaultTotalPcs').textContent=totalPcs||'—';
+    document.getElementById('vaultDrops').textContent=VAULT_DROPS.length||'—';
+    document.getElementById('vaultLive').textContent=liveCount||'—';
+  });
+}
+
+/* ═══════════ SIZE GUIDE ═══════════ */
+
+/*
+  ╔══════════════════════════════════════════════════════╗
+  ║  HOW TO EDIT SIZE GUIDE MEASUREMENTS                ║
+  ║  Find the SIZE_CHARTS object below.                 ║
+  ║  Each key is the product category (cat field):      ║
+  ║    'tee'    → Tees & Oversized                      ║
+  ║    'hoodie' → Hoodies                               ║
+  ║    'cargo'  → Cargos                                ║
+  ║  headers = column names shown in the table          ║
+  ║  rows = [ SIZE, col1, col2, col3, col4 ]            ║
+  ║  Just change the numbers directly.                  ║
+  ╚══════════════════════════════════════════════════════╝
+*/
+var SIZE_CHARTS={
+  tee:{
+    label:'TEES & OVERSIZED',
+    headers:['SIZE','CHEST','LENGTH','SHOULDER','SLEEVE'],
+    rows:[
+      ['XS', 96,  68, 43, 20],
+      ['S',  100, 70, 45, 21],
+      ['M',  106, 72, 47, 22],
+      ['L',  112, 74, 49, 23],
+      ['XL', 118, 76, 51, 24],
+      ['XXL',124, 78, 53, 25]
+    ]
+  },
+  hoodie:{
+    label:'HOODIES',
+    headers:['SIZE','CHEST','LENGTH','SHOULDER','SLEEVE'],
+    rows:[
+      ['XS', 100, 65, 46, 58],
+      ['S',  104, 67, 48, 60],
+      ['M',  110, 69, 50, 62],
+      ['L',  116, 71, 52, 64],
+      ['XL', 122, 73, 54, 66],
+      ['XXL',128, 75, 56, 68]
+    ]
+  },
+  cargo:{
+    label:'CARGOS',
+    headers:['SIZE','WAIST','HIP','INSEAM','LENGTH'],
+    rows:[
+      ['XS', 70, 88,  72, 95],
+      ['S',  74, 92,  74, 97],
+      ['M',  78, 96,  76, 99],
+      ['L',  82, 100, 78, 101],
+      ['XL', 86, 104, 80, 103],
+      ['XXL',90, 108, 82, 105]
+    ]
+  }
+};
+
+function buildSizeTable(chart){
+  var th=chart.headers.map(function(h,i){
+    return'<th style="padding:.6rem .8rem;text-align:'+(i===0?'left':'center')+';border:1px solid var(--border)">'+h+'</th>';
+  }).join('');
+  var tr=chart.rows.map(function(row,ri){
+    var bg=ri%2===1?'background:var(--bg2);':'';
+    var cells=row.map(function(v,i){
+      return'<td style="padding:.55rem .8rem;border:1px solid var(--border);text-align:'+(i===0?'left':'center')+(i===0?';font-weight:700':'')+'">'+(i===0?v:v+' cm')+'</td>';
+    }).join('');
+    return'<tr style="'+bg+'">'+cells+'</tr>';
+  }).join('');
+  return'<table style="width:100%;border-collapse:collapse;font-family:var(--fm);font-size:.6rem;letter-spacing:.08em"><thead><tr style="background:var(--bg2)">'+th+'</tr></thead><tbody>'+tr+'</tbody></table>';
+}
+
+function showSG(){
+  var cat=pdpState&&pdpState.prod?pdpState.prod.cat:'tee';
+  var chart=SIZE_CHARTS[cat]||SIZE_CHARTS['tee'];
+  document.getElementById('sg-title').textContent='SIZE GUIDE — '+chart.label;
+  document.getElementById('sg-table-wrap').innerHTML=buildSizeTable(chart);
+  document.getElementById('sgm').style.display='block';
+  document.body.style.overflow='hidden';
+}
+function closeSG(){document.getElementById('sgm').style.display='none';document.body.style.overflow='';}
+
+/* ═══════════ FABRIC & CARE ═══════════ */
+
+/*
+  ╔══════════════════════════════════════════════════════╗
+  ║  HOW TO EDIT FABRIC & CARE TEXT                     ║
+  ║  Find the FABRIC_CARE object below.                 ║
+  ║  Each key is the product category (cat field):      ║
+  ║    'tee'     → shown on all Tee product pages       ║
+  ║    'hoodie'  → shown on all Hoodie product pages    ║
+  ║    'cargo'   → shown on all Cargo product pages     ║
+  ║    'jacket'  → shown on all Jacket product pages    ║
+  ║    'default' → fallback for any other category      ║
+  ║  Just edit the text between the quotes.             ║
+  ╚══════════════════════════════════════════════════════╝
+*/
+var FABRIC_CARE={
+  tee:    '220–280gsm 100% combed ring-spun cotton. Preshrunk. Machine wash cold (30°C), inside out. Gentle cycle. Do not tumble dry — hang dry in shade. Do not bleach. Cool iron if needed.',
+  hoodie: '380gsm 100% combed cotton fleece. Garment-dyed. Machine wash cold (30°C), inside out. Gentle cycle. Hang dry — do not tumble dry or iron the print. Do not bleach.',
+  cargo:  'Heavy cotton twill. Machine wash cold (30°C). Hang dry. Do not tumble dry. Iron on medium heat. Wash separately on first wash — may bleed.',
+  jacket: 'Waxed or treated cotton outer. Spot clean where possible. If machine wash needed, use cold water on gentle cycle. Hang dry only. Re-wax after washing if applicable.',
+  default:'100% combed cotton. Machine wash cold (30°C), inside out. Do not tumble dry. Hang dry in shade. Do not bleach.'
+};
+
+function setFabricCare(cat){
+  var el=document.getElementById('pdp-fabric-care');
+  if(!el)return;
+  el.textContent=FABRIC_CARE[cat]||FABRIC_CARE['default'];
 }
 
 /* ═══════════ REALTIME ═══════════ */
