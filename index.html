@@ -34,6 +34,61 @@
   --fb:Arial,Helvetica,sans-serif;
   --fm:'Courier New',Courier,monospace;
 }
+/* ═══ VAULT PDP ═══ */
+.vpdp{display:none;background:#0a0a0a;color:#f0ece4;min-height:100vh;padding-top:72px}
+.vpdp.active{display:block}
+.vpdp-back{font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:rgba(240,236,228,.4);background:none;border:none;cursor:pointer;padding:1.5rem 2.5rem;display:flex;align-items:center;gap:.6rem;transition:color .2s}
+.vpdp-back:hover{color:var(--rust)}
+.vpdp-back::before{content:'←'}
+.vpdp-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 72px - 56px)}
+.vpdp-gallery{position:relative;background:#0f0f0f;overflow:hidden}
+.vpdp-gallery-main{width:100%;height:100%;min-height:520px;object-fit:cover;display:block}
+.vpdp-gallery-placeholder{width:100%;min-height:520px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:10rem;color:rgba(181,69,27,.07);background:linear-gradient(160deg,#141414 0%,#0a0a0a 100%)}
+.vpdp-badge-pos{position:absolute;top:1.5rem;left:1.5rem;font-family:var(--fm);font-size:.48rem;letter-spacing:.28em;padding:.38rem .75rem;border:1px solid}
+.vpdp-badge-pos.live{color:var(--rust);border-color:var(--rust);background:rgba(181,69,27,.12);animation:vault-pulse 2s ease-in-out infinite}
+.vpdp-badge-pos.sold{color:rgba(240,236,228,.4);border-color:rgba(240,236,228,.15);background:rgba(0,0,0,.5)}
+.vpdp-badge-pos.coming{color:rgba(240,236,228,.55);border-color:rgba(240,236,228,.2);background:rgba(0,0,0,.5)}
+.vpdp-thumbs{display:flex;gap:.5rem;padding:.75rem;background:#080808;overflow-x:auto}
+.vpdp-thumb{width:56px;height:70px;object-fit:cover;cursor:pointer;opacity:.45;border:1px solid transparent;flex-shrink:0;transition:all .2s}
+.vpdp-thumb.active,.vpdp-thumb:hover{opacity:1;border-color:var(--rust)}
+.vpdp-info{padding:3rem 2.5rem;overflow-y:auto;border-left:1px solid rgba(240,236,228,.06);display:flex;flex-direction:column}
+.vpdp-edition{font-family:var(--fm);font-size:.5rem;letter-spacing:.35em;color:var(--rust);margin-bottom:.6rem}
+.vpdp-name{font-family:var(--fd);font-size:clamp(2rem,4vw,3.2rem);line-height:.95;letter-spacing:.04em;margin-bottom:.8rem;color:#f0ece4}
+.vpdp-price{font-family:var(--fm);font-size:1.1rem;letter-spacing:.12em;color:#f0ece4;margin-bottom:.6rem}
+.vpdp-pcs-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem}
+.vpdp-pcs-label{font-family:var(--fm);font-size:.5rem;letter-spacing:.2em;color:rgba(240,236,228,.35)}
+.vpdp-pcs-pct{font-family:var(--fm);font-size:.5rem;letter-spacing:.15em;color:var(--rust)}
+.vpdp-bar-track{height:2px;background:rgba(240,236,228,.08);margin-bottom:1.5rem;position:relative}
+.vpdp-bar-fill{position:absolute;left:0;top:0;height:100%;background:var(--rust);transition:width .8s ease}
+.vpdp-desc{font-size:.85rem;color:rgba(240,236,228,.55);line-height:1.85;margin-bottom:2rem;font-weight:300}
+.vpdp-label{font-family:var(--fm);font-size:.5rem;letter-spacing:.28em;color:rgba(240,236,228,.4);margin-bottom:.7rem}
+.vpdp-sizes{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.8rem}
+.vpdp-size-btn{font-family:var(--fm);font-size:.58rem;letter-spacing:.1em;padding:.55rem .95rem;background:transparent;border:1px solid rgba(240,236,228,.15);color:rgba(240,236,228,.55);cursor:pointer;transition:all .2s;min-width:50px;text-align:center}
+.vpdp-size-btn:hover{border-color:rgba(240,236,228,.5);color:#f0ece4}
+.vpdp-size-btn.selected{border-color:var(--rust);color:#f0ece4;background:rgba(181,69,27,.12)}
+.vpdp-size-btn.oos{opacity:.25;cursor:not-allowed;text-decoration:line-through}
+.vpdp-qty-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.8rem}
+.vpdp-qty-btn{width:34px;height:34px;border:1px solid rgba(240,236,228,.15);background:transparent;color:#f0ece4;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:border-color .2s}
+.vpdp-qty-btn:hover{border-color:var(--rust)}
+.vpdp-qty-val{font-family:var(--fm);font-size:.8rem;letter-spacing:.1em;color:#f0ece4;min-width:32px;text-align:center}
+.vpdp-atc{width:100%;font-family:var(--fm);font-size:.7rem;letter-spacing:.22em;background:var(--rust);color:#f0ece4;border:none;padding:1.1rem;cursor:pointer;transition:background .2s;text-transform:uppercase;margin-bottom:.6rem}
+.vpdp-atc:hover{background:var(--rust-dark)}
+.vpdp-atc.disabled{background:#222;color:rgba(240,236,228,.25);cursor:default;pointer-events:none}
+.vpdp-err{font-family:var(--fm);font-size:.52rem;letter-spacing:.12em;color:var(--rust);margin-bottom:.8rem;display:none}
+.vpdp-acc{border-top:1px solid rgba(240,236,228,.07);margin-top:1.5rem}
+.vpdp-acc-item{border-bottom:1px solid rgba(240,236,228,.07)}
+.vpdp-acc-head{width:100%;background:none;border:none;color:rgba(240,236,228,.5);font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;padding:1rem 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;text-align:left;transition:color .2s}
+.vpdp-acc-head:hover{color:#f0ece4}
+.vpdp-acc-body{font-size:.78rem;color:rgba(240,236,228,.45);line-height:1.85;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s}
+.vpdp-acc-body.open{max-height:300px;padding-bottom:1rem}
+.vpdp-numbered{font-family:var(--fm);font-size:.5rem;letter-spacing:.2em;color:rgba(240,236,228,.25);margin-top:auto;padding-top:1.5rem;border-top:1px solid rgba(240,236,228,.06)}
+@media(max-width:768px){
+  .vpdp-wrap{grid-template-columns:1fr}
+  .vpdp-info{padding:2rem 1.2rem}
+  .vpdp-gallery-placeholder{min-height:320px;font-size:6rem}
+  .vpdp-gallery-main{min-height:320px}
+}
+
 /* ═══ VAULT QUICK-SHOP MODAL ═══ */
 .vqs-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s}
 .vqs-overlay.open{opacity:1;pointer-events:all}
@@ -113,10 +168,10 @@
 .vault-card-badge.live{background:rgba(181,69,27,.15);color:var(--rust);border-color:var(--rust);animation:vault-pulse 2s ease-in-out infinite}
 .vault-card-badge.coming{background:rgba(0,0,0,.6);color:rgba(240,236,228,.55);border-color:rgba(240,236,228,.2)}
 @keyframes vault-pulse{0%,100%{opacity:1}50%{opacity:.55}}
-.vault-card-btn{position:absolute;bottom:0;left:0;right:0;z-index:3;font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;background:var(--rust);color:#f0ece4;border:none;padding:.9rem;cursor:pointer;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);text-transform:uppercase}
-.vault-card:hover .vault-card-btn{transform:translateY(0)}
+.vault-card-btn{position:absolute;bottom:0;left:0;right:0;z-index:3;font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;background:var(--rust);color:#f0ece4;border:none;padding:.9rem;cursor:pointer;transition:transform .3s cubic-bezier(.4,0,.2,1);text-transform:uppercase;transform:translateY(0)}
+@media(hover:hover){.vault-card-btn{transform:translateY(100%)}.vault-card:hover .vault-card-btn{transform:translateY(0)}}
 .vault-card-btn:hover{background:var(--rust-dark)}
-.vault-card-btn.disabled{background:#333;color:rgba(240,236,228,.35);cursor:default}
+.vault-card-btn.disabled{background:#333;color:rgba(240,236,228,.35);cursor:default;pointer-events:none}
 /* vault notice bar */
 .vault-notice{background:rgba(181,69,27,.08);border:1px solid rgba(181,69,27,.18);padding:1rem 1.5rem;margin-bottom:2.5rem;display:flex;align-items:center;gap:1rem}
 .vault-notice-icon{font-size:1.1rem;flex-shrink:0}
@@ -1772,13 +1827,14 @@ function renderVault(){
       ?'<img src="'+d.image_url+'" class="vault-card-img" alt="'+d.name+'" onerror="this.style.display=\'none\'"/>'
       :'<div class="vault-card-placeholder">UG</div>';
 
-    var btnLabel=d.status==='sold'?'SOLD OUT — ARCHIVED':d.status==='coming'?'DROP INCOMING':'ADD TO BAG';
+    var btnLabel=d.status==='sold'?'SOLD OUT — ARCHIVED':d.status==='coming'?'DROP INCOMING':'VIEW DROP';
     var btnClass=d.status!=='live'?'vault-card-btn disabled':'vault-card-btn';
-    var btnAction=d.status==='live'?'onclick="vaultAddToCart(\''+d.id+'\')"':'';
+    var cardClick='onclick="openVPDP(\''+d.id+'\')"';
+    var btnOnclick='onclick="event.stopPropagation();openVPDP(\''+d.id+'\')"';
 
     var remainBar=d.status==='live'?'<div style="margin-top:.8rem"><div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span style="font-family:var(--fm);font-size:.45rem;letter-spacing:.2em;color:rgba(240,236,228,.35)">'+remaining+' OF '+d.pcs+' REMAINING</span><span style="font-family:var(--fm);font-size:.45rem;letter-spacing:.15em;color:var(--rust)">'+pct+'% CLAIMED</span></div><div style="height:2px;background:rgba(240,236,228,.08);position:relative"><div style="position:absolute;left:0;top:0;height:100%;width:'+pct+'%;background:var(--rust);transition:width .6s ease"></div></div></div>':'';
 
-    return '<div class="vault-card" onclick="vaultCardClick(\''+d.id+'\')">'
+    return '<div class="vault-card" '+cardClick+'>'
       +imgHtml
       +badgeHtml
       +'<div class="vault-card-overlay"></div>'
@@ -1792,7 +1848,7 @@ function renderVault(){
         +'</div>'
         +remainBar
       +'</div>'
-      +'<button class="'+btnClass+'" '+btnAction+' onclick="event.stopPropagation()">'+btnLabel+'</button>'
+      +'<button class="'+btnClass+'" '+btnOnclick+'>'+btnLabel+'</button>'
       +'</div>';
   }).join('');
 
@@ -1800,6 +1856,141 @@ function renderVault(){
   document.getElementById('vaultTotalPcs').textContent=totalPcs;
   document.getElementById('vaultDrops').textContent=VAULT_DROPS.length;
   document.getElementById('vaultLive').textContent=liveCount;
+}
+
+/* ═══ VAULT PRODUCT PAGE ═══ */
+var vpdpState={drop:null,size:null,qty:1};
+
+function openVPDP(id){
+  var d=VAULT_DROPS.find(function(x){return x.id===id;});
+  if(!d)return;
+  vpdpState={drop:d,size:null,qty:1};
+
+  /* edition / name / price */
+  document.getElementById('vpdp-edition').textContent=d.edition;
+  document.getElementById('vpdp-name').textContent=d.name;
+  document.getElementById('vpdp-price').textContent='₹'+d.price.toLocaleString('en-IN');
+  document.getElementById('vpdp-desc').textContent=d.desc;
+  document.getElementById('vpdp-qty').textContent='1';
+  document.getElementById('vpdp-err').style.display='none';
+
+  /* pieces bar */
+  var remaining=d.pcs-d.sold;
+  var pct=d.pcs>0?Math.round((d.sold/d.pcs)*100):0;
+  document.getElementById('vpdp-pcs-label').textContent=remaining+' OF '+d.pcs+' REMAINING';
+  document.getElementById('vpdp-pcs-pct').textContent=pct+'% CLAIMED';
+  document.getElementById('vpdp-bar').style.width=pct+'%';
+
+  /* badge */
+  var badge=document.getElementById('vpdp-badge');
+  if(d.status==='live'){badge.textContent='● LIVE NOW';badge.className='vpdp-badge-pos live';}
+  else if(d.status==='sold'){badge.textContent='SOLD OUT';badge.className='vpdp-badge-pos sold';}
+  else{badge.textContent='COMING SOON';badge.className='vpdp-badge-pos coming';}
+
+  /* image */
+  var wrap=document.getElementById('vpdp-img-wrap');
+  var thumbWrap=document.getElementById('vpdp-thumbs');
+  var imgs=d.images&&d.images.length?d.images:(d.image_url?[d.image_url]:[]);
+  if(imgs.length){
+    wrap.innerHTML='<img class="vpdp-gallery-main" id="vpdp-main-img" src="'+imgs[0]+'" alt="'+d.name+'" onerror="this.style.display=\'none\'"/>';
+    if(imgs.length>1){
+      thumbWrap.style.display='flex';
+      thumbWrap.innerHTML=imgs.map(function(url,i){
+        return'<img class="vpdp-thumb'+(i===0?' active':'')+'" src="'+url+'" onclick="vpdpSetImg(this,\''+url+'\')" alt="'+d.name+' view '+(i+1)+'">';
+      }).join('');
+    }else{thumbWrap.style.display='none';}
+  }else{
+    wrap.innerHTML='<div class="vpdp-gallery-placeholder">UG</div>';
+    thumbWrap.style.display='none';
+  }
+
+  /* sizes */
+  var oos=d.oos||[];
+  var atcBtn=document.getElementById('vpdp-atc');
+  if(d.status!=='live'){
+    document.getElementById('vpdp-sizes').innerHTML='';
+    atcBtn.textContent=d.status==='sold'?'SOLD OUT — ARCHIVED':'DROP INCOMING';
+    atcBtn.classList.add('disabled');
+  }else{
+    atcBtn.textContent='ADD TO BAG';
+    atcBtn.classList.remove('disabled');
+    document.getElementById('vpdp-sizes').innerHTML=SIZES.map(function(s){
+      var isOos=oos.includes(s);
+      return'<button class="vpdp-size-btn'+(isOos?' oos':'')+'"'
+        +(isOos?' disabled':'')+' onclick="vpdpSelSize(this,\''+s+'\')">'
+        +s+'</button>';
+    }).join('');
+  }
+
+  /* fabric & care */
+  document.getElementById('vpdp-fabric').textContent=FABRIC_CARE[d.cat]||FABRIC_CARE['default'];
+
+  /* numbered tag */
+  document.getElementById('vpdp-numbered').textContent='⬡ INDIVIDUALLY NUMBERED · '+d.pcs+' PIECES MADE · NEVER RESTOCKED';
+
+  /* show page */
+  document.querySelectorAll('.page,.pdp,.vpdp').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('pg-vpdp').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function closeVPDP(){
+  document.getElementById('pg-vpdp').classList.remove('active');
+  document.getElementById('pg-vault').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function vpdpSetImg(thumb,url){
+  document.querySelectorAll('.vpdp-thumb').forEach(function(t){t.classList.remove('active');});
+  thumb.classList.add('active');
+  var main=document.getElementById('vpdp-main-img');
+  if(main)main.src=url;
+}
+
+function vpdpSelSize(btn,s){
+  document.querySelectorAll('.vpdp-size-btn').forEach(function(b){b.classList.remove('selected');});
+  btn.classList.add('selected');
+  vpdpState.size=s;
+  document.getElementById('vpdp-err').style.display='none';
+}
+
+function vpdpChangeQty(dir){
+  vpdpState.qty=Math.max(1,Math.min(10,vpdpState.qty+dir));
+  document.getElementById('vpdp-qty').textContent=vpdpState.qty;
+}
+
+function vpdpAddToCart(){
+  if(!vpdpState.size){
+    document.getElementById('vpdp-err').style.display='block';
+    return;
+  }
+  var d=vpdpState.drop;
+  var key='vault-'+d.id+'-'+vpdpState.size;
+  var ex=cart.find(function(x){return x.key===key;});
+  if(ex){ex.qty+=vpdpState.qty;}
+  else{
+    cart.push({
+      key:key,
+      id:d.id,
+      name:d.name+' [VAULT]',
+      price:d.price,
+      size:vpdpState.size,
+      colorName:'Vault Edition',
+      qty:vpdpState.qty,
+      image_url:d.image_url||null
+    });
+  }
+  updateCart();
+  showToast('⬡ '+d.name+' ('+vpdpState.size+') — Added to bag');
+}
+
+function toggleVPDPAcc(btn){
+  var body=btn.nextElementSibling;
+  var arrow=btn.querySelector('span:last-child');
+  var isOpen=body.classList.contains('open');
+  document.querySelectorAll('.vpdp-acc-body').forEach(function(b){b.classList.remove('open');});
+  document.querySelectorAll('.vpdp-acc-head span:last-child').forEach(function(a){a.textContent='▾';});
+  if(!isOpen){body.classList.add('open');arrow.textContent='▴';}
 }
 
 /* ═══ VAULT QUICK-SHOP ═══ */
@@ -1884,12 +2075,12 @@ function vqsAddToCart(){
 
 function vaultCardClick(id){
   var d=VAULT_DROPS.find(function(x){return x.id===id;});
-  if(!d||d.status!=='live')return;
-  openVQS(id);
+  if(!d)return;
+  openVPDP(id);
 }
 
 function vaultAddToCart(id){
-  openVQS(id);
+  openVPDP(id);
 }
 
 function handleVaultNL(e){
@@ -2066,6 +2257,71 @@ document.addEventListener('DOMContentLoaded',function(){
   initAuth().then(function(){setTimeout(startRealtime,1500);});
 });
 </script>
+<!-- VAULT PRODUCT PAGE -->
+<div class="vpdp" id="pg-vpdp">
+  <button class="vpdp-back" onclick="closeVPDP()">BACK TO VAULT</button>
+  <div class="vpdp-wrap">
+    <!-- GALLERY -->
+    <div class="vpdp-gallery">
+      <div id="vpdp-img-wrap">
+        <div class="vpdp-gallery-placeholder" id="vpdp-placeholder">UG</div>
+      </div>
+      <div class="vpdp-thumbs" id="vpdp-thumbs" style="display:none"></div>
+      <div class="vpdp-badge-pos" id="vpdp-badge"></div>
+    </div>
+    <!-- INFO -->
+    <div class="vpdp-info">
+      <div class="vpdp-edition" id="vpdp-edition"></div>
+      <div class="vpdp-name" id="vpdp-name"></div>
+      <div class="vpdp-price" id="vpdp-price"></div>
+
+      <div class="vpdp-pcs-row">
+        <span class="vpdp-pcs-label" id="vpdp-pcs-label"></span>
+        <span class="vpdp-pcs-pct" id="vpdp-pcs-pct"></span>
+      </div>
+      <div class="vpdp-bar-track"><div class="vpdp-bar-fill" id="vpdp-bar"></div></div>
+
+      <div class="vpdp-desc" id="vpdp-desc"></div>
+
+      <div class="vpdp-label">SELECT SIZE</div>
+      <div class="vpdp-sizes" id="vpdp-sizes"></div>
+      <div class="vpdp-err" id="vpdp-err">PLEASE SELECT A SIZE FIRST</div>
+
+      <div class="vpdp-label">QUANTITY</div>
+      <div class="vpdp-qty-row">
+        <button class="vpdp-qty-btn" onclick="vpdpChangeQty(-1)">−</button>
+        <div class="vpdp-qty-val" id="vpdp-qty">1</div>
+        <button class="vpdp-qty-btn" onclick="vpdpChangeQty(1)">+</button>
+      </div>
+
+      <button class="vpdp-atc" id="vpdp-atc" onclick="vpdpAddToCart()">ADD TO BAG</button>
+
+      <div class="vpdp-acc">
+        <div class="vpdp-acc-item">
+          <button class="vpdp-acc-head" onclick="toggleVPDPAcc(this)">
+            <span>FABRIC & CARE</span><span>▾</span>
+          </button>
+          <div class="vpdp-acc-body" id="vpdp-fabric"></div>
+        </div>
+        <div class="vpdp-acc-item">
+          <button class="vpdp-acc-head" onclick="toggleVPDPAcc(this)">
+            <span>VAULT POLICY</span><span>▾</span>
+          </button>
+          <div class="vpdp-acc-body">All vault pieces are final sale. No returns, no exchanges. Each piece is individually numbered and permanently retired once sold.</div>
+        </div>
+        <div class="vpdp-acc-item">
+          <button class="vpdp-acc-head" onclick="toggleVPDPAcc(this)">
+            <span>SHIPPING</span><span>▾</span>
+          </button>
+          <div class="vpdp-acc-body">Vault orders ship within 3–5 business days. Each order is packed and sealed individually. Tracking provided via email once dispatched.</div>
+        </div>
+      </div>
+
+      <div class="vpdp-numbered" id="vpdp-numbered"></div>
+    </div>
+  </div>
+</div>
+
 <!-- VAULT QUICK-SHOP MODAL -->
 <div class="vqs-overlay" id="vqsOverlay" onclick="closeVQS()"></div>
 <div class="vqs-drawer" id="vqsDrawer">
