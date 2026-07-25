@@ -1730,7 +1730,7 @@ async function placeOrder(){
 /* ═══════════ NAVIGATION ═══════════ */
 function setNavActive(page){document.querySelectorAll('.nav-links a').forEach(function(a){a.classList.remove('active');});var nl=document.getElementById('nl-'+page);if(nl)nl.classList.add('active');}
 function goPage(page){
-  document.querySelectorAll('.page,.pdp').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.page,.pdp,.vpdp').forEach(function(p){p.classList.remove('active');});
   var el=document.getElementById('pg-'+page);if(el)el.classList.add('active');
   setNavActive(page);window.scrollTo(0,0);
   if(page==='shop'){loadProducts();}
@@ -1928,14 +1928,14 @@ function openVPDP(id){
   /* numbered tag */
   document.getElementById('vpdp-numbered').textContent='⬡ INDIVIDUALLY NUMBERED · '+d.pcs+' PIECES MADE · NEVER RESTOCKED';
 
-  /* show page */
+  /* show page — hide everything else first */
   document.querySelectorAll('.page,.pdp,.vpdp').forEach(function(p){p.classList.remove('active');});
   document.getElementById('pg-vpdp').classList.add('active');
   window.scrollTo(0,0);
 }
 
 function closeVPDP(){
-  document.getElementById('pg-vpdp').classList.remove('active');
+  document.querySelectorAll('.page,.pdp,.vpdp').forEach(function(p){p.classList.remove('active');});
   document.getElementById('pg-vault').classList.add('active');
   window.scrollTo(0,0);
 }
