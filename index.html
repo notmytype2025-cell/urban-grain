@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Urban Grain | Streetwear & Fashion</title>
-<meta name="description" content="Official website for Urban Grain. Discover the latest in premium streetwear, cargos, and tees."/>
-<meta name="keywords" content="Urban Grain, Indian streetwear, Chennai streetwear, limited drop clothing, hoodies India"/>
+<title>FADE | Streetwear & Fashion</title>
+<meta name="description" content="Official website for FADE. Discover the latest in premium streetwear, cargos, and tees."/>
+<meta name="keywords" content="FADE, Indian streetwear, Chennai streetwear, limited drop clothing, hoodies India"/>
 <meta name="robots" content="index, follow"/>
 <meta name="google-site-verification" content="myr0AKW7BvarjPJZrbHHflYsWqxOWotYmYDAQbrrE2E"/>
-<meta property="og:title" content="Urban Grain — Indian Streetwear"/>
+<meta property="og:title" content="FADE — Indian Streetwear"/>
 <meta property="og:description" content="Limited drops. Real quality. Made in India."/>
 <meta property="og:url" content="https://urban-grain.netlify.app"/>
 <meta property="og:type" content="website"/>
 <link rel="manifest" href="/manifest.json"/>
 <link rel="icon" type="image/png" sizes="32x32" href="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/favion.png"/>
 <link rel="icon" type="image/png" sizes="16x16" href="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/favion.png"/>
-<link rel="apple-touch-icon" sizes="180x180" href="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/favion.png"/>
+
 <meta name="theme-color" content="#b5451b"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-title" content="Urban Grain"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ClothingStore","name":"Urban Grain","url":"https://urban-grain.netlify.app","description":"Urban Grain is an Indian streetwear brand from Chennai.","email":"urbangrain25@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Chennai","addressRegion":"Tamil Nadu","addressCountry":"IN"}}</script>
+<meta name="apple-mobile-web-app-title" content="FADE"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ClothingStore","name":"FADE","url":"https://urban-grain.netlify.app","description":"FADE is an Indian streetwear brand from Chennai.","address":{"@type":"PostalAddress","addressLocality":"Chennai","addressRegion":"Tamil Nadu","addressCountry":"IN"}}</script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -30,8 +30,8 @@
   --rust:#b5451b;--rust-dark:#8a3212;
   --grain:#7a6a58;--mid:#9e8e7e;--mud:#3d2b1f;
   --border:rgba(90,70,50,0.15);
-  --fd:Impact,'Arial Narrow',Arial,sans-serif;
-  --fb:Arial,Helvetica,sans-serif;
+  --fd:'Helvetica Neue','Arial Nova',Arial,sans-serif;
+  --fb:'Helvetica Neue','Arial Nova',Arial,sans-serif;
   --fm:'Courier New',Courier,monospace;
 }
 /* ═══ VAULT PDP ═══ */
@@ -52,7 +52,7 @@
 .vpdp-thumb.active,.vpdp-thumb:hover{opacity:1;border-color:var(--rust)}
 .vpdp-info{padding:3rem 2.5rem;overflow-y:auto;border-left:1px solid rgba(240,236,228,.06);display:flex;flex-direction:column}
 .vpdp-edition{font-family:var(--fm);font-size:.5rem;letter-spacing:.35em;color:var(--rust);margin-bottom:.6rem}
-.vpdp-name{font-family:var(--fd);font-size:clamp(2rem,4vw,3.2rem);line-height:.95;letter-spacing:.04em;margin-bottom:.8rem;color:#f0ece4}
+.vpdp-name{font-family:var(--fd);font-size:clamp(1.6rem,3.5vw,2.8rem);line-height:1;letter-spacing:.05em;margin-bottom:.8rem;color:#f0ece4;font-weight:800;text-transform:uppercase}
 .vpdp-price{font-family:var(--fm);font-size:1.1rem;letter-spacing:.12em;color:#f0ece4;margin-bottom:.6rem}
 .vpdp-pcs-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem}
 .vpdp-pcs-label{font-family:var(--fm);font-size:.5rem;letter-spacing:.2em;color:rgba(240,236,228,.35)}
@@ -88,7 +88,37 @@
   .vpdp-gallery-main{min-height:320px}
 }
 
-/* ═══ VAULT QUICK-SHOP MODAL ═══ */
+/* vault PDP topbar */
+.vpdp-topbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.8rem 2rem;border-bottom:1px solid rgba(240,236,228,.07);background:#0a0a0a;position:sticky;top:72px;z-index:50}
+.vpdp-topbar-brand{font-family:var(--fm);font-size:.52rem;letter-spacing:.3em;color:rgba(240,236,228,.35);text-align:center}
+.vpdp-divider{height:1px;background:rgba(240,236,228,.07);margin:1.2rem 0}
+.vpdp-size-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem}
+.vpdp-sg-link{font-family:var(--fm);font-size:.52rem;letter-spacing:.15em;color:var(--rust);background:none;border:none;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0}
+.vpdp-sg-link:hover{color:var(--rust-dark)}
+.vpdp-guarantee{font-family:var(--fm);font-size:.48rem;letter-spacing:.15em;color:rgba(240,236,228,.25);text-align:center;margin-top:.6rem;margin-bottom:1.5rem}
+/* vault size guide modal */
+.vpdp-sg-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:3000;padding:2rem 1rem;overflow-y:auto}
+.vpdp-sg-overlay.open{display:flex;align-items:flex-start;justify-content:center}
+.vpdp-sg-box{background:#111;max-width:580px;width:100%;padding:2.5rem;position:relative;border:1px solid rgba(240,236,228,.1);margin:auto}
+.vpdp-sg-close{position:absolute;top:1rem;right:1.2rem;background:none;border:none;font-family:var(--fm);font-size:.55rem;letter-spacing:.15em;color:rgba(240,236,228,.4);cursor:pointer}
+.vpdp-sg-close:hover{color:#f0ece4}
+.vpdp-sg-title{font-family:var(--fd);font-size:1.6rem;font-weight:800;letter-spacing:.06em;color:#f0ece4;margin-bottom:.4rem;text-transform:uppercase}
+.vpdp-sg-table{width:100%;border-collapse:collapse;font-family:var(--fm);font-size:.58rem;letter-spacing:.08em}
+.vpdp-sg-table th{padding:.6rem .8rem;text-align:left;background:rgba(240,236,228,.06);border:1px solid rgba(240,236,228,.08);color:rgba(240,236,228,.6);font-weight:400;letter-spacing:.15em}
+.vpdp-sg-table th:not(:first-child){text-align:center}
+.vpdp-sg-table td{padding:.55rem .8rem;border:1px solid rgba(240,236,228,.06);color:rgba(240,236,228,.75)}
+.vpdp-sg-table td:first-child{font-weight:700;color:#f0ece4}
+.vpdp-sg-table td:not(:first-child){text-align:center}
+.vpdp-sg-table tr:nth-child(even){background:rgba(240,236,228,.03)}
+
+/* ═══ FADE INTRO ANIMATION ═══ */
+#fade-intro{position:fixed;inset:0;background:#0a0a0a;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;pointer-events:none}
+#fade-intro.done{opacity:0;pointer-events:none;transition:opacity .6s ease .2s}
+.fi-word{display:flex;gap:0;overflow:hidden}
+.fi-letter{font-family:'Helvetica Neue','Arial Nova',Arial,sans-serif;font-size:clamp(5rem,18vw,13rem);font-weight:800;letter-spacing:.15em;color:#f0ece4;display:inline-block;opacity:0;transform:translateY(60px);text-transform:uppercase;will-change:transform,opacity}
+.fi-line{width:0;height:1px;background:var(--rust,#b5451b);transition:width 1s cubic-bezier(.4,0,.2,1)}
+.fi-sub{font-family:'Courier New',Courier,monospace;font-size:.55rem;letter-spacing:.4em;color:rgba(240,236,228,0);text-transform:uppercase;transition:color .6s ease}
+.fi-sub.show{color:rgba(240,236,228,.35)}
 .vqs-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s}
 .vqs-overlay.open{opacity:1;pointer-events:all}
 .vqs-drawer{position:fixed;bottom:-100%;left:0;right:0;max-height:90vh;overflow-y:auto;background:#111;border-top:1px solid rgba(240,236,228,.1);z-index:2001;transition:bottom .35s cubic-bezier(.4,0,.2,1);padding:2rem}
@@ -128,7 +158,7 @@
 .vault-gate::before{content:'VAULT';font-family:var(--fd);font-size:clamp(8rem,22vw,20rem);color:rgba(181,69,27,.04);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:.05em;line-height:1}
 .vault-gate-eyebrow{font-family:var(--fm);font-size:.58rem;letter-spacing:.35em;color:var(--rust);margin-bottom:2rem;display:flex;align-items:center;gap:.8rem}
 .vault-gate-eyebrow::before,.vault-gate-eyebrow::after{content:'';display:block;width:40px;height:1px;background:var(--rust);opacity:.5}
-.vault-gate-title{font-family:var(--fd);font-size:clamp(3.5rem,9vw,8rem);line-height:.9;letter-spacing:.06em;margin-bottom:1.5rem;color:#f0ece4}
+.vault-gate-title{font-family:var(--fd);font-size:clamp(3rem,8vw,7rem);line-height:.95;letter-spacing:.08em;margin-bottom:1.5rem;color:#f0ece4;font-weight:800;text-transform:uppercase}
 .vault-gate-title span{color:var(--rust)}
 .vault-gate-sub{font-size:.9rem;font-weight:300;color:rgba(240,236,228,.4);line-height:1.9;max-width:420px;margin:0 auto 3rem;font-family:var(--fm);letter-spacing:.06em}
 .vault-count-row{display:flex;gap:3rem;justify-content:center;margin-bottom:3.5rem}
@@ -146,7 +176,7 @@
 .vault-inner.open{display:block}
 .vault-header{padding:3rem 0 2.5rem;border-bottom:1px solid rgba(240,236,228,.06);margin-bottom:3rem;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem}
 .vault-header-left p{font-family:var(--fm);font-size:.55rem;letter-spacing:.3em;color:var(--rust);margin-bottom:.6rem}
-.vault-header-left h2{font-family:var(--fd);font-size:clamp(2rem,5vw,4rem);color:#f0ece4;line-height:1;letter-spacing:.05em}
+.vault-header-left h2{font-family:var(--fd);font-size:clamp(1.8rem,4vw,3.2rem);color:#f0ece4;line-height:1.05;letter-spacing:.06em;font-weight:800;text-transform:uppercase}
 .vault-header-right{font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:rgba(240,236,228,.3);text-align:right;line-height:1.9}
 .vault-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:rgba(240,236,228,.06)}
 .vault-card{background:#0a0a0a;position:relative;cursor:pointer;overflow:hidden;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:flex-end}
@@ -156,7 +186,7 @@
 .vault-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.2) 50%,transparent 100%)}
 .vault-card-body{position:relative;z-index:2;padding:1.5rem}
 .vault-card-edition{font-family:var(--fm);font-size:.48rem;letter-spacing:.3em;color:var(--rust);margin-bottom:.4rem}
-.vault-card-name{font-family:var(--fd);font-size:1.5rem;color:#f0ece4;line-height:1.1;margin-bottom:.6rem;letter-spacing:.05em}
+.vault-card-name{font-family:var(--fd);font-size:1.2rem;color:#f0ece4;line-height:1.15;margin-bottom:.6rem;letter-spacing:.05em;font-weight:800;text-transform:uppercase}
 .vault-card-desc{font-family:var(--fb);font-size:.72rem;color:rgba(240,236,228,.45);line-height:1.6;margin-bottom:1rem}
 .vault-card-footer{display:flex;justify-content:space-between;align-items:center}
 .vault-card-price{font-family:var(--fm);font-size:.75rem;letter-spacing:.1em;color:#f0ece4}
@@ -198,12 +228,10 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--fb);background:var(--bg);color:var(--black);overflow-x:hidden}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--rust)}
-nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem;background:rgba(245,241,234,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.logo{font-family:var(--fd);font-size:1.8rem;letter-spacing:.1em;color:var(--black);cursor:pointer;display:flex;align-items:center;gap:.5rem}
-.nav-links{display:flex;gap:2rem;list-style:none}
-.nav-links a{font-family:var(--fm);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--grain);text-decoration:none;cursor:pointer;transition:color .2s}
-.nav-links a:hover,.nav-links a.active{color:var(--rust)}
-.nav-right{display:flex;gap:.6rem;align-items:center}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:1rem 2rem;background:rgba(245,241,234,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-size:1.4rem;letter-spacing:.18em;font-weight:800;color:var(--black);cursor:pointer;text-align:center;text-transform:uppercase}
+.nav-left{display:flex;align-items:center}
+.nav-right{display:flex;gap:.6rem;align-items:center;justify-content:flex-end}
 .cart-btn{font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;background:var(--rust);color:#fff;padding:.5rem 1.2rem;border:none;cursor:pointer}
 .cart-btn:hover{background:var(--rust-dark)}
 .auth-btn{font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--grain);padding:.5rem 1rem;border:1px solid var(--border);cursor:pointer;transition:all .2s}
@@ -253,11 +281,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .feat-item{padding:2rem 1.5rem;border-right:1px solid rgba(255,255,255,.15);text-align:center}
 .feat-item:last-child{border-right:none}
 .feat-icon{font-size:1.2rem;display:block;margin-bottom:.6rem}
-.feat-title{font-family:var(--fd);font-size:1rem;letter-spacing:.1em;color:#fff;margin-bottom:.3rem}
+.feat-title{font-family:var(--fd);font-size:.85rem;letter-spacing:.1em;color:#fff;margin-bottom:.3rem;font-weight:700;text-transform:uppercase}
 .feat-text{font-size:.75rem;font-weight:300;color:rgba(255,255,255,.65);line-height:1.5}
 .sec{padding:5rem 3rem}
 .sec-label{font-family:var(--fm);font-size:.6rem;letter-spacing:.3em;color:var(--rust);text-transform:uppercase;margin-bottom:.8rem}
-.sec-title{font-family:var(--fd);font-size:clamp(2.2rem,4vw,4rem);letter-spacing:.06em;line-height:1;margin-bottom:.8rem}
+.sec-title{font-family:var(--fd);font-size:clamp(1.6rem,3vw,2.8rem);letter-spacing:.04em;line-height:1.05;margin-bottom:.8rem;font-weight:800;text-transform:uppercase}
 .prod-card{background:var(--white);cursor:pointer;position:relative;overflow:hidden;transition:transform .2s}
 .prod-card:hover{transform:translateY(-3px)}
 .prod-card:hover .prod-img-inner{transform:scale(1.04)}
@@ -291,7 +319,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .rev-text{font-size:.85rem;font-weight:300;color:var(--grain);line-height:1.8;margin-bottom:1.2rem;font-style:italic}
 .rev-author{font-family:var(--fm);font-size:.58rem;letter-spacing:.18em;color:var(--mid);text-transform:uppercase}
 .nl-wrap{background:var(--mud);padding:6rem 3rem;text-align:center;position:relative;overflow:hidden}
-.nl-wrap::before{content:'URBAN GRAIN';font-family:var(--fd);font-size:15rem;color:rgba(181,69,27,.06);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.nl-wrap::before{content:'FADE';font-family:var(--fd);font-size:15rem;color:rgba(181,69,27,.06);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
 .nl-inner{position:relative;z-index:2;max-width:520px;margin:0 auto}
 .nl-form{display:flex;max-width:400px;margin:2rem auto 0}
 .nl-form input{flex:1;font-family:var(--fm);font-size:.65rem;padding:.9rem 1rem;background:rgba(245,241,234,.1);border:1px solid rgba(245,241,234,.2);border-right:none;color:#f5f1ea;outline:none}
@@ -327,9 +355,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .pdp-badge-lg{position:absolute;top:1.5rem;left:1.5rem;font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;padding:.3rem .8rem;background:var(--rust);color:#fff;text-transform:uppercase;z-index:11}
 .pdp-info{padding:3.5rem;background:var(--white);overflow-y:auto}
 .pdp-cat{font-family:var(--fm);font-size:.6rem;letter-spacing:.25em;color:var(--rust);text-transform:uppercase;margin-bottom:.6rem}
-.pdp-name{font-family:var(--fd);font-size:clamp(2rem,3.5vw,3rem);letter-spacing:.06em;line-height:1;margin-bottom:1rem}
+.pdp-name{font-family:var(--fd);font-size:clamp(1.6rem,3vw,2.4rem);letter-spacing:.04em;line-height:1.05;margin-bottom:1rem;font-weight:800;text-transform:uppercase}
 .pdp-price-row{display:flex;align-items:baseline;gap:1rem;margin-bottom:.5rem}
-.pdp-price{font-family:var(--fd);font-size:2rem;color:var(--rust)}
+.pdp-price{font-family:var(--fd);font-size:1.7rem;color:var(--rust);font-weight:700}
 .pdp-old{font-family:var(--fm);font-size:.85rem;color:var(--mid);text-decoration:line-through}
 .pdp-savings{font-family:var(--fm);font-size:.58rem;letter-spacing:.15em;color:#2a7a1a;padding:.2rem .6rem;background:rgba(42,122,26,.1);border:1px solid rgba(42,122,26,.2);margin-bottom:1.5rem;display:inline-block}
 .pdp-divider{height:1px;background:var(--border);margin:1.2rem 0}
@@ -377,7 +405,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;display:none;align-items:center;justify-content:center;padding:1rem}
 .modal-ov.open{display:flex}
 .modal-box{background:var(--white);width:100%;max-width:420px;border-top:3px solid var(--rust);padding:2.5rem;position:relative}
-.modal-box h2{font-family:var(--fd);font-size:2rem;letter-spacing:.08em;margin-bottom:.4rem}
+.modal-box h2{font-family:var(--fd);font-size:1.6rem;letter-spacing:.06em;margin-bottom:.4rem;font-weight:800;text-transform:uppercase}
 .modal-sub{font-size:.82rem;color:var(--grain);margin-bottom:2rem}
 .mf{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
 .mf label{font-family:var(--fm);font-size:.56rem;letter-spacing:.18em;color:var(--rust);text-transform:uppercase}
@@ -554,7 +582,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 /* FOOTER */
 footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(200,184,154,.06)}
 .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3.5rem}
-.footer-logo{font-family:var(--fd);font-size:1.8rem;letter-spacing:.1em;color:#f5f1ea;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;cursor:pointer}
+.footer-logo{font-family:var(--fd);font-size:1.4rem;letter-spacing:.18em;font-weight:800;color:#f5f1ea;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;cursor:pointer;text-transform:uppercase}
 .footer-tagline{font-size:.82rem;font-weight:300;color:rgba(245,241,234,.45);line-height:1.7;max-width:260px}
 .footer-col h4{font-family:var(--fm);font-size:.56rem;letter-spacing:.25em;text-transform:uppercase;color:var(--rust);margin-bottom:1.3rem}
 .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.7rem}
@@ -596,25 +624,28 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
 </style>
 </head>
 <body>
+<!-- FADE INTRO ANIMATION -->
+<div id="fade-intro">
+  <div class="fi-word">
+    <span class="fi-letter">F</span>
+    <span class="fi-letter">A</span>
+    <span class="fi-letter">D</span>
+    <span class="fi-letter">E</span>
+  </div>
+  <div class="fi-line" id="fi-line"></div>
+  <div class="fi-sub" id="fi-sub">STREETWEAR · MADE IN INDIA</div>
+</div>
 
 <nav>
-  <span class="logo" onclick="goPage('home')">
-    <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/Image.png" alt="UG" style="height:36px;width:auto;border-radius:2px" onerror="this.style.display='none'"/>
-    URBAN GRAIN
-  </span>
-  <ul class="nav-links">
-    <li><a id="nl-home" onclick="goPage('home')">Home</a></li>
-    <li><a id="nl-shop" onclick="goPage('shop')">Shop</a></li>
-    <li><a id="nl-about" onclick="goPage('about')">About</a></li>
-    <li><a id="nl-contact" onclick="goPage('contact')">Contact</a></li>
-    <li><a id="nl-vault" onclick="goPage('vault')" style="color:var(--rust);font-weight:700;letter-spacing:.22em">⬡ VAULT</a></li>
-  </ul>
+  <div class="nav-left">
+    <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+  </div>
+  <span class="logo" onclick="goPage('home')">FADE</span>
   <div class="nav-right">
     <button class="auth-btn" id="btnLogin" onclick="openAuth('login')">LOGIN</button>
     <button class="auth-btn" id="btnAccount" onclick="goPage('account')" style="display:none">MY ACCOUNT</button>
     <button class="auth-btn" id="btnLogout" onclick="doLogout()" style="display:none">LOGOUT</button>
     <button class="cart-btn" onclick="toggleCart()">BAG (<span id="cart-count">0</span>)</button>
-    <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
@@ -633,7 +664,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
     <button class="modal-close-x" onclick="closeAuth()">✕</button>
     <div id="fmLogin">
       <h2>WELCOME BACK</h2>
-      <p class="modal-sub">Sign in to your Urban Grain account.</p>
+      <p class="modal-sub">Sign in to your FADE account.</p>
       <div class="mf"><label>Email</label><input type="email" id="lEmail" placeholder="you@email.com"/></div>
       <div class="mf"><label>Password</label><input type="password" id="lPass" placeholder="••••••••"/></div>
       <div class="modal-err" id="lErr"></div>
@@ -656,7 +687,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
 </div>
     <div id="fmSignup" style="display:none">
       <h2>JOIN THE GRAIN</h2>
-      <p class="modal-sub">Create your Urban Grain account.</p>
+      <p class="modal-sub">Create your FADE account.</p>
       <div class="mf"><label>Full Name</label><input type="text" id="sName" placeholder="Arjun Kumar"/></div>
       <div class="mf"><label>Email</label><input type="email" id="sEmail" placeholder="you@email.com"/></div>
       <div class="mf"><label>Phone</label><input type="tel" id="sPhone" placeholder="+91 98765 43210"/></div>
@@ -673,7 +704,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
 
   <!-- GATE SCREEN -->
   <div class="vault-gate" id="vaultGate">
-    <div class="vault-gate-eyebrow">URBAN GRAIN · VAULT</div>
+    <div class="vault-gate-eyebrow">FADE · VAULT</div>
     <h1 class="vault-gate-title">THE<br><span>VAULT</span></h1>
     <p class="vault-gate-sub">NOT EVERYTHING MAKES IT HERE.<br>ONLY THE ONES THAT SHOULDN'T EXIST — BUT DO.</p>
     <div class="vault-count-row">
@@ -699,7 +730,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
   <div class="vault-inner" id="vaultInner">
     <div class="vault-header">
       <div class="vault-header-left">
-        <p>// URBAN GRAIN · VAULT DROPS</p>
+        <p>// FADE · VAULT DROPS</p>
         <h2>LIMITED<br>ARCHIVE</h2>
       </div>
       <div class="vault-header-right">
@@ -711,7 +742,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
 
     <div class="vault-notice">
       <span class="vault-notice-icon">⬡</span>
-      <div class="vault-notice-text">VAULT PIECES ARE MADE IN SINGLE-RUN QUANTITIES ONLY. EVERY ITEM IS INDIVIDUALLY NUMBERED. ONCE A DROP SELLS OUT, IT IS PERMANENTLY RETIRED FROM THE URBAN GRAIN CATALOGUE.</div>
+      <div class="vault-notice-text">VAULT PIECES ARE MADE IN SINGLE-RUN QUANTITIES ONLY. EVERY ITEM IS INDIVIDUALLY NUMBERED. ONCE A DROP SELLS OUT, IT IS PERMANENTLY RETIRED FROM THE FADE CATALOGUE.</div>
     </div>
 
     <div class="vault-grid" id="vaultGrid"></div>
@@ -762,7 +793,6 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
   <section class="sec" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem">
       <div><p class="sec-label">// Latest Drops</p><h2 class="sec-title">FRESH OFF THE LINE</h2></div>
-      <button class="btn-o" onclick="goPage('shop')">VIEW ALL →</button>
     </div>
     <div class="grid-4" id="home-drops"></div>
   </section>
@@ -772,15 +802,6 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       <h2 class="sec-title">CONCRETE ROOTS</h2>
     </div>
     <div class="lbook-scroll" id="lookbook-scroll"></div>
-  </section>
-  <section class="sec" style="background:var(--bg2)">
-    <p class="sec-label">// Community</p>
-    <h2 class="sec-title">REAL PEOPLE, REAL FITS</h2>
-    <div class="rev-grid">
-      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"The quality is insane for the price — thick fabric, great fit, clean design."</p><p class="rev-author">— Arjun K., Mumbai</p></div>
-      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Been waiting for an Indian streetwear brand that gets it. Urban Grain is exactly that."</p><p class="rev-author">— Priya S., Bangalore</p></div>
-      <div class="rev-card"><div class="rev-stars">★★★★☆</div><p class="rev-text">"Heavy weight, great print, washes perfectly. The Tees are my daily now."</p><p class="rev-author">— Dev R., Delhi</p></div>
-    </div>
   </section>
   <div class="nl-wrap">
     <div class="nl-inner">
@@ -857,7 +878,6 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       <button class="btn-wl" onclick="showToast('Added to wishlist!')">♡ ADD TO WISHLIST</button>
       <div class="pdp-details">
         <div class="acc-item"><button class="acc-head" onclick="toggleAcc(this)"><span>PRODUCT DETAILS</span><span class="acc-arrow">▾</span></button><div class="acc-body open" id="pdp-desc"></div></div>
-        <div class="acc-item"><button class="acc-head" onclick="toggleAcc(this)"><span>FABRIC & CARE</span><span class="acc-arrow">▾</span></button><div class="acc-body" id="pdp-fabric-care">—</div></div>
         <div class="acc-item"><button class="acc-head" onclick="toggleAcc(this)"><span>SHIPPING & RETURNS</span><span class="acc-arrow">▾</span></button><div class="acc-body">Ships within 2–3 business days. Free shipping above ₹1299. 7-day exchange on unworn items.</div></div>
       </div>
     </div>
@@ -920,7 +940,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
     <div class="about-hero-in">
       <p class="sec-label" style="color:rgba(181,69,27,.7)">// Who We Are</p>
       <h1 class="sec-title" style="color:#f5f1ea;font-size:clamp(2.5rem,5vw,5rem)">BORN FROM THE STREETS</h1>
-      <p style="font-size:.9rem;font-weight:300;color:rgba(245,241,234,.6);margin-bottom:1rem">Urban Grain started in Chennai with a clear mission: make streetwear that speaks the language of Indian cities.</p>
+      <p style="font-size:.9rem;font-weight:300;color:rgba(245,241,234,.6);margin-bottom:1rem">FADE started in Chennai with a clear mission: make streetwear that speaks the language of Indian cities.</p>
       <button class="btn-p" style="margin-top:2rem" onclick="goPage('shop')">SHOP THE COLLECTION</button>
     </div>
     <div class="about-cards">
@@ -940,7 +960,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       <h2 class="sec-title" style="font-size:2.2rem;margin-bottom:1.2rem">FROM ONE ROOM TO EVERY CITY</h2>
       <p>It started with frustration. We were tired of paying premium prices for brands that didn't understand the Indian street.</p>
       <p>In 2025, we set up in Chennai with a clear mission: make streetwear that speaks the language of Indian cities.</p>
-      <p>Urban Grain ships pan-India. Heavy fabrics, real stories, real streets.</p>
+      <p>FADE ships pan-India. Heavy fabrics, real stories, real streets.</p>
     </div>
     <div>
       <p class="sec-label">// Our Values</p>
@@ -977,7 +997,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
     <div class="contact-sidebar">
       <p class="sec-label">// Reach Us</p>
       <h3 style="font-family:var(--fd);font-size:2rem;letter-spacing:.06em;margin-bottom:2rem">GET IN TOUCH</h3>
-      <div class="contact-detail"><div class="contact-icon">@</div><div><div class="contact-lbl">Email</div><div class="contact-val">urbangrain25@gmail.com</div></div></div>
+      <div class="contact-detail"><div class="contact-icon">@</div><div><div class="contact-lbl">Email</div><div class="contact-val">—</div></div></div>
       <div class="contact-detail"><div class="contact-icon">◷</div><div><div class="contact-lbl">Hours</div><div class="contact-val">Mon – Fri: 10am – 7pm IST</div></div></div>
       <div class="contact-socials">
         <a class="soc-btn" href="https://www.instagram.com/urbangrain.in?igsh=MTF2bXJ5eW92ZmNiaQ==" target="_blank">INSTAGRAM</a>
@@ -985,7 +1005,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
       <div class="contact-faq">
         <div class="faq-label">// Quick Answers</div>
         <div class="faq-item"><div class="faq-q">When will my order ship?</div><div class="faq-a">Orders ship within 2–3 business days.</div></div>
-        <div class="faq-item"><div class="faq-q">Do you do custom orders?</div><div class="faq-a">Yes — minimum 50 pieces. Email urbangrain25@gmail.com</div></div>
+        <div class="faq-item"><div class="faq-q">Do you do custom orders?</div><div class="faq-a">Yes — minimum 50 pieces. Reach out via the contact form above.</div></div>
         <div class="faq-item"><div class="faq-q">What's your return policy?</div><div class="faq-a">7-day exchange for unworn items.</div></div>
       </div>
     </div>
@@ -1118,10 +1138,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
 <footer>
   <div class="footer-top">
     <div>
-      <span class="footer-logo" onclick="goPage('home')">
-        <img src="https://jylkltzzrlzldrvmepkw.supabase.co/storage/v1/object/public/assets/Image.png" alt="UG" style="height:32px;width:auto;border-radius:2px" onerror="this.style.display='none'"/>
-        URBAN GRAIN
-      </span>
+      <span class="footer-logo" onclick="goPage('home')">FADE</span>
       <p class="footer-tagline">Streetwear built for the city. Limited drops. Real quality. Made in India.</p>
     </div>
     <div class="footer-col"><h4>Shop</h4><ul>
@@ -1140,7 +1157,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
     </ul></div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy">© 2026 URBAN GRAIN. ALL RIGHTS RESERVED.</p>
+    <p class="footer-copy">© 2026 FADE. ALL RIGHTS RESERVED.</p>
     <div class="footer-links">
       <a onclick="openPol('refund')">Returns Policy</a>
       <a onclick="openPol('privacy')">Privacy</a>
@@ -1269,7 +1286,7 @@ function renderLookbook(){
 
 function renderHome(){
   var el=document.getElementById('home-drops');
-  if(el)el.innerHTML=PRODS.slice(0,4).map(prodCard).join('')||'<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid);padding:2rem">NO PRODUCTS YET</p>';
+  if(el)el.innerHTML=PRODS.map(prodCard).join('')||'<p style="font-family:var(--fm);font-size:.65rem;color:var(--mid);padding:2rem">NO PRODUCTS YET</p>';
   renderLookbook();
   updateHeroImage();
 }
@@ -1403,7 +1420,7 @@ async function doSignup(){
   if(r.user&&r.user.id)await sbUpsert('customers',{id:r.user.id,email:email,full_name:name,phone:phone});
   document.getElementById('sErr').style.display='none';
   closeAuth();
-  if(r.confirmed){await afterLogin(r.user);showToast('Welcome to Urban Grain, '+name.split(' ')[0]+'!');}
+  if(r.confirmed){await afterLogin(r.user);showToast('Welcome to FADE, '+name.split(' ')[0]+'!');}
   else showToast('Account created! Check your email to verify.');
 }
 function forgotPassword() {
@@ -1683,7 +1700,7 @@ async function placeOrder(){
   if(typeof Razorpay==='undefined'){showToast('Payment gateway loading. Please try again.');return;}
   var options={
     key:RZP_KEY,amount:total*100,currency:'INR',
-    name:'Urban Grain',description:'Order '+orderId,image:LOGO_URL,
+    name:'FADE',description:'Order '+orderId,image:LOGO_URL,
     prefill:{name:name,email:email,contact:phone},
     notes:{order_id:orderId},theme:{color:'#b5451b'},
     modal:{ondismiss:function(){showToast('Payment cancelled.');}},
@@ -1727,7 +1744,7 @@ async function placeOrder(){
 }
 
 /* ═══════════ NAVIGATION ═══════════ */
-function setNavActive(page){document.querySelectorAll('.nav-links a').forEach(function(a){a.classList.remove('active');});var nl=document.getElementById('nl-'+page);if(nl)nl.classList.add('active');}
+function setNavActive(page){}
 function goPage(page){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
   var el=document.getElementById('pg-'+page);if(el)el.classList.add('active');
@@ -1742,7 +1759,7 @@ function switchAccTab(tab,btn){document.querySelectorAll('.acc-tab').forEach(fun
 function toggleMob(){document.getElementById('mobMenu').classList.toggle('open');}
 
 /* ═══════════ FORMS ═══════════ */
-async function handleNL(e){e.preventDefault();var em=e.target.querySelector('input[type=email]').value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showToast('Please enter a valid email address.');return;}await sbUpsert('newsletter_subscribers',{email:em});showToast("You're in! Welcome to the Urban Grain fam.");e.target.reset();}
+async function handleNL(e){e.preventDefault();var em=e.target.querySelector('input[type=email]').value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showToast('Please enter a valid email address.');return;}await sbUpsert('newsletter_subscribers',{email:em});showToast("You're in! Welcome to the FADE fam.");e.target.reset();}
 async function handleContact(e){
   e.preventDefault();
   await sbInsert('contact_messages',{name:document.getElementById('cf-fn').value+' '+document.getElementById('cf-ln').value,email:document.getElementById('cf-em').value,subject:document.getElementById('cf-sub').value,message:document.getElementById('cf-msg').value});
@@ -1924,6 +1941,10 @@ function openVPDP(id){
   /* fabric & care */
   document.getElementById('vpdp-fabric').textContent=FABRIC_CARE[d.cat]||FABRIC_CARE['default'];
 
+  /* product details */
+  var detailsEl=document.getElementById('vpdp-details-body');
+  if(detailsEl)detailsEl.textContent=d.desc||'—';
+
   /* numbered tag */
   document.getElementById('vpdp-numbered').textContent='⬡ INDIVIDUALLY NUMBERED · '+d.pcs+' PIECES MADE · NEVER RESTOCKED';
 
@@ -1939,6 +1960,25 @@ function closeVPDP(){
   document.getElementById('pg-vault').classList.add('active');
   setNavActive('vault');
   window.scrollTo(0,0);
+}
+
+function vpdpShowSG(){
+  var d=vpdpState.drop;
+  var cat=d?d.cat:'tee';
+  var chart=SIZE_CHARTS[cat]||SIZE_CHARTS['tee'];
+  document.getElementById('vpdp-sg-title').textContent='SIZE GUIDE — '+chart.label;
+  /* build dark-themed table */
+  var th=chart.headers.map(function(h,i){return'<th'+(i===0?'':'')+'>'+h+'</th>';}).join('');
+  var tr=chart.rows.map(function(row){
+    return'<tr>'+row.map(function(v,i){return'<td>'+(i===0?v:v+' cm')+'</td>';}).join('')+'</tr>';
+  }).join('');
+  document.getElementById('vpdp-sg-table').innerHTML='<table class="vpdp-sg-table"><thead><tr>'+th+'</tr></thead><tbody>'+tr+'</tbody></table>';
+  document.getElementById('vpdpSGOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function vpdpCloseSG(){
+  document.getElementById('vpdpSGOverlay').classList.remove('open');
+  document.body.style.overflow='';
 }
 
 function vpdpSetImg(thumb,url){
@@ -1993,6 +2033,32 @@ function toggleVPDPAcc(btn){
   document.querySelectorAll('.vpdp-acc-head span:last-child').forEach(function(a){a.textContent='▾';});
   if(!isOpen){body.classList.add('open');arrow.textContent='▴';}
 }
+
+/* ═══ FADE INTRO ANIMATION ═══ */
+(function(){
+  var intro=document.getElementById('fade-intro');
+  if(!intro)return;
+  if(sessionStorage.getItem('fade-intro-done')){
+    intro.style.display='none';return;
+  }
+  var letters=document.querySelectorAll('.fi-letter');
+  var line=document.getElementById('fi-line');
+  var sub=document.getElementById('fi-sub');
+  letters.forEach(function(l,i){
+    setTimeout(function(){
+      l.style.transition='opacity .5s ease, transform .6s cubic-bezier(.2,0,0,1)';
+      l.style.opacity='1';
+      l.style.transform='translateY(0)';
+    },150+i*90);
+  });
+  setTimeout(function(){line.style.width='160px';},620);
+  setTimeout(function(){sub.classList.add('show');},900);
+  setTimeout(function(){
+    intro.classList.add('done');
+    sessionStorage.setItem('fade-intro-done','1');
+    setTimeout(function(){intro.style.display='none';},800);
+  },2200);
+})();
 
 /* ═══ VAULT QUICK-SHOP ═══ */
 var vqsState={drop:null,size:null,qty:1};
@@ -2252,7 +2318,7 @@ function showToast(msg){var t=document.getElementById('toast');if(!t)return;t.te
 /* ═══════════ INIT ═══════════ */
 document.addEventListener('DOMContentLoaded',function(){
   var te=document.getElementById('tickerEl');
-  if(te){var items=['NEW DROP — URBAN GRAIN','FREE SHIPPING OVER ₹1299','UG26 COLLECTION','MADE IN INDIA'];var all=items.concat(items).map(function(t){return'<span class="tick-item">'+t+'</span>';}).join('');te.innerHTML=all+all;}
+  if(te){var items=['NEW DROP — FADE','FREE SHIPPING OVER ₹1299','FADE SS26 COLLECTION','MADE IN INDIA'];var all=items.concat(items).map(function(t){return'<span class="tick-item">'+t+'</span>';}).join('');te.innerHTML=all+all;}
   PRODS=FALLBACK;renderHome();renderShop('all');
   loadProducts();
   initAuth().then(function(){setTimeout(startRealtime,1500);});
@@ -2260,60 +2326,82 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 <!-- VAULT PRODUCT PAGE -->
 <div class="page vpdp" id="pg-vpdp">
-  <button class="vpdp-back" onclick="closeVPDP()">BACK TO VAULT</button>
+
+  <!-- TOP NAV BAR -->
+  <div class="vpdp-topbar">
+    <button class="vpdp-back" onclick="closeVPDP()">← BACK TO VAULT</button>
+    <div class="vpdp-topbar-brand">FADE · VAULT</div>
+    <div></div>
+  </div>
+
+  <!-- MAIN GRID -->
   <div class="vpdp-wrap">
-    <!-- GALLERY -->
+
+    <!-- LEFT: GALLERY -->
     <div class="vpdp-gallery">
       <div id="vpdp-img-wrap">
-        <div class="vpdp-gallery-placeholder" id="vpdp-placeholder">UG</div>
+        <div class="vpdp-gallery-placeholder" id="vpdp-placeholder">FADE</div>
       </div>
       <div class="vpdp-thumbs" id="vpdp-thumbs" style="display:none"></div>
       <div class="vpdp-badge-pos" id="vpdp-badge"></div>
     </div>
-    <!-- INFO -->
+
+    <!-- RIGHT: INFO -->
     <div class="vpdp-info">
+
+      <!-- EDITION + NAME + PRICE -->
       <div class="vpdp-edition" id="vpdp-edition"></div>
       <div class="vpdp-name" id="vpdp-name"></div>
       <div class="vpdp-price" id="vpdp-price"></div>
 
+      <!-- PIECES BAR -->
       <div class="vpdp-pcs-row">
         <span class="vpdp-pcs-label" id="vpdp-pcs-label"></span>
         <span class="vpdp-pcs-pct" id="vpdp-pcs-pct"></span>
       </div>
       <div class="vpdp-bar-track"><div class="vpdp-bar-fill" id="vpdp-bar"></div></div>
 
+      <!-- DESC -->
       <div class="vpdp-desc" id="vpdp-desc"></div>
 
-      <div class="vpdp-label">SELECT SIZE</div>
-      <div class="vpdp-sizes" id="vpdp-sizes"></div>
-      <div class="vpdp-err" id="vpdp-err">PLEASE SELECT A SIZE FIRST</div>
+      <div class="vpdp-divider"></div>
 
-      <div class="vpdp-label">QUANTITY</div>
+      <!-- SIZE SECTION -->
+      <div class="vpdp-size-head">
+        <div class="vpdp-label">SELECT SIZE</div>
+        <button class="vpdp-sg-link" onclick="vpdpShowSG()">SIZE GUIDE ↗</button>
+      </div>
+      <div class="vpdp-sizes" id="vpdp-sizes"></div>
+      <div class="vpdp-err" id="vpdp-err">⚠ PLEASE SELECT A SIZE FIRST</div>
+
+      <!-- QTY -->
+      <div class="vpdp-label" style="margin-top:1.2rem">QUANTITY</div>
       <div class="vpdp-qty-row">
         <button class="vpdp-qty-btn" onclick="vpdpChangeQty(-1)">−</button>
         <div class="vpdp-qty-val" id="vpdp-qty">1</div>
         <button class="vpdp-qty-btn" onclick="vpdpChangeQty(1)">+</button>
       </div>
 
+      <!-- ADD TO BAG -->
       <button class="vpdp-atc" id="vpdp-atc" onclick="vpdpAddToCart()">ADD TO BAG</button>
+      <div class="vpdp-guarantee">⬡ Final sale · Individually numbered · Never restocked</div>
 
+      <!-- ACCORDIONS -->
       <div class="vpdp-acc">
         <div class="vpdp-acc-item">
-          <button class="vpdp-acc-head" onclick="toggleVPDPAcc(this)">
-            <span>FABRIC & CARE</span><span>▾</span>
-          </button>
+          <button class="vpdp-acc-head" onclick="toggleVPDPAcc(this)"><span>PRODUCT DETAILS</span><span>▾</span></button>
+          <div class="vpdp-acc-body" id="vpdp-details-body"></div>
+        </div>
+        <div class="vpdp-acc-item">
+          <button class="vpdp-acc-head" onclick="toggleVPDPAcc(this)"><span>FABRIC & CARE</span><span>▾</span></button>
           <div class="vpdp-acc-body" id="vpdp-fabric"></div>
         </div>
         <div class="vpdp-acc-item">
-          <button class="vpdp-acc-head" onclick="toggleVPDPAcc(this)">
-            <span>VAULT POLICY</span><span>▾</span>
-          </button>
-          <div class="vpdp-acc-body">All vault pieces are final sale. No returns, no exchanges. Each piece is individually numbered and permanently retired once sold.</div>
+          <button class="vpdp-acc-head" onclick="toggleVPDPAcc(this)"><span>VAULT POLICY</span><span>▾</span></button>
+          <div class="vpdp-acc-body">All vault pieces are final sale. No returns, no exchanges. Each piece is individually numbered and permanently retired once sold out.</div>
         </div>
         <div class="vpdp-acc-item">
-          <button class="vpdp-acc-head" onclick="toggleVPDPAcc(this)">
-            <span>SHIPPING</span><span>▾</span>
-          </button>
+          <button class="vpdp-acc-head" onclick="toggleVPDPAcc(this)"><span>SHIPPING</span><span>▾</span></button>
           <div class="vpdp-acc-body">Vault orders ship within 3–5 business days. Each order is packed and sealed individually. Tracking provided via email once dispatched.</div>
         </div>
       </div>
@@ -2321,6 +2409,23 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="vpdp-numbered" id="vpdp-numbered"></div>
     </div>
   </div>
+
+  <!-- VAULT SIZE GUIDE MODAL (per product category) -->
+  <div class="vpdp-sg-overlay" id="vpdpSGOverlay" onclick="vpdpCloseSG()">
+    <div class="vpdp-sg-box" onclick="event.stopPropagation()">
+      <button class="vpdp-sg-close" onclick="vpdpCloseSG()">✕ CLOSE</button>
+      <p style="font-family:var(--fm);font-size:.48rem;letter-spacing:.3em;color:var(--rust);margin-bottom:.4rem">// FIT REFERENCE</p>
+      <h3 class="vpdp-sg-title" id="vpdp-sg-title">SIZE GUIDE</h3>
+      <p style="font-family:var(--fm);font-size:.52rem;color:rgba(240,236,228,.4);letter-spacing:.08em;margin-bottom:1.5rem">All measurements in cm. Measure your body, not the garment.</p>
+      <div id="vpdp-sg-table"></div>
+      <p style="font-family:var(--fm);font-size:.48rem;letter-spacing:.1em;color:rgba(240,236,228,.3);line-height:1.9;margin-top:1.2rem">
+        ▸ Vault pieces are cut oversized — size down for a slimmer fit.<br>
+        ▸ Measurements are of the garment laid flat.<br>
+        ▸ ±1–2cm variation is normal across hand-finished pieces.
+      </p>
+    </div>
+  </div>
+
 </div>
 
 <!-- VAULT QUICK-SHOP MODAL -->
