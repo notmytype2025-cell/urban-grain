@@ -1865,9 +1865,10 @@ function renderVault(){
     else if(d.status==='live')badgeHtml='<div class="vault-card-badge live">● LIVE NOW</div>';
     else if(d.status==='coming')badgeHtml='<div class="vault-card-badge coming">COMING SOON</div>';
 
-    var imgHtml=d.image_url
-      ?'<img src="'+d.image_url+'" class="vault-card-img" alt="'+d.name+'" onerror="this.style.display=\'none\'"/>'
-      :'<div class="vault-card-placeholder">UG</div>';
+    var imgSrc=d.image_url||(d.images&&d.images.length?d.images[0]:null);
+    var imgHtml=imgSrc
+      ?'<img src="'+imgSrc+'" class="vault-card-img" alt="'+d.name+'" onerror="this.style.display=\'none\'"/>'
+      :'<div class="vault-card-placeholder">FADE</div>';
 
     var btnLabel=d.status==='sold'?'SOLD OUT — ARCHIVED':d.status==='coming'?'DROP INCOMING':'VIEW DROP';
     var btnClass=d.status!=='live'?'vault-card-btn disabled':'vault-card-btn';
@@ -1904,7 +1905,7 @@ function renderVault(){
 var vpdpState={drop:null,size:null,qty:1};
 
 function openVPDP(id){
-  var d=VAULT_DROPS.find(function(x){return x.id===id;});
+  var d=VAULT_DROPS.find(function(x){return x.id==id;});
   if(!d)return;
   vpdpState={drop:d,size:null,qty:1};
 
@@ -1933,6 +1934,7 @@ function openVPDP(id){
   var wrap=document.getElementById('vpdp-img-wrap');
   var thumbWrap=document.getElementById('vpdp-thumbs');
   var imgs=d.images&&d.images.length?d.images:(d.image_url?[d.image_url]:[]);
+  var imgSrc=d.image_url||(imgs.length?imgs[0]:null);
   if(imgs.length){
     wrap.innerHTML='<img class="vpdp-gallery-main" id="vpdp-main-img" src="'+imgs[0]+'" alt="'+d.name+'" onerror="this.style.display=\'none\'"/>';
     if(imgs.length>1){
@@ -2116,7 +2118,7 @@ function doSearch(q){
 var vqsState={drop:null,size:null,qty:1};
 
 function openVQS(id){
-  var d=VAULT_DROPS.find(function(x){return x.id===id;});
+  var d=VAULT_DROPS.find(function(x){return x.id==id;});
   if(!d||d.status!=='live')return;
   vqsState={drop:d,size:null,qty:1};
 
@@ -2193,7 +2195,7 @@ function vqsAddToCart(){
 }
 
 function vaultCardClick(id){
-  var d=VAULT_DROPS.find(function(x){return x.id===id;});
+  var d=VAULT_DROPS.find(function(x){return x.id==id;});
   if(!d)return;
   openVPDP(id);
 }
