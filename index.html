@@ -275,7 +275,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:grid;grid-template-c
   .ctas{flex-direction:column;width:100%}
   .ctas button{width:100%}
 }  
-.ticker{background:var(--rust);padding:.6rem 0;overflow:hidden}
+.ticker{background:#000000;padding:.6rem 0;overflow:hidden}
 .ticker-inner{display:flex;gap:4rem;animation:tick 22s linear infinite;white-space:nowrap}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .tick-item{font-family:var(--fd);font-size:.8rem;letter-spacing:.2em;color:#fff;flex-shrink:0}
@@ -668,6 +668,8 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
   </div>
   <div id="searchResults" style="max-width:600px;margin:.5rem auto 0;display:flex;flex-wrap:wrap;gap:.5rem"></div>
 </div>
+
+<div class="mob-menu" id="mobMenu">
   <a onclick="goPage('home');toggleMob()">Home</a>
   <a onclick="goPage('shop');toggleMob()">Shop</a>
   <a onclick="goPage('about');toggleMob()">About</a>
@@ -1409,9 +1411,9 @@ function openAuth(m){
   document.getElementById('fmForgot').style.display=m==='forgot'?'block':'none';
   document.getElementById('lErr').style.display='none';
   document.getElementById('sErr').style.display='none';
-  var _am=document.getElementById('authModal');if(_am)_am.classList.add('open');
+  document.getElementById('authModal').classList.add('open');
 }
-function closeAuth(){var _am=document.getElementById('authModal');if(_am)_am.classList.remove('open');}
+function closeAuth(){document.getElementById('authModal').classList.remove('open');}
 function showErr(id,msg,type){var el=document.getElementById(id);el.textContent=msg;el.className='modal-err '+(type||'error');el.style.display='block';}
 async function doLogin(){
   var email=document.getElementById('lEmail').value.trim();
@@ -1548,7 +1550,7 @@ function openProd(id){
   document.querySelectorAll('#starSelect span').forEach(function(s){s.classList.remove('active');});
   loadReviews(id);
   document.querySelectorAll('.page,.pdp').forEach(function(pg){pg.classList.remove('active');});
-  var pgProd=document.getElementById('pg-product');if(pgProd)pgProd.classList.add('active');
+  document.getElementById('pg-product').classList.add('active');
   window.scrollTo(0,0);setNavActive('');
 }
 function goBackPDP(){
@@ -1613,7 +1615,7 @@ function updateCart(){
     return'<div class="cart-item"><div class="ci-img">'+imgHtml+'</div><div class="ci-detail"><div class="ci-name">'+i.name+'</div><div class="ci-meta">'+i.size+' · '+i.colorName+'</div><div class="ci-price">₹'+(i.price*i.qty).toLocaleString('en-IN')+'</div><div class="ci-qty"><button class="qty-btn" onclick="changeQty(\''+i.key+'\',-1)">−</button><span class="qty-num">'+i.qty+'</span><button class="qty-btn" onclick="changeQty(\''+i.key+'\',1)">+</button><button class="ci-remove" onclick="removeFromCart(\''+i.key+'\')">REMOVE</button></div></div></div>';
   }).join('');
 }
-function toggleCart(){var cs=document.getElementById('cSide');var co=document.getElementById('cOverlay');if(cs)cs.classList.toggle('open');if(co)co.classList.toggle('open');}
+function toggleCart(){document.getElementById('cSide').classList.toggle('open');document.getElementById('cOverlay').classList.toggle('open');}
 function goCheckout(){
   if(!cart.length){showToast('Your bag is empty!');return;}
   toggleCart();goPage('checkout');
@@ -1667,7 +1669,7 @@ function updateTotals(sub){
 }
 
 function setShip(el,cost,method){document.querySelectorAll('.ship-opt').forEach(function(s){s.classList.remove('sel');});el.classList.add('sel');shipCost=cost;shipMethod=method;updateTotals();}
-function switchPay(type,btn){document.querySelectorAll('.pay-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.pay-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');var pp=document.getElementById('pp-'+type);if(pp)pp.classList.add('active');payMethod=type;}
+function switchPay(type,btn){document.querySelectorAll('.pay-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.pay-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');document.getElementById('pp-'+type).classList.add('active');payMethod=type;}
 function applyPromo(){
   var code=document.getElementById('promoInp').value.trim().toUpperCase();
   var sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
@@ -1769,8 +1771,8 @@ function goPage(page){
   if(page==='checkout')showCheckoutForLoggedIn();
   if(page==='vault')resetVaultGate();
 }
-function switchAccTab(tab,btn){document.querySelectorAll('.acc-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.acc-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');var at=document.getElementById('tab-'+tab);if(at)at.classList.add('active');if(tab==='orders')loadOrders();}
-function toggleMob(){var mm=document.getElementById('mobMenu');if(mm)mm.classList.toggle('open');}
+function switchAccTab(tab,btn){document.querySelectorAll('.acc-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.acc-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');document.getElementById('tab-'+tab).classList.add('active');if(tab==='orders')loadOrders();}
+function toggleMob(){document.getElementById('mobMenu').classList.toggle('open');}
 
 /* ═══════════ FORMS ═══════════ */
 async function handleNL(e){e.preventDefault();var em=e.target.querySelector('input[type=email]').value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showToast('Please enter a valid email address.');return;}await sbUpsert('newsletter_subscribers',{email:em});showToast("You're in! Welcome to the FADE fam.");e.target.reset();}
@@ -1788,8 +1790,8 @@ var POLS={
   privacy:{title:'Privacy Policy',sections:[{h:'1. Information We Collect',items:['Name, phone, email, address.','Payment details via third-party gateways.']},{h:'2. How We Use Your Data',items:['Order processing and delivery.','Customer support.']},{h:'3. Data Protection',items:['Industry-standard security measures.','Payment info not stored on our servers.']}]},
   terms:{title:'Terms & Conditions',sections:[{h:'1. General',items:['By using this website, you agree to all terms.']},{h:'2. Pricing',items:['All prices in INR.','Prices may change without prior notice.']},{h:'3. Governing Law',items:['Governed by the laws of India.']}]},
 };
-function openPol(key){var p=POLS[key];if(!p)return;document.getElementById('polTitle').textContent=p.title;document.getElementById('polBody').innerHTML=p.sections.map(function(s){return'<div style="margin-bottom:1.8rem"><div style="font-family:var(--fd);font-size:1.1rem;color:var(--black);margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)">'+s.h+'</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem">'+s.items.map(function(i){return'<li style="display:flex;gap:.7rem"><span style="color:var(--rust)">▸</span><span>'+i+'</span></li>';}).join('')+'</ul></div>';}).join('');var po=document.getElementById('polOv');if(po)po.classList.add('open');document.body.style.overflow='hidden';}
-function closePolBtn(){var po=document.getElementById('polOv');if(po)po.classList.remove('open');document.body.style.overflow='';}
+function openPol(key){var p=POLS[key];if(!p)return;document.getElementById('polTitle').textContent=p.title;document.getElementById('polBody').innerHTML=p.sections.map(function(s){return'<div style="margin-bottom:1.8rem"><div style="font-family:var(--fd);font-size:1.1rem;color:var(--black);margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)">'+s.h+'</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem">'+s.items.map(function(i){return'<li style="display:flex;gap:.7rem"><span style="color:var(--rust)">▸</span><span>'+i+'</span></li>';}).join('')+'</ul></div>';}).join('');document.getElementById('polOv').classList.add('open');document.body.style.overflow='hidden';}
+function closePolBtn(){document.getElementById('polOv').classList.remove('open');document.body.style.overflow='';}
 
 /* ═══════════ VAULT ═══════════ */
 var VAULT_DROPS=[];
@@ -1821,8 +1823,8 @@ async function loadVaultDrops(){
 }
 
 function enterVault(){
-  var vg=document.getElementById('vaultGate');if(vg)vg.style.display='none';
-  var vi=document.getElementById('vaultInner');if(vi)vi.classList.add('open');
+  document.getElementById('vaultGate').style.display='none';
+  document.getElementById('vaultInner').classList.add('open');
   /* show loading state then fetch and render */
   var grid=document.getElementById('vaultGrid');
   var inner=document.getElementById('vaultInner');
@@ -1965,14 +1967,14 @@ function openVPDP(id){
 
   /* show vault product page */
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  var vp=document.getElementById('pg-vpdp');if(vp)vp.classList.add('active');
+  document.getElementById('pg-vpdp').classList.add('active');
   setNavActive('vault');
   window.scrollTo(0,0);
 }
 
 function closeVPDP(){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  var vaultPg=document.getElementById('pg-vault');if(vaultPg)vaultPg.classList.add('active');
+  document.getElementById('pg-vault').classList.add('active');
   setNavActive('vault');
   window.scrollTo(0,0);
 }
@@ -1988,13 +1990,11 @@ function vpdpShowSG(){
     return'<tr>'+row.map(function(v,i){return'<td>'+(i===0?v:v+' cm')+'</td>';}).join('')+'</tr>';
   }).join('');
   document.getElementById('vpdp-sg-table').innerHTML='<table class="vpdp-sg-table"><thead><tr>'+th+'</tr></thead><tbody>'+tr+'</tbody></table>';
-  var sgOv=document.getElementById('vpdpSGOverlay');
-  if(sgOv)sgOv.classList.add('open');
+  document.getElementById('vpdpSGOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
 function vpdpCloseSG(){
-  var sgOv=document.getElementById('vpdpSGOverlay');
-  if(sgOv)sgOv.classList.remove('open');
+  document.getElementById('vpdpSGOverlay').classList.remove('open');
   document.body.style.overflow='';
 }
 
@@ -2134,14 +2134,14 @@ function openVQS(id){
   }).join('');
 
   /* open */
-  var qo=document.getElementById('vqsOverlay');if(qo)qo.classList.add('open');
-  var qd=document.getElementById('vqsDrawer');if(qd)qd.classList.add('open');
+  document.getElementById('vqsOverlay').classList.add('open');
+  document.getElementById('vqsDrawer').classList.add('open');
   document.body.style.overflow='hidden';
 }
 
 function closeVQS(){
-  var qo=document.getElementById('vqsOverlay');if(qo)qo.classList.remove('open');
-  var qd=document.getElementById('vqsDrawer');if(qd)qd.classList.remove('open');
+  document.getElementById('vqsOverlay').classList.remove('open');
+  document.getElementById('vqsDrawer').classList.remove('open');
   document.body.style.overflow='';
 }
 
@@ -2211,12 +2211,9 @@ function resetVaultGate(){
   loadVaultDrops().then(function(){
     var totalPcs=VAULT_DROPS.reduce(function(s,d){return s+d.pcs;},0);
     var liveCount=VAULT_DROPS.filter(function(d){return d.status==='live';}).length;
-    var tEl=document.getElementById('vaultTotalPcs');
-    var dEl=document.getElementById('vaultDrops');
-    var lEl=document.getElementById('vaultLive');
-    if(tEl)tEl.textContent=totalPcs||'—';
-    if(dEl)dEl.textContent=VAULT_DROPS.length||'—';
-    if(lEl)lEl.textContent=liveCount||'—';
+    document.getElementById('vaultTotalPcs').textContent=totalPcs||'—';
+    document.getElementById('vaultDrops').textContent=VAULT_DROPS.length||'—';
+    document.getElementById('vaultLive').textContent=liveCount||'—';
   });
 }
 
