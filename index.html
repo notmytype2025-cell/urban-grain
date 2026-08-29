@@ -1836,11 +1836,9 @@ async function loadVaultDrops(){
 function enterVault(){
   document.getElementById('vaultGate').style.display='none';
   document.getElementById('vaultInner').classList.add('open');
-  /* show loading state then fetch and render */
   var grid=document.getElementById('vaultGrid');
-  var inner=document.getElementById('vaultInner');
   if(grid)grid.innerHTML='<div style="grid-column:1/-1;padding:4rem;text-align:center;font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;color:rgba(240,236,228,.3)">LOADING VAULT...</div>';
-  if(inner)inner.classList.add('open');
+  loadVaultDrops().then(function(){renderVault();});
 }
 
 function renderVault(){
