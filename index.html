@@ -1797,29 +1797,40 @@ function closePolBtn(){document.getElementById('polOv').classList.remove('open')
 var VAULT_DROPS=[];
 
 async function loadVaultDrops(){
-  /* fetch from Supabase vault_products table */
-  var url=SB_URL+'/rest/v1/vault_products?select=*&order=created_at.asc&active=is.true';
   try{
-    var r=await sbFetch(url,{headers:sbH()});
-    if(r.ok&&Array.isArray(r.data)&&r.data.length){
-      VAULT_DROPS=r.data.map(function(row){
-        return{
-          id:row.id,
-          edition:row.edition||'VAULT DROP',
-          name:row.name||'',
-          desc:row.desc||row.description||'',
-          price:row.price||0,
-          pcs:row.pcs_made||0,
-          sold:row.pcs_sold||0,
-          status:row.status||'coming',
-          image_url:row.image_url||null,
-          images:row.images||[],
-          cat:row.cat||'general',
-          oos:row.oos||[]
-        };
-      });
+    var url=SB_URL+'/rest/v1/vault_products?select=*';
+    var r=await fetch(url,{
+      method:'GET',
+      headers:{
+        'apikey':SB_KEY,
+        'Content-Type':'application/json',
+        'Accept':'application/json'
+      }
+    });
+    var data=await r.json();
+    console.log('Vault fetch status:',r.status,'data:',JSON.stringify(data).slice(0,300));
+    if(Array.isArray(data)&&data.length){
+      VAULT_DROPS=data
+        .filter(function(row){return row.active!==false;})
+        .map(function(row){
+          return{
+            id:row.id,
+            edition:row.edition||'VAULT DROP',
+            name:row.name||'',
+            desc:row.desc||row.description||'',
+            price:row.price||0,
+            pcs:row.pcs_made||0,
+            sold:row.pcs_sold||0,
+            status:(row.status||'coming').trim().toLowerCase(),
+            image_url:row.image_url||null,
+            images:Array.isArray(row.images)?row.images:(row.image_url?[row.image_url]:[]),
+            cat:(row.cat||'tee').trim().replace(/s$/,''),
+            oos:row.oos||[]
+          };
+        });
     }
   }catch(e){console.log('Vault fetch error:',e.message);}
+  console.log('Vault drops loaded:',VAULT_DROPS.length);
 }
 
 function enterVault(){
