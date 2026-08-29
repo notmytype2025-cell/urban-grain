@@ -231,7 +231,9 @@ body{font-family:var(--fb);background:var(--bg);color:var(--black);overflow-x:hi
 nav{position:fixed;top:0;left:0;right:0;z-index:900;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:1rem 2rem;background:rgba(245,241,234,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
 .logo{font-family:var(--fd);font-size:1.4rem;letter-spacing:.18em;font-weight:800;color:var(--black);cursor:pointer;text-align:center;text-transform:uppercase}
 .nav-left{display:flex;align-items:center}
-.nav-right{display:flex;gap:.6rem;align-items:center;justify-content:flex-end}
+.nav-icon-btn{background:none;border:none;cursor:pointer;color:var(--black);display:flex;align-items:center;justify-content:center;padding:.3rem;transition:color .2s;width:34px;height:34px}
+.nav-icon-btn:hover{color:var(--rust)}
+.nav-right{display:flex;gap:.2rem;align-items:center;justify-content:flex-end}
 .cart-btn{font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;background:var(--rust);color:#fff;padding:.5rem 1.2rem;border:none;cursor:pointer}
 .cart-btn:hover{background:var(--rust-dark)}
 .auth-btn{font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--grain);padding:.5rem 1rem;border:1px solid var(--border);cursor:pointer;transition:all .2s}
@@ -617,7 +619,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
   .acc-panel{padding:2rem 1.5rem}
 }
 @media(max-width:560px){
-  .grid-4,.grid-3,.rev-grid{grid-template-columns:1fr}
+  .grid-4,.grid-3,.rev-grid{grid-template-columns:repeat(2,1fr)}
   .about-stats-bar{grid-template-columns:1fr 1fr}.feat-bar{grid-template-columns:1fr 1fr}
   .footer-top{grid-template-columns:1fr}.about-values{grid-template-columns:1fr}
 }
@@ -642,14 +644,30 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
   </div>
   <span class="logo" onclick="goPage('home')">FADE</span>
   <div class="nav-right">
-    <button class="auth-btn" id="btnLogin" onclick="openAuth('login')">LOGIN</button>
-    <button class="auth-btn" id="btnAccount" onclick="goPage('account')" style="display:none">MY ACCOUNT</button>
-    <button class="auth-btn" id="btnLogout" onclick="doLogout()" style="display:none">LOGOUT</button>
+    <button class="nav-icon-btn" id="btnSearch" onclick="toggleSearch()" title="Search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="nav-icon-btn" id="btnLogin" onclick="openAuth('login')" title="Login">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </button>
+    <button class="nav-icon-btn" id="btnAccount" onclick="goPage('account')" title="My Account" style="display:none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </button>
+    <button class="nav-icon-btn" id="btnLogout" onclick="doLogout()" title="Logout" style="display:none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
     <button class="cart-btn" onclick="toggleCart()">BAG (<span id="cart-count">0</span>)</button>
   </div>
 </nav>
 
-<div class="mob-menu" id="mobMenu">
+<!-- SEARCH BAR -->
+<div id="searchBar" style="display:none;position:fixed;top:72px;left:0;right:0;z-index:899;background:var(--bg);border-bottom:1px solid var(--border);padding:.8rem 2rem;display:none">
+  <div style="max-width:600px;margin:0 auto;display:flex;gap:.6rem;align-items:center">
+    <input id="searchInput" type="text" placeholder="SEARCH PRODUCTS..." oninput="doSearch(this.value)" style="flex:1;font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;padding:.7rem 1rem;background:var(--bg2);border:1px solid var(--border);outline:none;color:var(--black)"/>
+    <button onclick="closeSearch()" style="font-family:var(--fm);font-size:.55rem;letter-spacing:.15em;background:none;border:none;cursor:pointer;color:var(--grain)">✕</button>
+  </div>
+  <div id="searchResults" style="max-width:600px;margin:.5rem auto 0;display:flex;flex-wrap:wrap;gap:.5rem"></div>
+</div>
   <a onclick="goPage('home');toggleMob()">Home</a>
   <a onclick="goPage('shop');toggleMob()">Shop</a>
   <a onclick="goPage('about');toggleMob()">About</a>
@@ -1391,9 +1409,9 @@ function openAuth(m){
   document.getElementById('fmForgot').style.display=m==='forgot'?'block':'none';
   document.getElementById('lErr').style.display='none';
   document.getElementById('sErr').style.display='none';
-  document.getElementById('authModal').classList.add('open');
+  var _am=document.getElementById('authModal');if(_am)_am.classList.add('open');
 }
-function closeAuth(){document.getElementById('authModal').classList.remove('open');}
+function closeAuth(){var _am=document.getElementById('authModal');if(_am)_am.classList.remove('open');}
 function showErr(id,msg,type){var el=document.getElementById(id);el.textContent=msg;el.className='modal-err '+(type||'error');el.style.display='block';}
 async function doLogin(){
   var email=document.getElementById('lEmail').value.trim();
@@ -1427,18 +1445,14 @@ function forgotPassword() {
     openAuth('forgot');
 }
 
-async function doForgotPassword() {
-    var email = document.getElementById('fEmail').value.trim();
-    if (!email) { showErr('fErr', 'Please enter your email.'); return; }
-
-    showErr('fErr', 'Sending...', 'info');
-    var { error } = await _sb.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/index.html'
-    });
-
-    if (error) { showErr('fErr', error.message); return; }
-    document.getElementById('fErr').style.display = 'none';
-    showToast('Reset link sent! Check your inbox.');
+async function doForgotPassword(){
+  var email=document.getElementById('fEmail').value.trim();
+  if(!email){showErr('fErr','Please enter your email.');return;}
+  showErr('fErr','Sending...','info');
+  var r=await _sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/index.html'});
+  if(r.error){showErr('fErr',r.error.message);return;}
+  closeAuth();
+  showToast('✓ Reset link sent — check your inbox.');
 }
 async function doLogout(){await sbSignOut();afterLogout();goPage('home');showToast('Logged out.');}
 async function saveProfile(){
@@ -1534,7 +1548,7 @@ function openProd(id){
   document.querySelectorAll('#starSelect span').forEach(function(s){s.classList.remove('active');});
   loadReviews(id);
   document.querySelectorAll('.page,.pdp').forEach(function(pg){pg.classList.remove('active');});
-  document.getElementById('pg-product').classList.add('active');
+  var pgProd=document.getElementById('pg-product');if(pgProd)pgProd.classList.add('active');
   window.scrollTo(0,0);setNavActive('');
 }
 function goBackPDP(){
@@ -1599,7 +1613,7 @@ function updateCart(){
     return'<div class="cart-item"><div class="ci-img">'+imgHtml+'</div><div class="ci-detail"><div class="ci-name">'+i.name+'</div><div class="ci-meta">'+i.size+' · '+i.colorName+'</div><div class="ci-price">₹'+(i.price*i.qty).toLocaleString('en-IN')+'</div><div class="ci-qty"><button class="qty-btn" onclick="changeQty(\''+i.key+'\',-1)">−</button><span class="qty-num">'+i.qty+'</span><button class="qty-btn" onclick="changeQty(\''+i.key+'\',1)">+</button><button class="ci-remove" onclick="removeFromCart(\''+i.key+'\')">REMOVE</button></div></div></div>';
   }).join('');
 }
-function toggleCart(){document.getElementById('cSide').classList.toggle('open');document.getElementById('cOverlay').classList.toggle('open');}
+function toggleCart(){var cs=document.getElementById('cSide');var co=document.getElementById('cOverlay');if(cs)cs.classList.toggle('open');if(co)co.classList.toggle('open');}
 function goCheckout(){
   if(!cart.length){showToast('Your bag is empty!');return;}
   toggleCart();goPage('checkout');
@@ -1653,7 +1667,7 @@ function updateTotals(sub){
 }
 
 function setShip(el,cost,method){document.querySelectorAll('.ship-opt').forEach(function(s){s.classList.remove('sel');});el.classList.add('sel');shipCost=cost;shipMethod=method;updateTotals();}
-function switchPay(type,btn){document.querySelectorAll('.pay-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.pay-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');document.getElementById('pp-'+type).classList.add('active');payMethod=type;}
+function switchPay(type,btn){document.querySelectorAll('.pay-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.pay-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');var pp=document.getElementById('pp-'+type);if(pp)pp.classList.add('active');payMethod=type;}
 function applyPromo(){
   var code=document.getElementById('promoInp').value.trim().toUpperCase();
   var sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
@@ -1755,8 +1769,8 @@ function goPage(page){
   if(page==='checkout')showCheckoutForLoggedIn();
   if(page==='vault')resetVaultGate();
 }
-function switchAccTab(tab,btn){document.querySelectorAll('.acc-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.acc-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');document.getElementById('tab-'+tab).classList.add('active');if(tab==='orders')loadOrders();}
-function toggleMob(){document.getElementById('mobMenu').classList.toggle('open');}
+function switchAccTab(tab,btn){document.querySelectorAll('.acc-tab').forEach(function(t){t.classList.remove('active');});document.querySelectorAll('.acc-panel').forEach(function(p){p.classList.remove('active');});btn.classList.add('active');var at=document.getElementById('tab-'+tab);if(at)at.classList.add('active');if(tab==='orders')loadOrders();}
+function toggleMob(){var mm=document.getElementById('mobMenu');if(mm)mm.classList.toggle('open');}
 
 /* ═══════════ FORMS ═══════════ */
 async function handleNL(e){e.preventDefault();var em=e.target.querySelector('input[type=email]').value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showToast('Please enter a valid email address.');return;}await sbUpsert('newsletter_subscribers',{email:em});showToast("You're in! Welcome to the FADE fam.");e.target.reset();}
@@ -1774,8 +1788,8 @@ var POLS={
   privacy:{title:'Privacy Policy',sections:[{h:'1. Information We Collect',items:['Name, phone, email, address.','Payment details via third-party gateways.']},{h:'2. How We Use Your Data',items:['Order processing and delivery.','Customer support.']},{h:'3. Data Protection',items:['Industry-standard security measures.','Payment info not stored on our servers.']}]},
   terms:{title:'Terms & Conditions',sections:[{h:'1. General',items:['By using this website, you agree to all terms.']},{h:'2. Pricing',items:['All prices in INR.','Prices may change without prior notice.']},{h:'3. Governing Law',items:['Governed by the laws of India.']}]},
 };
-function openPol(key){var p=POLS[key];if(!p)return;document.getElementById('polTitle').textContent=p.title;document.getElementById('polBody').innerHTML=p.sections.map(function(s){return'<div style="margin-bottom:1.8rem"><div style="font-family:var(--fd);font-size:1.1rem;color:var(--black);margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)">'+s.h+'</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem">'+s.items.map(function(i){return'<li style="display:flex;gap:.7rem"><span style="color:var(--rust)">▸</span><span>'+i+'</span></li>';}).join('')+'</ul></div>';}).join('');document.getElementById('polOv').classList.add('open');document.body.style.overflow='hidden';}
-function closePolBtn(){document.getElementById('polOv').classList.remove('open');document.body.style.overflow='';}
+function openPol(key){var p=POLS[key];if(!p)return;document.getElementById('polTitle').textContent=p.title;document.getElementById('polBody').innerHTML=p.sections.map(function(s){return'<div style="margin-bottom:1.8rem"><div style="font-family:var(--fd);font-size:1.1rem;color:var(--black);margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)">'+s.h+'</div><ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem">'+s.items.map(function(i){return'<li style="display:flex;gap:.7rem"><span style="color:var(--rust)">▸</span><span>'+i+'</span></li>';}).join('')+'</ul></div>';}).join('');var po=document.getElementById('polOv');if(po)po.classList.add('open');document.body.style.overflow='hidden';}
+function closePolBtn(){var po=document.getElementById('polOv');if(po)po.classList.remove('open');document.body.style.overflow='';}
 
 /* ═══════════ VAULT ═══════════ */
 var VAULT_DROPS=[];
@@ -1807,12 +1821,13 @@ async function loadVaultDrops(){
 }
 
 function enterVault(){
-  document.getElementById('vaultGate').style.display='none';
-  document.getElementById('vaultInner').classList.add('open');
+  var vg=document.getElementById('vaultGate');if(vg)vg.style.display='none';
+  var vi=document.getElementById('vaultInner');if(vi)vi.classList.add('open');
   /* show loading state then fetch and render */
   var grid=document.getElementById('vaultGrid');
+  var inner=document.getElementById('vaultInner');
   if(grid)grid.innerHTML='<div style="grid-column:1/-1;padding:4rem;text-align:center;font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;color:rgba(240,236,228,.3)">LOADING VAULT...</div>';
-  loadVaultDrops().then(function(){renderVault();});
+  if(inner)inner.classList.add('open');
 }
 
 function renderVault(){
@@ -1950,14 +1965,14 @@ function openVPDP(id){
 
   /* show vault product page */
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  document.getElementById('pg-vpdp').classList.add('active');
+  var vp=document.getElementById('pg-vpdp');if(vp)vp.classList.add('active');
   setNavActive('vault');
   window.scrollTo(0,0);
 }
 
 function closeVPDP(){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  document.getElementById('pg-vault').classList.add('active');
+  var vaultPg=document.getElementById('pg-vault');if(vaultPg)vaultPg.classList.add('active');
   setNavActive('vault');
   window.scrollTo(0,0);
 }
@@ -1973,11 +1988,13 @@ function vpdpShowSG(){
     return'<tr>'+row.map(function(v,i){return'<td>'+(i===0?v:v+' cm')+'</td>';}).join('')+'</tr>';
   }).join('');
   document.getElementById('vpdp-sg-table').innerHTML='<table class="vpdp-sg-table"><thead><tr>'+th+'</tr></thead><tbody>'+tr+'</tbody></table>';
-  document.getElementById('vpdpSGOverlay').classList.add('open');
+  var sgOv=document.getElementById('vpdpSGOverlay');
+  if(sgOv)sgOv.classList.add('open');
   document.body.style.overflow='hidden';
 }
 function vpdpCloseSG(){
-  document.getElementById('vpdpSGOverlay').classList.remove('open');
+  var sgOv=document.getElementById('vpdpSGOverlay');
+  if(sgOv)sgOv.classList.remove('open');
   document.body.style.overflow='';
 }
 
@@ -2032,6 +2049,32 @@ function toggleVPDPAcc(btn){
   document.querySelectorAll('.vpdp-acc-body').forEach(function(b){b.classList.remove('open');});
   document.querySelectorAll('.vpdp-acc-head span:last-child').forEach(function(a){a.textContent='▾';});
   if(!isOpen){body.classList.add('open');arrow.textContent='▴';}
+}
+
+/* ═══ SEARCH ═══ */
+function toggleSearch(){
+  var bar=document.getElementById('searchBar');
+  var isOpen=bar.style.display==='block';
+  bar.style.display=isOpen?'none':'block';
+  if(!isOpen){document.getElementById('searchInput').focus();document.getElementById('searchResults').innerHTML='';}
+}
+function closeSearch(){
+  document.getElementById('searchBar').style.display='none';
+  document.getElementById('searchInput').value='';
+  document.getElementById('searchResults').innerHTML='';
+}
+function doSearch(q){
+  var res=document.getElementById('searchResults');
+  q=q.trim().toLowerCase();
+  if(!q||q.length<2){res.innerHTML='';return;}
+  var matches=PRODS.filter(function(p){
+    return p.name.toLowerCase().includes(q)||(p.cat&&p.cat.toLowerCase().includes(q));
+  }).slice(0,8);
+  if(!matches.length){res.innerHTML='<span style="font-family:var(--fm);font-size:.55rem;letter-spacing:.12em;color:var(--mid)">NO RESULTS</span>';return;}
+  res.innerHTML=matches.map(function(p){
+    return'<button onclick="closeSearch();openProd(\''+p.id+'\')" style="font-family:var(--fm);font-size:.58rem;letter-spacing:.1em;background:var(--bg2);border:1px solid var(--border);padding:.4rem .8rem;cursor:pointer;color:var(--black)">'
+      +p.name+(p.cat?' <span style="color:var(--mid)">'+p.cat.toUpperCase()+'</span>':'')+'</button>';
+  }).join('');
 }
 
 /* ═══ FADE INTRO ANIMATION ═══ */
@@ -2091,14 +2134,14 @@ function openVQS(id){
   }).join('');
 
   /* open */
-  document.getElementById('vqsOverlay').classList.add('open');
-  document.getElementById('vqsDrawer').classList.add('open');
+  var qo=document.getElementById('vqsOverlay');if(qo)qo.classList.add('open');
+  var qd=document.getElementById('vqsDrawer');if(qd)qd.classList.add('open');
   document.body.style.overflow='hidden';
 }
 
 function closeVQS(){
-  document.getElementById('vqsOverlay').classList.remove('open');
-  document.getElementById('vqsDrawer').classList.remove('open');
+  var qo=document.getElementById('vqsOverlay');if(qo)qo.classList.remove('open');
+  var qd=document.getElementById('vqsDrawer');if(qd)qd.classList.remove('open');
   document.body.style.overflow='';
 }
 
@@ -2165,13 +2208,15 @@ function resetVaultGate(){
   var inner=document.getElementById('vaultInner');
   if(gate)gate.style.display='';
   if(inner)inner.classList.remove('open');
-  /* fetch fresh counts to populate gate screen */
   loadVaultDrops().then(function(){
     var totalPcs=VAULT_DROPS.reduce(function(s,d){return s+d.pcs;},0);
     var liveCount=VAULT_DROPS.filter(function(d){return d.status==='live';}).length;
-    document.getElementById('vaultTotalPcs').textContent=totalPcs||'—';
-    document.getElementById('vaultDrops').textContent=VAULT_DROPS.length||'—';
-    document.getElementById('vaultLive').textContent=liveCount||'—';
+    var tEl=document.getElementById('vaultTotalPcs');
+    var dEl=document.getElementById('vaultDrops');
+    var lEl=document.getElementById('vaultLive');
+    if(tEl)tEl.textContent=totalPcs||'—';
+    if(dEl)dEl.textContent=VAULT_DROPS.length||'—';
+    if(lEl)lEl.textContent=liveCount||'—';
   });
 }
 
