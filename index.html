@@ -20,7 +20,7 @@
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="FADE"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ClothingStore","name":"FADE","url":"https://urban-grain.netlify.app","description":"FADE is an Indian streetwear brand from Chennai.","address":{"@type":"PostalAddress","addressLocality":"Chennai","addressRegion":"Tamil Nadu","addressCountry":"IN"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ClothingStore","name":"FADE","url":"https://fade07.netlify.app","description":"FADE is an Indian streetwear brand from Chennai.","address":{"@type":"PostalAddress","addressLocality":"Chennai","addressRegion":"Tamil Nadu","addressCountry":"IN"}}</script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -1250,7 +1250,7 @@ async function sbGetSession(){
 }
 async function sbInsert(t,o){if(IS_PREVIEW)return pvInsert(t,o);var x=await sbFetch(SB_URL+'/rest/v1/'+t,{method:'POST',headers:sbH({Prefer:'return=minimal'}),body:JSON.stringify(o)});return{error:x.ok?null:(x.data.message||x.data.hint||'Insert failed')};}
 async function sbUpsert(t,o){if(IS_PREVIEW)return pvUpsert(t,o);var x=await sbFetch(SB_URL+'/rest/v1/'+t,{method:'POST',headers:sbH({Prefer:'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify(o)});return{error:x.ok?null:(x.data.message||'Upsert failed')};}
-async function sbSelect(t,f){if(IS_PREVIEW)return pvSelect(t,f);var url=SB_URL+'/rest/v1/'+t+'?select=*&order=id.asc';if(f)Object.entries(f).forEach(function(e){url+='&'+e[0]+'=eq.'+encodeURIComponent(e[1]);});var x=await sbFetch(url,{headers:sbH()});return{data:x.ok&&Array.isArray(x.data)?x.data:[],error:x.ok?null:'Fetch failed'};}
+async function sbSelect(t,f){if(IS_PREVIEW)return pvSelect(t,f);var url=SB_URL+'/rest/v1/'+t+'?select=*&order=created_at.desc';if(f)Object.entries(f).forEach(function(e){var v=e[1];url+='&'+e[0]+'='+(v===true?'is.true':v===false?'is.false':'eq.'+encodeURIComponent(v));});var x=await sbFetch(url,{headers:sbH()});return{data:x.ok&&Array.isArray(x.data)?x.data:[],error:x.ok?null:'Fetch failed'};}
 async function sbSelectOne(t,f){if(IS_PREVIEW)return pvSelectOne(t,f);var r=await sbSelect(t,f);return{data:r.data.length?r.data[0]:null,error:r.error};}
 async function sbPatch(t,filter,updates){if(IS_PREVIEW)return{error:null};var url=SB_URL+'/rest/v1/'+t+'?';Object.entries(filter).forEach(function(e){url+=e[0]+'=eq.'+encodeURIComponent(e[1])+'&';});var x=await sbFetch(url,{method:'PATCH',headers:sbH({Prefer:'return=minimal'}),body:JSON.stringify(updates)});return{error:x.ok?null:'Patch failed'};}
 
@@ -1411,6 +1411,7 @@ function openAuth(m){
   document.getElementById('fmForgot').style.display=m==='forgot'?'block':'none';
   document.getElementById('lErr').style.display='none';
   document.getElementById('sErr').style.display='none';
+  document.getElementById('fErr').style.display='none';
   document.getElementById('authModal').classList.add('open');
 }
 function closeAuth(){document.getElementById('authModal').classList.remove('open');}
@@ -1443,18 +1444,20 @@ async function doSignup(){
   if(r.confirmed){await afterLogin(r.user);showToast('Welcome to FADE, '+name.split(' ')[0]+'!');}
   else showToast('Account created! Check your email to verify.');
 }
-function forgotPassword() {
-    openAuth('forgot');
-}
 
 async function doForgotPassword(){
   var email=document.getElementById('fEmail').value.trim();
   if(!email){showErr('fErr','Please enter your email.');return;}
-  showErr('fErr','Sending...','info');
-  var r=await _sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/index.html'});
-  if(r.error){showErr('fErr',r.error.message);return;}
-  closeAuth();
-  showToast('✓ Reset link sent — check your inbox.');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('fErr','Please enter a valid email address.');return;}
+  showErr('fErr','Sending reset link...','info');
+  try{
+    var r=await _sb.auth.resetPasswordForEmail(email,{redirectTo:'https://fade07.netlify.app/index.html'});
+    if(r.error){showErr('fErr',r.error.message||'Failed to send. Please try again.');return;}
+    closeAuth();
+    showToast('✓ Reset link sent — check your inbox (and spam folder).');
+  }catch(e){
+    showErr('fErr','Something went wrong. Please try again.');
+  }
 }
 async function doLogout(){await sbSignOut();afterLogout();goPage('home');showToast('Logged out.');}
 async function saveProfile(){
@@ -1505,7 +1508,6 @@ async function sendOrderEmail(orderId,email,items,total){
 }
 
 async function createDelhiveryShipment(orderId,name,phone,address,city,state,pin,items,total){
-  
   try{
     var qty=items.reduce(function(s,i){return s+i.qty;},0);
     var products=items.map(function(i){return i.name+' x'+i.qty;}).join(', ');
@@ -1513,7 +1515,7 @@ async function createDelhiveryShipment(orderId,name,phone,address,city,state,pin
     if(!r.ok)return null;
     var d=await r.json();
     if(d.waybill){await sbPatch('orders',{id:orderId},{waybill:d.waybill,status:'processing'});return d.waybill;}
-  }catch(e){console.log('Delhivery:',e.message);}
+  }catch(e){}
   return null;
 }
 
@@ -1533,7 +1535,6 @@ function openProd(id){
   document.getElementById('pdp-desc').textContent=p.desc;
   document.getElementById('pdp-qty').textContent=1;
   document.getElementById('pdp-badge-wrap').innerHTML=p.tag?'<div class="pdp-badge-lg">'+p.tag+'</div>':'';
-  setFabricCare(p.cat);
   /* build slider */
   buildSlider(p.images&&p.images.length?p.images:(p.image_url?[p.image_url]:[]));
   /* colors */
@@ -1567,7 +1568,7 @@ function pdpAddToCart(){
   var key=p.id+'-'+pdpState.size+'-'+pdpState.colorName.replace(/\s/g,'_');
   var ex=cart.find(function(x){return x.key===key;});
   if(ex)ex.qty+=pdpState.qty;
-  else cart.push(Object.assign({},p,{key:key,size:pdpState.size,colorName:pdpState.colorName,qty:pdpState.qty}));
+  else cart.push(Object.assign({},p,{key:key,productId:p.id,isVault:false,size:pdpState.size,colorName:pdpState.colorName,qty:pdpState.qty}));
   updateCart();showToast(p.name+' ('+pdpState.size+' / '+pdpState.colorName+') — Added to bag');
 }
 function toggleAcc(h){var b=h.nextElementSibling;var a=h.querySelector('.acc-arrow');b.classList.toggle('open');a.style.transform=b.classList.contains('open')?'':'rotate(-90deg)';}
@@ -1701,53 +1702,48 @@ async function placeOrder(){
   if(!a1){showToast('Please enter your address.');document.getElementById('co-a1').focus();return;}
   if(!city){showToast('Please enter your city.');document.getElementById('co-cy').focus();return;}
   if(!pin||pin.length!==6){showToast('Please enter a valid 6-digit PIN code.');document.getElementById('co-pi').focus();return;}
-  var sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
-  var total=Math.max(0,sub+shipCost-discount);
-  var orderId='UG-'+Math.floor(100000+Math.random()*900000);
+  var orderId='FADE-'+Math.floor(100000+Math.random()*900000);
   var name=(fn+' '+ln).trim();
   /* preview mode */
   if(IS_PREVIEW){
-    await saveOrderWithPayment(orderId,'preview_'+uid(),total);
+    await saveOrderWithPayment(orderId,'preview_'+uid(),cart.reduce(function(s,i){return s+i.price*i.qty;},0)+shipCost-discount);
     document.getElementById('coWrap').style.display='none';
     document.getElementById('orderOk').style.display='block';
     document.getElementById('okId').textContent='ORDER #'+orderId;
     cart=[];updateCart();showToast('Order placed! (Preview mode)');return;
   }
   if(typeof Razorpay==='undefined'){showToast('Payment gateway loading. Please try again.');return;}
+
+  /* call serverless function to get server-calculated amount and Razorpay order_id */
+  var serverResp,serverTotal;
+  try{
+    showToast('Verifying order...');
+    var cartItems=cart.map(function(i){return{productId:i.productId||i.id,qty:i.qty,isVault:!!i.isVault};});
+    var r=await fetch('/.netlify/functions/create-order',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({cartItems:cartItems,shipCost:shipCost,discount:discount,receipt:orderId})
+    });
+    serverResp=await r.json();
+    if(!r.ok||serverResp.error){showToast('Order error: '+(serverResp.error||'Please try again.'));return;}
+    serverTotal=serverResp.amount;
+  }catch(e){showToast('Could not verify order. Please try again.');return;}
+
   var options={
-    key:RZP_KEY,amount:total*100,currency:'INR',
-    name:'FADE',description:'Order '+orderId,image:LOGO_URL,
+    key:RZP_KEY,
+    order_id:serverResp.order_id,
+    amount:serverTotal*100,
+    currency:'INR',
+    name:'FADE',description:'Order '+orderId,
     prefill:{name:name,email:email,contact:phone},
     notes:{order_id:orderId},theme:{color:'#b5451b'},
     modal:{ondismiss:function(){showToast('Payment cancelled.');}},
     handler:async function(response){
-      await saveOrderWithPayment(orderId,response.razorpay_payment_id,total);
-      await sendOrderEmail(orderId,email,cart.slice(),total);
-      var waybill = null;
-      try {
-        const shipmentResponse = await fetch('/.netlify/functions/create-shipment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                orderId: orderId,
-                name: name,
-                phone: phone,
-                address: a1 + ' ' + (document.getElementById('co-a2')?.value || ''),
-                city: city,
-                state: document.getElementById('co-st')?.value || '',
-                pin: pin,
-                cart: cart.slice(),
-                total: total
-            })
-        });
-
-        if (shipmentResponse.ok) {
-            const shipmentData = await shipmentResponse.json();
-            waybill = shipmentData.waybill_number || shipmentData.waybill || shipmentData.awb || null;
-        }
-    } catch (shipmentError) {
-        console.error("Automated waybill creation failed:", shipmentError);
-    }
+      await saveOrderWithPayment(orderId,response.razorpay_payment_id,serverTotal);
+      await sendOrderEmail(orderId,email,cart.slice(),serverTotal);
+      var a2=document.getElementById('co-a2')?document.getElementById('co-a2').value:'';
+      var state=document.getElementById('co-st')?document.getElementById('co-st').value:'';
+      var waybill=await createDelhiveryShipment(orderId,name,phone,a1+(a2?' '+a2:''),city,state,pin,cart.slice(),serverTotal);
       document.getElementById('coWrap').style.display='none';
       document.getElementById('orderOk').style.display='block';
       document.getElementById('okId').textContent='ORDER #'+orderId;
@@ -1808,7 +1804,6 @@ async function loadVaultDrops(){
       }
     });
     var data=await r.json();
-    console.log('Vault fetch status:',r.status,'data:',JSON.stringify(data).slice(0,300));
     if(Array.isArray(data)&&data.length){
       VAULT_DROPS=data
         .filter(function(row){return row.active!==false;})
@@ -1829,8 +1824,7 @@ async function loadVaultDrops(){
           };
         });
     }
-  }catch(e){console.log('Vault fetch error:',e.message);}
-  console.log('Vault drops loaded:',VAULT_DROPS.length);
+  }catch(e){}
 }
 
 function enterVault(){
@@ -2041,6 +2035,8 @@ function vpdpAddToCart(){
     cart.push({
       key:key,
       id:d.id,
+      productId:d.id,
+      isVault:true,
       name:d.name+' [VAULT]',
       price:d.price,
       size:vpdpState.size,
@@ -2181,6 +2177,8 @@ function vqsAddToCart(){
     cart.push({
       key:key,
       id:d.id,
+      productId:d.id,
+      isVault:true,
       name:d.name+' [VAULT]',
       price:d.price,
       size:vqsState.size,
@@ -2208,7 +2206,7 @@ function handleVaultNL(e){
   e.preventDefault();
   var em=e.target.querySelector('input[type=email]').value.trim();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){showToast('Please enter a valid email.');return;}
-  sbUpsert('newsletter_subscribers',{email:em,vault_access:true});
+  sbUpsert('newsletter_subscribers',{email:em});
   showToast('⬡ You\'re on the Vault list. First to know.');
   e.target.reset();
 }
@@ -2329,11 +2327,7 @@ var FABRIC_CARE={
   default:'100% combed cotton. Machine wash cold (30°C), inside out. Do not tumble dry. Hang dry in shade. Do not bleach.'
 };
 
-function setFabricCare(cat){
-  var el=document.getElementById('pdp-fabric-care');
-  if(!el)return;
-  el.textContent=FABRIC_CARE[cat]||FABRIC_CARE['default'];
-}
+/* FABRIC_CARE used in vault PDP only */
 
 /* ═══════════ REALTIME ═══════════ */
 function startRealtime(){
@@ -2362,7 +2356,7 @@ function startRealtime(){
       }catch(_){}
     };
     ws.onclose=function(){setTimeout(startRealtime,5000);};
-  }catch(e){console.log('Realtime:',e.message);}
+  }catch(e){}
 }
 function forgotPassword(){ openAuth('forgot'); }
 /* ═══════════ TOAST ═══════════ */
