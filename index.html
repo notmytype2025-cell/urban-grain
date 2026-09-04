@@ -234,9 +234,25 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:grid;grid-template-c
 .nav-icon-btn{background:none;border:none;cursor:pointer;color:var(--black);display:flex;align-items:center;justify-content:center;padding:.3rem;transition:color .2s;width:34px;height:34px}
 .nav-icon-btn:hover{color:var(--rust)}
 .nav-right{display:flex;gap:.2rem;align-items:center;justify-content:flex-end}
-.cart-btn{font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;background:var(--rust);color:#fff;padding:.5rem 1.2rem;border:none;cursor:pointer}
-.cart-btn:hover{background:var(--rust-dark)}
-.auth-btn{font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--grain);padding:.5rem 1rem;border:1px solid var(--border);cursor:pointer;transition:all .2s}
+.cart-btn{background:none;border:none;cursor:pointer;}
+.cart-side{position:fixed;top:0;right:-440px;width:440px;height:100vh;background:var(--white);border-left:1px solid var(--border);z-index:1900;display:flex;flex-direction:column;transition:right .35s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 40px rgba(0,0,0,.08)}
+.cart-side.open{right:0}
+.cart-head{padding:1.2rem 1.8rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--bg)}
+.cart-head h2{font-family:var(--fd);font-size:1.2rem;letter-spacing:.08em;font-weight:800;display:flex;align-items:center;gap:.5rem}
+.cart-x{background:none;border:1px solid var(--border);width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--grain);transition:all .2s}
+.cart-x:hover{background:var(--black);color:#fff;border-color:var(--black)}
+.cart-body{flex:1;overflow-y:auto;padding:0 1.8rem}
+.cart-empty-msg{font-family:var(--fm);font-size:.6rem;letter-spacing:.25em;color:var(--mid);text-align:center;padding:4rem 0}
+.cart-foot{border-top:1px solid var(--border);background:var(--bg);padding:1.2rem 1.8rem}
+.cart-summary{margin-bottom:1rem}
+.cart-summary-row{display:flex;justify-content:space-between;font-family:var(--fm);font-size:.58rem;letter-spacing:.1em;color:var(--grain);margin-bottom:.4rem}
+.cart-summary-divider{height:1px;background:var(--border);margin:.8rem 0}
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.cart-total-lbl{font-family:var(--fm);font-size:.6rem;letter-spacing:.25em;color:var(--black);font-weight:700}
+.cart-total-val{font-family:var(--fd);font-size:1.8rem;color:var(--black);font-weight:800}
+.btn-checkout{display:flex;align-items:center;justify-content:center;gap:.7rem;width:100%;font-family:var(--fm);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;background:var(--black);color:#fff;padding:1.1rem;border:none;cursor:pointer;transition:background .2s;font-weight:600;margin-bottom:.7rem}
+.btn-checkout:hover{background:var(--rust)}
+.cart-secure-note{font-family:var(--fm);font-size:.5rem;letter-spacing:.08em;color:var(--mid);text-align:center}.auth-btn{font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--grain);padding:.5rem 1rem;border:1px solid var(--border);cursor:pointer;transition:all .2s}
 .auth-btn:hover{border-color:var(--rust);color:var(--rust)}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
 .hamburger span{width:22px;height:1.5px;background:var(--black);display:block}
@@ -611,7 +627,7 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
   .grid-4,.grid-3,.rev-grid{grid-template-columns:repeat(2,1fr)}
   .about-hero,.about-body-sec,.contact-grid,.checkout-wrap{grid-template-columns:1fr}
   .about-cards{display:none}.footer-top{grid-template-columns:1fr 1fr}
-  .cart-side{width:100%;right:-100%}.cog2{grid-template-columns:1fr}
+  .cart-side{width:100%;right:-100%;border-left:none;border-top:1px solid var(--border)}.cog2{grid-template-columns:1fr}
   .filter-bar,.shop-hero,.about-hero,.contact-hero{padding-left:1.5rem;padding-right:1.5rem}
   .about-stats-bar{grid-template-columns:repeat(2,1fr)}.pdp-grid{grid-template-columns:1fr}
   .pdp-info{padding:2rem 1.5rem}.pdp-back{padding:.9rem 1.5rem}
@@ -656,7 +672,10 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
     <button class="nav-icon-btn" id="btnLogout" onclick="doLogout()" title="Logout" style="display:none">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
     </button>
-    <button class="cart-btn" onclick="toggleCart()">BAG (<span id="cart-count">0</span>)</button>
+    <button class="nav-icon-btn cart-btn" onclick="toggleCart()" title="Your Bag" style="position:relative">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span id="cart-count" style="position:absolute;top:-4px;right:-4px;background:var(--rust);color:#fff;font-family:var(--fm);font-size:.45rem;letter-spacing:0;min-width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0 3px;display:none">0</span>
+    </button>
   </div>
 </nav>
 
@@ -784,11 +803,26 @@ footer{background:var(--mud);padding:4.5rem 3rem 2rem;border-top:1px solid rgba(
 <!-- CART -->
 <div class="cart-overlay" id="cOverlay" onclick="toggleCart()"></div>
 <div class="cart-side" id="cSide">
-  <div class="cart-head"><h2>YOUR BAG</h2><button class="cart-x" onclick="toggleCart()">✕</button></div>
+  <div class="cart-head">
+    <div style="display:flex;align-items:center;gap:.8rem">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <h2>YOUR BAG <span id="cart-count-side" style="font-size:.7rem;color:var(--mid);font-family:var(--fm);letter-spacing:.1em"></span></h2>
+    </div>
+    <button class="cart-x" onclick="toggleCart()">✕</button>
+  </div>
   <div class="cart-body" id="cBody"><div class="cart-empty-msg">YOUR BAG IS EMPTY</div></div>
   <div class="cart-foot">
-    <div class="cart-total-row"><span class="cart-total-lbl">Total</span><span class="cart-total-val">₹<span id="cTotal">0</span></span></div>
-    <button class="btn-checkout" onclick="goCheckout()">PROCEED TO CHECKOUT</button>
+    <div class="cart-summary">
+      <div class="cart-summary-row"><span>Subtotal</span><span>₹<span id="cSubtotal">0</span></span></div>
+      <div class="cart-summary-row" id="cShipRow"><span>Shipping</span><span id="cShipVal">₹99</span></div>
+      <div class="cart-summary-divider"></div>
+      <div class="cart-total-row"><span class="cart-total-lbl">TOTAL</span><span class="cart-total-val">₹<span id="cTotal">0</span></span></div>
+    </div>
+    <button class="btn-checkout" onclick="goCheckout()">
+      <span>CHECKOUT</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+    <p class="cart-secure-note">🔒 Secure checkout · Free shipping over ₹1299</p>
   </div>
 </div>
 
@@ -1605,14 +1639,32 @@ async function loadReviews(productId){
 function removeFromCart(key){cart=cart.filter(function(x){return x.key!==key;});updateCart();}
 function changeQty(key,d){var i=cart.find(function(x){return x.key===key;});if(!i)return;i.qty+=d;if(i.qty<=0)cart=cart.filter(function(x){return x.key!==key;});updateCart();}
 function updateCart(){
-  var total=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
+  var sub=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
   var count=cart.reduce(function(s,i){return s+i.qty;},0);
-  document.getElementById('cart-count').textContent=count;
-  document.getElementById('cTotal').textContent=total.toLocaleString('en-IN');
+  var ship=sub>=1299?0:99;
+  var total=sub+ship-discount;
+
+  /* nav badge */
+  var badge=document.getElementById('cart-count');
+  if(badge){badge.textContent=count;badge.style.display=count>0?'flex':'none';}
+
+  /* side count label */
+  var side=document.getElementById('cart-count-side');
+  if(side)side.textContent=count>0?'('+count+')':'';
+
+  /* totals */
+  var subEl=document.getElementById('cSubtotal');
+  if(subEl)subEl.textContent=sub.toLocaleString('en-IN');
+  var shipVal=document.getElementById('cShipVal');
+  if(shipVal)shipVal.textContent=sub>=1299?'FREE':'₹99';
+  var shipRow=document.getElementById('cShipRow');
+  if(shipRow)shipRow.style.display=cart.length?'flex':'none';
+  document.getElementById('cTotal').textContent=Math.max(0,total).toLocaleString('en-IN');
+
   var body=document.getElementById('cBody');
   if(!cart.length){body.innerHTML='<div class="cart-empty-msg">YOUR BAG IS EMPTY</div>';return;}
   body.innerHTML=cart.map(function(i){
-    var imgHtml=i.image_url?'<img src="'+i.image_url+'" style="width:100%;height:100%;object-fit:cover;background:#f5f5f5;" onerror="this.style.display=\'none\'"/>':'UG';
+    var imgHtml=i.image_url?'<img src="'+i.image_url+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>':'FADE';
     return'<div class="cart-item"><div class="ci-img">'+imgHtml+'</div><div class="ci-detail"><div class="ci-name">'+i.name+'</div><div class="ci-meta">'+i.size+' · '+i.colorName+'</div><div class="ci-price">₹'+(i.price*i.qty).toLocaleString('en-IN')+'</div><div class="ci-qty"><button class="qty-btn" onclick="changeQty(\''+i.key+'\',-1)">−</button><span class="qty-num">'+i.qty+'</span><button class="qty-btn" onclick="changeQty(\''+i.key+'\',1)">+</button><button class="ci-remove" onclick="removeFromCart(\''+i.key+'\')">REMOVE</button></div></div></div>';
   }).join('');
 }
